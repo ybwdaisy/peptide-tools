@@ -1,0 +1,33 @@
+{
+  "name": "peptide-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "check": "astro check",
+    "test": "node --import tsx --test tests/unit/*.test.ts",
+    "test:e2e": "playwright test",
+    "verify:site": "node scripts/check-site.mjs"
+  },
+  "dependencies": {
+    "@js-temporal/polyfill": "0.5.1",
+    "astro": "7.4.11",
+    "decimal.js": "10.6.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@fontsource-variable/instrument-sans": "^5.2.8",
+    "@fontsource-variable/schibsted-grotesk": "^5.2.7",
+    "@playwright/test": "1.65.0",
+    "@types/node": "^24.19.2",
+    "puppeteer-core": "25.17.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

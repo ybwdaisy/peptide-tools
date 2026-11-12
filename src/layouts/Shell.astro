@@ -1,0 +1,55 @@
+---
+import '../styles/app.css';
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/schibsted-grotesk';
+interface Props { title: string; description: string; active?: string; noindex?: boolean }
+const { title, description, active, noindex = false } = Astro.props;
+const isProduction = import.meta.env.VERCEL_ENV === 'production';
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? '';
+const verification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site);
+const nav = [['Calculator', '/calculator'], ['Reference library', '/library'], ['Protocol planner', '/planner']];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f8f7ef" />
+    <meta name="referrer" content="no-referrer" />
+    {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
+    {verification && <meta name="google-site-verification" content={verification} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={`${title} | Peptide Tools`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <title>{title} | Peptide Tools</title>
+  </head>
+  <body data-ga-id={gaId} data-analytics-origin="https://peptides.ybwdaisy.com" data-analytics-enabled={String(isProduction && /^G-[A-Z0-9]+$/.test(gaId))}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header container">
+      <a class="brand" href="/" aria-label="Peptide Tools home">Peptide<span>Tools</span></a>
+      <nav aria-label="Main navigation">{nav.map(([label, href]) => <a href={href} aria-current={active === href ? 'page' : undefined}>{label}</a>)}</nav>
+      <span class="local-label">Works in your browser</span>
+    </header>
+    <main id="main" class="container"><slot /></main>
+    <footer class="site-footer container">
+      <p>Tools for arithmetic and personal organization. No medical advice.</p>
+      <nav aria-label="Footer"><a href="/privacy">Privacy</a><a href="/disclaimer">Disclaimer</a><button type="button" class="text-button" data-open-consent>Analytics preferences</button></nav>
+      <p id="analytics-status" class="small">Optional analytics: off.</p>
+    </footer>
+    <section id="analytics-choice" class="consent-bar" aria-label="Optional analytics preferences" hidden>
+      <div><strong>Help improve these tools?</strong><p>Optional usage analytics excludes your inputs. Tools work either way. <a href="/privacy">Details</a></p></div>
+      <div class="actions"><button type="button" class="button secondary" data-consent="denied">No thanks</button><button type="button" class="button secondary" data-consent="granted">Allow analytics</button></div>
+    </section>
+    <noscript><div class="noscript-note container">JavaScript is needed for calculations and local schedules. Reference pages remain readable. Analytics is off.</div></noscript>
+    <script>
+      import { initAnalytics } from '../scripts/analytics';
+      initAnalytics();
+    </script>
+  </body>
+</html>
+<style is:global>html, body { overflow-x: clip; }</style>

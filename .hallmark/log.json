@@ -1,0 +1,29 @@
+[
+ {
+  "scope": "app",
+  "shape": "app screen",
+  "theme": "dose",
+  "axes": [
+   "light",
+   "grotesk-sans",
+   "chromatic-green"
+  ],
+  "nav": "top bar, three destinations",
+  "footer": "privacy and analytics controls",
+  "imagery": "none, actual working tools",
+  "photos": [],
+  "entry": "calculator workbench",
+  "fingerprint": "app:calculator-local-calendar",
+  "sections": [
+   "calculator",
+   "reference index",
+   "local calendar"
+  ],
+  "signature": "dose-to-volume workbench and cycle calendar",
+  "waived": [],
+  "prompt": "English mobile-first peptide arithmetic, sourced reference and browser-local scheduling",
+  "finishReview": "subagent, 2 findings resolved against recaptures",
+  "date": "2026-11-12",
+  "mode": "build"
+ }
+]
