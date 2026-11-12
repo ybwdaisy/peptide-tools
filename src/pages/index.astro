@@ -1,0 +1,12 @@
+---
+import Shell from '../layouts/Shell.astro';
+import Calculator from '../components/Calculator.astro';
+---
+<Shell title="Peptide calculator and local planner" description="Convert a specified dose to volume, read sourced peptide references, and organize a private browser-local schedule.">
+  <div class="page-heading"><h1>Peptide arithmetic, made clear.</h1><p>Convert your inputs. Read the evidence. Keep your schedule local.</p></div>
+  <Calculator compact />
+  <section class="next-tools" aria-label="More tools">
+    <a href="/library"><div><h2>Read the reference library</h2><p>Study context, source links and what remains unknown.</p></div><span aria-hidden="true">↗</span></a>
+    <a href="/planner"><div><h2>Build your own schedule</h2><p>A calendar you fill in, save locally and export.</p></div><span aria-hidden="true">↗</span></a>
+  </section>
+</Shell>

@@ -1,0 +1,8 @@
+node_modules
+.git
+.hallmark/shots
+.hallmark/screens
+test-results
+playwright-report
+qa/screenshots
+.env*

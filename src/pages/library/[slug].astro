@@ -1,0 +1,26 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import { peptides, FDA_RISK_SOURCE } from '../../data/peptides';
+export function getStaticPaths() { return peptides.map(peptide => ({ params: { slug: peptide.slug }, props: { peptide } })); }
+const { peptide } = Astro.props;
+---
+<Shell title={`${peptide.name}: evidence and half-life context`} description={`${peptide.name} reference: ${peptide.summary} Read the original sources and limitations; no dose recommendations.`} active="/library">
+  <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/library">Reference library</a></nav>
+  <article class="prose">
+    <div class="page-heading"><h1>{peptide.name}</h1><p>{peptide.aliases.join('; ')}</p></div>
+    <p class="small">Source type: {peptide.evidence}. Sources checked <time datetime={peptide.checked}>{peptide.checked}</time>.</p>
+    <h2>What the cited research examined</h2><p>{peptide.summary}</p><p>{peptide.limitation}</p>
+    <h2>Reference facts</h2>
+    <dl class="reference-facts">
+      <div><dt>Half-life</dt><dd>{peptide.halfLife ?? 'Not established for general human use by the cited source.'}{peptide.halfLifeContext && <span class="small">{peptide.halfLifeContext}</span>}</dd></div>
+      <div><dt>Human dose range</dt><dd>Not provided. This reference does not recommend a human dose.</dd></div>
+      <div><dt>Administration interval</dt><dd>Not established by these sources. A half-life is not a dosing schedule.</dd></div>
+      <div><dt>Storage</dt><dd>Product-specific information required. These sources do not establish a storage specification.</dd></div>
+    </dl>
+    <h2>Safety context</h2><p>{peptide.risk}</p><p class="small">Research results and substance listings are not product approvals. The FDA overview distinguishes current Category 2 entries from withdrawn nominations; withdrawal does not establish safety.</p>
+    <h2>Sources and review method</h2>
+    <ol class="sources">{peptide.sources.map(source => <li><a href={source.url} target="_blank" rel="noreferrer noopener">{source.title}</a></li>)}<li><a href={FDA_RISK_SOURCE.url} target="_blank" rel="noreferrer noopener">{FDA_RISK_SOURCE.title}</a></li></ol>
+    <p>These are bounded summaries of the linked sources, not systematic reviews. An unknown field means that these sources do not establish a general-use value. It does not claim that no other literature exists.</p>
+    <div class="notice"><p>The <a href="/calculator">calculator</a> converts values you provide. The <a href="/planner">planner</a> organizes entries you choose. Neither tool assesses whether a substance or schedule is appropriate.</p></div>
+  </article>
+</Shell>

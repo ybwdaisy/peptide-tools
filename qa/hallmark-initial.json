@@ -1,0 +1,61 @@
+{
+  "summary": {
+    "fails": 2,
+    "reflex": 2,
+    "warns": 1,
+    "waived": 0,
+    "rejected": 0,
+    "answered": 0,
+    "dismissed": 0,
+    "notes": 0,
+    "files": 13,
+    "render": "ran"
+  },
+  "findings": [
+    {
+      "gate": "19",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "src/components/Calculator.astro",
+      "line": 26,
+      "evidence": "dash \"—\" in copy",
+      "fix": "A comma, a colon, a full stop or parentheses; never a dash"
+    },
+    {
+      "gate": "34",
+      "grade": "FAIL",
+      "tier": "floor",
+      "file": "src/layouts/Shell.astro",
+      "line": 1,
+      "evidence": "no overflow-x: clip on html and body",
+      "fix": "overflow-x: clip on both html and body"
+    },
+    {
+      "gate": "7b",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "src/styles/app.css",
+      "line": 190,
+      "evidence": "pure #000: --color-ink: oklch(0% 0 0) (:root)",
+      "fix": "Tint the base toward the anchor hue"
+    },
+    {
+      "gate": "37",
+      "grade": "REFLEX",
+      "tier": "reflex",
+      "file": "src/styles/base.css",
+      "line": 4,
+      "evidence": "5 font families: schibsted grotesk variable, instrument sans variable, s…",
+      "fix": "Drop the extra family; three is the ceiling"
+    },
+    {
+      "gate": "25",
+      "grade": "WARN",
+      "tier": "reflex",
+      "file": "src/styles/app.css",
+      "line": 64,
+      "evidence": "measure 32ch on .result-empty p (45-75ch range)",
+      "fix": "Set prose measure between 45 and 75ch; a one-sentence lede or caption from 28ch"
+    }
+  ]
+}

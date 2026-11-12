@@ -1,0 +1,23 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import { peptides } from '../../data/peptides';
+---
+<Shell title="Peptide reference library" description="Browse 16 source-linked peptide references with study context, pharmacokinetic limitations, and explicit gaps in human evidence." active="/library">
+  <div class="page-heading"><h1>Read the evidence, with context.</h1><p>Sixteen reference entries. Primary sources, study conditions and explicit unknowns.</p></div>
+  <div class="search-bar"><label for="library-search">Find a name or alias</label><input id="library-search" name="library-search" type="search" autocomplete="off" placeholder="e.g. GHK-Cu or Epithalon" aria-describedby="library-count" /><p id="library-count" class="field-help" role="status">{peptides.length} references</p></div>
+  <ul class="reference-list" id="reference-list">
+    {peptides.map(peptide => <li data-reference data-search={`${peptide.name} ${peptide.aliases.join(' ')}`.toLowerCase()}><a href={`/library/${peptide.slug}`}><div><strong>{peptide.name}</strong><p>{peptide.aliases[0]}</p></div><p class="reference-summary">{peptide.summary}</p><span class="evidence-tag">{peptide.evidence}</span></a></li>)}
+  </ul>
+  <p id="library-empty" class="notice" hidden>No matching reference. Try another name or clear the search.</p>
+  <div class="notice prose"><p>“Human study” describes the source, not a safety endorsement. A study-specific half-life is not a dosing interval. These entries do not recommend doses or product storage instructions.</p></div>
+  <script>
+    const search = document.querySelector<HTMLInputElement>('#library-search')!;
+    const references = Array.from(document.querySelectorAll<HTMLElement>('[data-reference]'));
+    search.addEventListener('input', () => {
+      const value = search.value.toLowerCase().trim(); let count = 0;
+      references.forEach(row => { row.hidden = !row.dataset.search!.includes(value); if (!row.hidden) count++; });
+      document.querySelector('#library-count')!.textContent = `${count} references`;
+      document.querySelector<HTMLElement>('#library-empty')!.hidden = count > 0;
+    });
+  </script>
+</Shell>
