@@ -134,7 +134,7 @@ test('consented event contract sends only allowlisted data and withdrawal stops 
   const defaultsIndex = commands.findIndex(args => args[0] === 'set');
   expect(defaultsIndex).toBeGreaterThan(-1);
   expect(defaultsIndex).toBeLessThan(commands.findIndex(args => args[0] === 'js'));
-  expect(commands[defaultsIndex][1]).toMatchObject({ send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, page_location: 'https://peptides.ybwdaisy.com/calculator', page_title: 'Peptide Tools: calculator' });
+  expect(commands[defaultsIndex]?.[1]).toMatchObject({ send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, page_location: 'https://peptides.ybwdaisy.com/calculator', page_title: 'Peptide Tools: calculator' });
   expect(commands.find(args => args[0] === 'config')?.[2]).toMatchObject({ send_page_view: false, allow_google_signals: false, page_location: 'https://peptides.ybwdaisy.com/calculator', campaign_source: 'reddit' });
   await page.getByRole('button', { name: 'Analytics preferences', exact: true }).click();
   await page.getByRole('button', { name: 'No thanks', exact: true }).click();
