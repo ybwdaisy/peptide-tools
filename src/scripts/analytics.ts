@@ -1,3 +1,4 @@
+import { ui } from '../lib/i18n';
 import { EVENT_NAMES, eventParams, safeCampaign, safePage, safeReferrer, type AnalyticsEvent } from '../lib/analytics-policy';
 
 declare global { interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void } }
@@ -9,7 +10,7 @@ const campaign = safeCampaign(location.search);
 const referrer = safeReferrer(document.referrer);
 function readChoice() { try { return localStorage.getItem(CONSENT_KEY); } catch { return null; } }
 function writeChoice(value: string) { try { localStorage.setItem(CONSENT_KEY, value); } catch { /* This-page consent remains usable without storage. */ } }
-function configuration() { return location.origin === document.body.dataset.analyticsOrigin && document.body.dataset.analyticsEnabled === 'true' && /^G-[A-Z0-9]+$/.test(document.body.dataset.gaId ?? ''); }
+function configuration() { return document.documentElement.dataset.languageRedirect !== 'true' && location.origin === document.body.dataset.analyticsOrigin && document.body.dataset.analyticsEnabled === 'true' && /^G-[A-Z0-9]+$/.test(document.body.dataset.gaId ?? ''); }
 function initialize() {
   if (ready || !consent || !configuration()) return;
   ready = true;
@@ -52,7 +53,7 @@ export function initAnalytics() {
   const choice = readChoice();
   consent = choice === 'granted';
   if (panel) panel.hidden = choice !== null;
-  function renderStatus() { if (status) status.textContent = consent ? 'Optional analytics: allowed.' : 'Optional analytics: off.'; }
+  function renderStatus() { if (status) status.textContent = consent ? ui('Optional analytics: allowed.') : ui('Optional analytics: off.'); }
   renderStatus();
   initialize();
   document.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach(button => button.addEventListener('click', () => {

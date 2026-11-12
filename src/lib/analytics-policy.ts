@@ -3,7 +3,7 @@ export type AnalyticsEvent = typeof EVENT_NAMES[number];
 export type PageGroup = 'home' | 'calculator' | 'library' | 'library_detail' | 'planner' | 'privacy' | 'disclaimer' | 'not_found';
 const paths: Record<PageGroup, string> = { home: '/', calculator: '/calculator', library: '/library', library_detail: '/library/detail', planner: '/planner', privacy: '/privacy', disclaimer: '/disclaimer', not_found: '/404' };
 export function pageGroup(path: string): PageGroup {
-  const p = path.replace(/\/+$/, '') || '/';
+  const p = path.replace(/^\/zh(?=\/|$)/, '').replace(/\/+$/, '') || '/';
   if (p.startsWith('/library/')) return 'library_detail';
   return (Object.keys(paths) as PageGroup[]).find(k => paths[k] === p) ?? 'not_found';
 }

@@ -1,54 +1,57 @@
 ---
 import Shell from '../layouts/Shell.astro';
+import { getLocale, translate } from '../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
 ---
-<Shell title="Local peptide protocol planner" description="Build a schedule from your own entries, save it in this browser, and print or export a time-zone-aware calendar. No account or dose templates." active="/planner">
-  <div class="page-heading"><h1>A schedule you define.</h1><p>Enter your own plan. Save it in this browser. Export when you need it.</p></div>
+<Shell title={t("Local peptide protocol planner")} description={t("Build a schedule from your own entries, save it in this browser, and print or export a time-zone-aware calendar. No account or dose templates.")} active="/planner">
+  <div class="page-heading"><h1>{t("A schedule you define.")}</h1><p>{t("Enter your own plan. Save it in this browser. Export when you need it.")}</p></div>
   <div class="planner-layout">
     <form id="planner-form" class="planner-form" novalidate>
       <div class="planner-meta">
-        <div><label for="protocol-name">Protocol name</label><input id="protocol-name" name="protocolName" maxlength="80" autocomplete="off" required placeholder="Your protocol name" aria-describedby="planner-error" /></div>
-        <div><label for="time-zone">Time zone</label><select id="time-zone" name="timeZone" aria-describedby="timezone-help planner-error"><option value="UTC">UTC</option></select></div>
-        <div><label for="start-date">Start date (included)</label><input id="start-date" name="startDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
-        <div><label for="end-date">End date (included)</label><input id="end-date" name="endDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
+        <div><label for="protocol-name">{t("Protocol name")}</label><input id="protocol-name" name="protocolName" maxlength="80" autocomplete="off" required placeholder={t("Your protocol name")} aria-describedby="planner-error" /></div>
+        <div><label for="time-zone">{t("Time zone")}</label><select id="time-zone" name="timeZone" aria-describedby="timezone-help planner-error"><option value="UTC">UTC</option></select></div>
+        <div><label for="start-date">{t("Start date (included)")}</label><input id="start-date" name="startDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
+        <div><label for="end-date">{t("End date (included)")}</label><input id="end-date" name="endDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
       </div>
-      <p id="timezone-help" class="field-help">Times stay at the chosen local clock time. A repeated time uses its first occurrence; a skipped clock-change time must be changed.</p>
+      <p id="timezone-help" class="field-help">{t("Times stay at the chosen local clock time. A repeated time uses its first occurrence; a skipped clock-change time must be changed.")}</p>
       <div id="protocol-items"></div>
-      <div class="actions"><button type="button" class="button secondary" id="add-item">Add schedule item</button><span class="small">Up to 20 items, 366 days.</span></div>
+      <div class="actions"><button type="button" class="button secondary" id="add-item">{t("Add schedule item")}</button><span class="small">{t("Up to 20 items, 366 days.")}</span></div>
       <p id="planner-error" class="error-message" role="alert"></p>
-      <div class="actions"><button type="submit" class="button">Generate calendar</button><button type="button" class="button secondary" id="save-protocol">Save in this browser</button><button type="button" class="text-button" id="new-protocol">Start a new protocol</button></div>
+      <div class="actions"><button type="submit" class="button">{t("Generate calendar")}</button><button type="button" class="button secondary" id="save-protocol">{t("Save in this browser")}</button><button type="button" class="text-button" id="new-protocol">{t("Start a new protocol")}</button></div>
       <p id="planner-status" class="status-message" role="status"></p>
     </form>
-    <aside class="saved-aside" aria-label="Saved protocols and backups">
-      <div><h2>Saved in this browser</h2><p id="saved-empty" class="small">No saved protocols yet. Save your plan to reopen it here.</p><ul id="saved-list" class="saved-list"></ul></div>
-      <div class="data-actions"><h2>Your data</h2><button type="button" class="button secondary" id="backup-export" disabled>Download JSON backup</button><label for="backup-import" class="small">Restore a JSON backup</label><input id="backup-import" type="file" accept=".json,application/json" aria-describedby="storage-note" /><button type="button" class="text-button danger" id="clear-data">Clear saved protocols</button></div>
-      <p id="storage-note" class="small">Local storage is not a backup. Clearing browser data removes saved protocols. Download a backup to keep a copy.</p>
+    <aside class="saved-aside" aria-label={t("Saved protocols and backups")}>
+      <div><h2>{t("Saved in this browser")}</h2><p id="saved-empty" class="small">{t("No saved protocols yet. Save your plan to reopen it here.")}</p><ul id="saved-list" class="saved-list"></ul></div>
+      <div class="data-actions"><h2>{t("Your data")}</h2><button type="button" class="button secondary" id="backup-export" disabled>{t("Download JSON backup")}</button><label for="backup-import" class="small">{t("Restore a JSON backup")}</label><input id="backup-import" type="file" accept=".json,application/json" aria-describedby="storage-note" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
+      <p id="storage-note" class="small">{t("Local storage is not a backup. Clearing browser data removes saved protocols. Download a backup to keep a copy.")}</p>
       <p id="storage-status" class="status-message" role="status"></p>
     </aside>
   </div>
-  <section id="calendar-section" class="calendar-section" aria-label="Generated cycle calendar">
-    <div id="calendar-empty" class="calendar-empty"><h2>Your calendar starts here.</h2><p class="small">Add an item and choose cycle dates, then generate the calendar.</p></div>
+  <section id="calendar-section" class="calendar-section" aria-label={t("Generated cycle calendar")}>
+    <div id="calendar-empty" class="calendar-empty"><h2>{t("Your calendar starts here.")}</h2><p class="small">{t("Add an item and choose cycle dates, then generate the calendar.")}</p></div>
     <div id="generated-calendar" hidden>
-      <div class="print-heading"><h1 id="print-title"></h1><p id="print-context"></p><p>User-entered schedule. This is not a prescription or dose recommendation.</p></div>
-      <div class="calendar-toolbar"><div><h2 id="calendar-title">Cycle calendar</h2><p id="calendar-summary" class="small"></p></div><div><label for="calendar-month" class="visually-hidden">Displayed month</label><select id="calendar-month"></select></div><div class="actions"><button type="button" class="button secondary" id="export-ics">Export calendar (.ics)</button><button type="button" class="button secondary" id="print-calendar">Print cycle</button></div></div>
-      <div class="calendar-grid" id="calendar-weekdays" aria-hidden="true">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => <span class="calendar-weekday">{day}</span>)}</div>
-      <div class="calendar-grid" id="calendar-grid" aria-label="Month calendar"></div>
-      <p class="small calendar-note">The table below lists exact entries in the selected time zone. Exported events contain your inputs and have no reminders.</p>
-      <table class="schedule-table"><caption class="visually-hidden">Generated schedule entries</caption><thead><tr><th scope="col">Date / time</th><th scope="col">Item</th><th scope="col">Dose entered</th></tr></thead><tbody id="schedule-rows"></tbody></table>
-      <button type="button" class="text-button" id="show-more" hidden>Show more entries</button>
+      <div class="print-heading"><h1 id="print-title"></h1><p id="print-context"></p><p>{t("User-entered schedule. This is not a prescription or dose recommendation.")}</p></div>
+      <div class="calendar-toolbar"><div><h2 id="calendar-title">{t("Cycle calendar")}</h2><p id="calendar-summary" class="small"></p></div><div><label for="calendar-month" class="visually-hidden">{t("Displayed month")}</label><select id="calendar-month"></select></div><div class="actions"><button type="button" class="button secondary" id="export-ics">{t("Export calendar (.ics)")}</button><button type="button" class="button secondary" id="print-calendar">{t("Print cycle")}</button></div></div>
+      <div class="calendar-grid" id="calendar-weekdays" aria-hidden="true">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => <span class="calendar-weekday">{t(day)}</span>)}</div>
+      <div class="calendar-grid" id="calendar-grid" aria-label={t("Month calendar")}></div>
+      <p class="small calendar-note">{t("The table below lists exact entries in the selected time zone. Exported events contain your inputs and have no reminders.")}</p>
+      <table class="schedule-table"><caption class="visually-hidden">{t("Generated schedule entries")}</caption><thead><tr><th scope="col">{t("Date / time")}</th><th scope="col">{t("Item")}</th><th scope="col">{t("Dose entered")}</th></tr></thead><tbody id="schedule-rows"></tbody></table>
+      <button type="button" class="text-button" id="show-more" hidden>{t("Show more entries")}</button>
     </div>
   </section>
   <template id="protocol-item-template">
     <fieldset class="protocol-item">
-      <legend class="visually-hidden">Schedule item</legend>
-      <div class="item-heading"><h2 data-item-title></h2><button type="button" class="text-button" data-remove>Remove item</button></div>
+      <legend class="visually-hidden">{t("Schedule item")}</legend>
+      <div class="item-heading"><h2 data-item-title></h2><button type="button" class="text-button" data-remove>{t("Remove item")}</button></div>
       <div class="item-fields">
-        <div><label data-label-for="label">Item name</label><input data-field="label" maxlength="80" autocomplete="off" placeholder="Name from your own plan" required aria-describedby="planner-error" /></div>
-        <div><label data-label-for="dose">Dose entered</label><input data-field="dose" inputmode="decimal" autocomplete="off" required aria-describedby="planner-error" /></div>
-        <div><label data-label-for="unit">Unit</label><select data-field="unit"><option value="mcg">mcg</option><option value="mg">mg</option></select></div>
+        <div><label data-label-for="label">{t("Item name")}</label><input data-field="label" maxlength="80" autocomplete="off" placeholder={t("Name from your own plan")} required aria-describedby="planner-error" /></div>
+        <div><label data-label-for="dose">{t("Dose entered")}</label><input data-field="dose" inputmode="decimal" autocomplete="off" required aria-describedby="planner-error" /></div>
+        <div><label data-label-for="unit">{t("Unit")}</label><select data-field="unit"><option value="mcg">mcg</option><option value="mg">mg</option></select></div>
       </div>
-      <div class="item-frequency"><div><label data-label-for="time">Local time</label><input data-field="time" type="time" required aria-describedby="planner-error" /></div><div><label data-label-for="frequency">Repeat</label><select data-field="frequency"><option value="daily">Every day</option><option value="alternate">Every other day</option><option value="weekdays">Selected weekdays</option><option value="interval">Every N days</option></select></div></div>
-      <div data-interval-section class="repeat-options" hidden><label data-label-for="interval">Number of days</label><input data-field="interval" type="number" min="1" max="366" step="1" aria-describedby="planner-error" /></div>
-      <fieldset data-weekdays-section class="repeat-options" hidden><legend>Repeat on</legend><div class="weekdays">{[['Mon',1],['Tue',2],['Wed',3],['Thu',4],['Fri',5],['Sat',6],['Sun',7]].map(([day, value]) => <label><input data-weekday type="checkbox" value={value} />{day}</label>)}</div></fieldset>
+      <div class="item-frequency"><div><label data-label-for="time">{t("Local time")}</label><input data-field="time" type="time" required aria-describedby="planner-error" /></div><div><label data-label-for="frequency">{t("Repeat")}</label><select data-field="frequency"><option value="daily">{t("Every day")}</option><option value="alternate">{t("Every other day")}</option><option value="weekdays">{t("Selected weekdays")}</option><option value="interval">{t("Every N days")}</option></select></div></div>
+      <div data-interval-section class="repeat-options" hidden><label data-label-for="interval">{t("Number of days")}</label><input data-field="interval" type="number" min="1" max="366" step="1" aria-describedby="planner-error" /></div>
+      <fieldset data-weekdays-section class="repeat-options" hidden><legend>{t("Repeat on")}</legend><div class="weekdays">{[['Mon',1],['Tue',2],['Wed',3],['Thu',4],['Fri',5],['Sat',6],['Sun',7]].map(([day, value]) => <label><input data-weekday type="checkbox" value={value} />{t(String(day))}</label>)}</div></fieldset>
     </fieldset>
   </template>
   <script>

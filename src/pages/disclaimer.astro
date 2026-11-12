@@ -1,11 +1,14 @@
 ---
 import Shell from '../layouts/Shell.astro';
+import { getLocale, translate } from '../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
 ---
-<Shell title="Tool limitations and disclaimer" description="Peptide Tools provides arithmetic, bounded research references and user-entered schedules, not medical advice, prescriptions or safety assessments.">
-  <article class="prose"><div class="page-heading"><h1>Arithmetic is not medical advice.</h1><p>Updated November 12, 2026.</p></div>
-    <h2>What these tools do</h2><p>The calculator converts your specified dose and concentration into a volume. The planner turns your own entries into calendar dates. Neither determines an appropriate dose, route, combination, cycle, product quality or treatment.</p>
-    <h2>Check the inputs and equipment</h2><p>A correct mathematical result cannot validate the concentration, identity or quality of a product. An optional U-100 scale refers to volume markings, not biological activity in peptide IU. Results are not automatically rounded to device graduations.</p><p>Consult a qualified healthcare professional about treatment decisions and any measurement or administration uncertainty. Do not use reference half-lives to infer a dosing interval.</p>
-    <h2>Research has limits</h2><p>Animal, cell and small human studies have different evidentiary limits. Study formulations and routes cannot be treated as interchangeable. Source links and checked dates support review, but these entries are not systematic reviews, approvals or safety endorsements.</p>
-    <h2>Schedules and files</h2><p>The calendar is a personal organizational record, not a prescription or a reliable medication reminder system. Check exported events and time zones in your calendar application. No reminder alarms are included.</p>
+<Shell title={t("Tool limitations and disclaimer")} description={t("Peptide Tools provides arithmetic, bounded research references and user-entered schedules, not medical advice, prescriptions or safety assessments.")}>
+  <article class="prose"><div class="page-heading"><h1>{t("Arithmetic is not medical advice.")}</h1><p>{t("Updated November 12, 2026.")}</p></div>
+    <h2>{t("What these tools do")}</h2><p>{t("The calculator converts your specified dose and concentration into a volume. The planner turns your own entries into calendar dates. Neither determines an appropriate dose, route, combination, cycle, product quality or treatment.")}</p>
+    <h2>{t("Check the inputs and equipment")}</h2><p>{t("A correct mathematical result cannot validate the concentration, identity or quality of a product. An optional U-100 scale refers to volume markings, not biological activity in peptide IU. Results are not automatically rounded to device graduations.")}</p><p>{t("Consult a qualified healthcare professional about treatment decisions and any measurement or administration uncertainty. Do not use reference half-lives to infer a dosing interval.")}</p>
+    <h2>{t("Research has limits")}</h2><p>{t("Animal, cell and small human studies have different evidentiary limits. Study formulations and routes cannot be treated as interchangeable. Source links and checked dates support review, but these entries are not systematic reviews, approvals or safety endorsements.")}</p>
+    <h2>{t("Schedules and files")}</h2><p>{t("The calendar is a personal organizational record, not a prescription or a reliable medication reminder system. Check exported events and time zones in your calendar application. No reminder alarms are included.")}</p>
   </article>
 </Shell>

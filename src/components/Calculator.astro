@@ -1,36 +1,39 @@
 ---
+import { getLocale, translate } from '../lib/i18n';
 interface Props { compact?: boolean }
 const { compact = false } = Astro.props;
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
 ---
 <div class:list={['calculator-workbench', { compact }]}>
   <form id="calculator-form" class="calculator-inputs" novalidate>
-    <h2>Your inputs</h2>
-    <label for="concentration">Concentration <span class="unit-label">mg/mL</span></label>
-    <input id="concentration" name="concentration" inputmode="decimal" type="text" autocomplete="off" required aria-describedby="concentration-help calculator-error" placeholder="e.g. 2" />
-    <p id="concentration-help" class="field-help">Use the concentration verified for your specific solution.</p>
+    <h2>{t("Your inputs")}</h2>
+    <label for="concentration">{t("Concentration")} <span class="unit-label">mg/mL</span></label>
+    <input id="concentration" name="concentration" inputmode="decimal" type="text" autocomplete="off" required aria-describedby="concentration-help calculator-error" placeholder={t("e.g. 2")} />
+    <p id="concentration-help" class="field-help">{t("Use the concentration verified for your specific solution.")}</p>
     <div class="dose-row">
-      <div><label for="dose">Target dose</label><input id="dose" name="dose" type="text" inputmode="decimal" autocomplete="off" required placeholder="Your specified dose" aria-describedby="calculator-error" /></div>
-      <div><label for="unit">Unit</label><select id="unit" name="unit"><option value="mcg">mcg</option><option value="mg">mg</option></select></div>
+      <div><label for="dose">{t("Target dose")}</label><input id="dose" name="dose" type="text" inputmode="decimal" autocomplete="off" required placeholder={t("Your specified dose")} aria-describedby="calculator-error" /></div>
+      <div><label for="unit">{t("Unit")}</label><select id="unit" name="unit"><option value="mcg">mcg</option><option value="mg">mg</option></select></div>
     </div>
-    <label class="checkbox-label"><input type="checkbox" name="useSyringe" id="use-syringe" /> Show a U-100 syringe scale</label>
+    <label class="checkbox-label"><input type="checkbox" name="useSyringe" id="use-syringe" /> {t("Show a U-100 syringe scale")}</label>
     <fieldset id="syringe-fields" class="syringe-fields" disabled hidden>
-      <legend>Match your actual device</legend>
-      <div class="two-columns"><div><label for="capacity">Capacity</label><select id="capacity" name="capacity" aria-describedby="calculator-error"><option value="0.3">0.3 mL</option><option value="0.5">0.5 mL</option><option value="1" selected>1 mL</option></select></div><div><label for="increment">Smallest graduation</label><select id="increment" name="increment"><option value="0.5">0.5 marking</option><option value="1" selected>1 marking</option><option value="2">2 markings</option></select></div></div>
-      <p class="field-help">U-100 markings measure volume here, not peptide activity.</p>
+      <legend>{t("Match your actual device")}</legend>
+      <div class="two-columns"><div><label for="capacity">{t("Capacity")}</label><select id="capacity" name="capacity" aria-describedby="calculator-error"><option value="0.3">{t("0.3 mL")}</option><option value="0.5">{t("0.5 mL")}</option><option value="1" selected>{t("1 mL")}</option></select></div><div><label for="increment">{t("Smallest graduation")}</label><select id="increment" name="increment"><option value="0.5">{t("0.5 marking")}</option><option value="1" selected>{t("1 marking")}</option><option value="2">{t("2 markings")}</option></select></div></div>
+      <p class="field-help">{t("U-100 markings measure volume here, not peptide activity.")}</p>
     </fieldset>
     <p id="calculator-error" class="error-message" role="alert"></p>
-    <button class="button" type="submit">Calculate volume</button>
+    <button class="button" type="submit">{t("Calculate volume")}</button>
   </form>
-  <section class="calculator-output" aria-label="Calculation result" aria-live="polite" aria-atomic="true">
-    <h2>Calculated volume</h2>
-    <div id="result-empty" class="result-empty"><span class="result-placeholder">… <span>mL</span></span><p>Enter your verified concentration and target dose to calculate.</p></div>
+  <section class="calculator-output" aria-label={t("Calculation result")} aria-live="polite" aria-atomic="true">
+    <h2>{t("Calculated volume")}</h2>
+    <div id="result-empty" class="result-empty"><span class="result-placeholder">… <span>mL</span></span><p>{t("Enter your verified concentration and target dose to calculate.")}</p></div>
     <div id="calculator-result" hidden>
       <p class="volume"><output id="result-volume"></output> <span>mL</span></p>
       <p id="result-equation" class="equation"></p>
-      <div id="result-markings" class="markings" hidden><p><output id="markings-value"></output> U-100 markings</p><p id="graduation-note" class="field-help" hidden></p></div>
+      <div id="result-markings" class="markings" hidden><p><output id="markings-value"></output> {t("U-100 markings")}</p><p id="graduation-note" class="field-help" hidden></p></div>
       <p id="result-unit-note" class="field-help"></p>
     </div>
-    <div class="result-context"><p><strong>Check the inputs, every time.</strong></p><p>This tool converts units. It does not determine an appropriate dose or whether a product is safe to use.</p></div>
+    <div class="result-context"><p><strong>{t("Check the inputs, every time.")}</strong></p><p>{t("This tool converts units. It does not determine an appropriate dose or whether a product is safe to use.")}</p></div>
   </section>
 </div>
 <script>

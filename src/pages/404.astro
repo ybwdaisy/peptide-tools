@@ -1,6 +1,9 @@
 ---
 import Shell from '../layouts/Shell.astro';
+import { getLocale, localePath, translate } from '../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
 ---
-<Shell title="Page not found" description="This page does not exist. Open the calculator, reference library or local planner." noindex>
-  <div class="page-heading"><h1>This page is not here.</h1><p>Open the <a href="/calculator">calculator</a>, <a href="/library">reference library</a> or <a href="/planner">planner</a>.</p></div>
+<Shell title={t("Page not found")} description={t("This page does not exist. Open the calculator, reference library or local planner.")} noindex>
+  <div class="page-heading"><h1>{t("This page is not here.")}</h1><p>{t("Open the")} <a href={localePath("/calculator", locale)}>{t("calculator")}</a>, <a href={localePath("/library", locale)}>{t("reference library")}</a> {t("or")} <a href={localePath("/planner", locale)}>{t("planner")}</a>.</p></div>
 </Shell>
