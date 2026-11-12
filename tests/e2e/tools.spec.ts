@@ -137,6 +137,20 @@ test('consented event contract sends only allowlisted data and withdrawal stops 
   await expect(page.locator('#analytics-status')).toHaveText('Optional analytics: off.');
   expect(analytics).toHaveLength(1);
 });
+test('an accidentally production-marked alias cannot load analytics outside the approved origin', async ({ page }) => {
+  await page.route('**/calculator', async route => {
+    const response = await route.fetch();
+    await route.fulfill({ response, body: (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"') });
+  });
+  const requests: string[] = [];
+  page.on('request', request => { if (/googletagmanager|google-analytics/.test(request.url())) requests.push(request.url()); });
+  await page.goto('/calculator'); await page.getByRole('button', { name: 'Allow analytics', exact: true }).click();
+  await page.getByLabel('Concentration', { exact: false }).fill('5'); await page.getByLabel('Target dose', { exact: true }).fill('250');
+  await page.getByRole('button', { name: 'Calculate volume', exact: true }).click();
+  await expect(page.locator('#result-volume')).toHaveText('0.05');
+  expect(requests).toEqual([]);
+  expect(await page.evaluate(() => 'dataLayer' in window)).toBe(false);
+});
 test('all main routes render without overflow or uncaught application errors', async ({ page }) => {
   const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   for (const path of ['/', '/calculator', '/library', '/library/tb-500', '/planner', '/privacy', '/disclaimer']) {

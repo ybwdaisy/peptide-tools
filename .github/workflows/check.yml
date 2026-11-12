@@ -2,7 +2,7 @@ name: Verify tools
 on:
   pull_request:
   push:
-    branches: [main, codex/peptide-tools-mvp]
+    branches: [main]
 permissions:
   contents: read
 jobs:

@@ -17,7 +17,9 @@ Work is on `codex/peptide-tools-mvp`. Do not merge, deploy production, attach th
 
 Preview has noindex/nofollow, disallows crawling and does not load GA4. Protocols in preview storage do not transfer to production automatically; use JSON export/import if transferring test data deliberately.
 
-Vercel automatically classified the project's first CLI deployment as production despite `--environment preview`. That exact deployment was immediately removed; the project was verified to have no remaining deployments or production target. Do not repeat that first-deploy CLI command. Any review deployment must explicitly use a non-production target in its request and be checked afterward; default Vercel aliases must never enable analytics. Vercel Git repository connection also requires granting its GitHub App access to this new private repository; CLI source deployment does not establish Git integration.
+Vercel automatically classified the project's first CLI deployment as production despite `--environment preview`. An explicit REST `target: staging` request with automatic custom-domain assignment disabled was also reclassified as production. Both exact deployments were removed; the project was verified to have no remaining deployments or production target. Remote review deployment remains pending a supported safe first-deploy workflow or the owner's approval for initial production setup. Do not retry these commands as previews. Default Vercel aliases cannot enable analytics because of the independent runtime origin gate.
+
+Vercel Git repository connection requires granting its GitHub App access to this new private repository; source deployment does not establish Git integration.
 
 ## Rollback
 
