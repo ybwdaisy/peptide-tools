@@ -21,7 +21,11 @@ const nav = [['Calculator', '/calculator'], ['Reference library', '/library'], [
     {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
     {verification && <meta name="google-site-verification" content={verification} />}
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="Peptide Tools" />
     <meta property="og:title" content={`${title} | Peptide Tools`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
