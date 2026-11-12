@@ -9,7 +9,7 @@ const campaign = safeCampaign(location.search);
 const referrer = safeReferrer(document.referrer);
 function readChoice() { try { return localStorage.getItem(CONSENT_KEY); } catch { return null; } }
 function writeChoice(value: string) { try { localStorage.setItem(CONSENT_KEY, value); } catch { /* This-page consent remains usable without storage. */ } }
-function configuration() { return document.body.dataset.analyticsEnabled === 'true' && /^G-[A-Z0-9]+$/.test(document.body.dataset.gaId ?? ''); }
+function configuration() { return location.origin === document.body.dataset.analyticsOrigin && document.body.dataset.analyticsEnabled === 'true' && /^G-[A-Z0-9]+$/.test(document.body.dataset.gaId ?? ''); }
 function initialize() {
   if (ready || !consent || !configuration()) return;
   ready = true;

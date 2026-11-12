@@ -28,7 +28,7 @@ const nav = [['Calculator', '/calculator'], ['Reference library', '/library'], [
     <meta property="og:url" content={canonical} />
     <title>{title} | Peptide Tools</title>
   </head>
-  <body data-ga-id={gaId} data-analytics-enabled={String(isProduction && /^G-[A-Z0-9]+$/.test(gaId))}>
+  <body data-ga-id={gaId} data-analytics-origin="https://peptides.ybwdaisy.com" data-analytics-enabled={String(isProduction && /^G-[A-Z0-9]+$/.test(gaId))}>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header container">
       <a class="brand" href="/" aria-label="Peptide Tools home">Peptide<span>Tools</span></a>

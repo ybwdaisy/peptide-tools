@@ -7,6 +7,7 @@
 - Vercel production config: `PUBLIC_GA_MEASUREMENT_ID` (configured).
 - Preview and local development do not load GA4, even if consent was granted.
 - Production build must have `VERCEL_ENV=production`; no tag is loaded before affirmative consent.
+- A second runtime origin gate permits analytics only on `https://peptides.ybwdaisy.com`, never on a default Vercel alias or staging hostname.
 - Stream ID is not a property ID. The GA4 property ID and Google account are not yet available to the implementation session.
 
 ## Required GA4 admin settings before release

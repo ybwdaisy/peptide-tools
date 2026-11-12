@@ -17,6 +17,8 @@ Work is on `codex/peptide-tools-mvp`. Do not merge, deploy production, attach th
 
 Preview has noindex/nofollow, disallows crawling and does not load GA4. Protocols in preview storage do not transfer to production automatically; use JSON export/import if transferring test data deliberately.
 
+Vercel automatically classified the project's first CLI deployment as production despite `--environment preview`. That exact deployment was immediately removed; the project was verified to have no remaining deployments or production target. Do not repeat that first-deploy CLI command. Any review deployment must explicitly use a non-production target in its request and be checked afterward; default Vercel aliases must never enable analytics. Vercel Git repository connection also requires granting its GitHub App access to this new private repository; CLI source deployment does not establish Git integration.
+
 ## Rollback
 
 Record the first stable production deployment ID after launch. For later releases, use Vercel rollback to that recorded deployment or revert the responsible commit through a PR. Static source rollback does not restore browser data; preserve the version-1 importer and storage key. No automatic downgrade or clearing of local data is implemented.
