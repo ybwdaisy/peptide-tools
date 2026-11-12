@@ -49,7 +49,7 @@ The final production collection test used a fresh headed Chrome profile, actual 
 
 - Physical iPhone Safari and import into the owner's chosen calendar application. Chrome/WebKit iPhone simulation passed, not physical-device acceptance.
 - Actual OS print dialog and paper output. Final analytics trace intercepted the print API, verifying invocation and SDK intent only; print layouts were checked separately.
-- Vercel GitHub App repository access for automatic Git deployment. Authenticated CLI deployment works and production is live.
+- GitHub repository connection is verified as of 2026-11-13, with production branch `main`; see `release.md` for the Git-based deployment workflow. End-to-end push/preview verification is recorded in the documentation PR.
 - Natural Google crawling/indexing, processed reports and mature day-7/day-30 cohorts.
 
 No Google passwords, session cookies or tokens were requested or copied. Administrative work used authenticated visible UI controls.

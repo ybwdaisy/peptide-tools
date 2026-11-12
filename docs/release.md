@@ -1,17 +1,17 @@
 # Production release and rollback
 
-Updated: 2026-11-12. The owner authorized merging, production deployment and subdomain setup.
+Updated: 2026-11-13. The owner authorized merging, production deployment and subdomain setup.
 
 ## Current production
 
 - Live: https://peptides.ybwdaisy.com
 - MVP: https://github.com/ybwdaisy/peptide-tools/pull/1
 - Real-SDK privacy fix: https://github.com/ybwdaisy/peptide-tools/pull/2
-- Deployed source main commit: `24c32d76dd6ef00570951f62a6f04105b3a4d5f0`.
-- Passing source CI: https://github.com/ybwdaisy/peptide-tools/actions/runs/43218006404
+- Deployed source main commit: `cbc8b89febcae61eda09fa21c0e2a69cf35278c7` (Chinese language support, PR #5).
+- Passing source CI: https://github.com/ybwdaisy/peptide-tools/actions/runs/43320686303
 - Vercel project `peptide-tools`, scope `ybwdaisys-projects`; Node 24, Astro, `npm run build`, output `dist`.
-- Active production `dpl_ERqBeqyQ8FdwY3FuAZELCwWLEzCX`.
-- Deployment URL: https://peptide-tools-h323puk16-ybwdaisys-projects.vercel.app
+- Active production `dpl_9TFnF7aDFGDcVmE23jFds5ytXnhP`.
+- Deployment URL: https://peptide-tools-4jiz27nwj-ybwdaisys-projects.vercel.app
 - Public Measurement ID `G-B34CBGW0EF` is active in production only. Final production privacy/count checks and GA4 Realtime/DebugView reception passed; see `analytics-setup.md`.
 
 Alibaba Cloud has an enabled `peptides` CNAME to `757213d368615bb6.vercel-dns-017.com`, TTL 10 minutes. Vercel verified correct configuration, valid HTTPS and public HTTP 200. Apex, www, verification records and nameservers were preserved.
@@ -20,13 +20,17 @@ Search Console URL-prefix ownership is verified. Sitemap submission reports Succ
 
 ## Future releases
 
-Use a new branch and PR, required CI and relevant browser checks. Authenticated CLI source deployment:
+Use a new branch and PR, required CI and relevant browser checks. GitHub repository `ybwdaisy/peptide-tools` is now linked to this Vercel project; `main` is the production branch. Branch pushes create previews, and merges/pushes to `main` are configured for production deployment. Wait for required CI before merging.
+
+Use authenticated CLI source deployment only as a deliberate fallback, rather than duplicating a Git-triggered release:
 
 ```sh
 vercel deploy --prod --yes --scope ybwdaisys-projects --project peptide-tools --verify
 ```
 
-The Vercel GitHub App lacks access to the private repository, so automatic Git deployments are not connected. CLI deployments work. Do not make the repository public to solve this. Documentation-only commits do not require redeploying the accepted runtime.
+Repository connection and production branch were verified through the project API on 2026-11-13. Preview deployments are not disabled, the ignore-build command is unset, and the repository has no `git.deploymentEnabled: false` or legacy `github.enabled: false`. A Git push-triggered preview is the end-to-end verification step; retain its result in the documentation PR.
+
+`gitProviderOptions.createDeployments` controls GitHub `deployment_status` event records, not whether a push builds on Vercel. A value of `disabled` must not be interpreted as disabling automatic Vercel deployments. See the [official provider definition](https://github.com/vercel/terraform-provider-vercel/blob/main/docs/resources/project.md#nested-schema-for-git_provider_options). No notification settings were changed.
 
 Preview/local builds have noindex/nofollow, disallow crawling and omit production GA4 configuration. Default Vercel aliases cannot collect because of the exact-origin gate. Local browser protocols do not transfer between origins; use deliberate JSON backup/restore when needed.
 
