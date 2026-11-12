@@ -17,6 +17,8 @@ function initialize() {
   window.dataLayer = [];
   window.gtag = function (..._args: unknown[]) { window.dataLayer!.push(arguments); };
   window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+  // Apply privacy defaults before the tag initializes any remotely configured destination.
+  window.gtag('set', { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, ...safePage(location.pathname), page_referrer: referrer, ...campaign });
   window.gtag('js', new Date());
   window.gtag('config', id, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, cookie_domain: location.hostname, cookie_flags: 'SameSite=Lax;Secure', ...safePage(location.pathname), page_referrer: referrer, ...campaign });
   const script = document.createElement('script');

@@ -1,28 +1,39 @@
-# Preview, release and rollback
+# Production release and rollback
 
-## Review gate
+## Published release
 
-Work is on `codex/peptide-tools-mvp`. Do not merge, deploy production, attach the production domain or change DNS until the owner approves the reviewed result. A branch preview is authorized.
+The owner explicitly authorized merging, production deployment and subdomain/DNS setup on 2026-11-12.
 
-## Before production
+- Live site: https://peptides.ybwdaisy.com
+- Merged PR: https://github.com/ybwdaisy/peptide-tools/pull/1
+- Main/source commit: `c5c0ed4ec9576074c0cf1262db22de542f0e8517`.
+- Main CI: https://github.com/ybwdaisy/peptide-tools/actions/runs/43202654613 (passed).
+- Vercel project: `peptide-tools`, scope `ybwdaisys-projects`, Node 24, Astro, `npm run build`, output `dist`.
+- Current production: `dpl_GcAv1Qj82ywP11kKNp5GKTSUnNyk`, deployed from the same source commit with analytics paused.
+- Initial authorized production: `dpl_GSurr16iGtwrEMsjt4U6yKbxXF36`. **Do not roll back to this configuration while the Google tag privacy defect remains unresolved.**
 
-1. Confirm PR checks and browser results; complete the analytics admin settings in `analytics-setup.md`.
-2. Confirm Vercel project `peptide-tools` under `ybwdaisys-projects`, Node 24, Astro framework, build `npm run build`, output `dist` and production branch `main`.
-3. Confirm public production config `PUBLIC_GA_MEASUREMENT_ID=G-B34CBGW0EF`; add Search Console verification only if needed. No secrets belong in public env variables or Git.
-4. After approval, attach `peptides.ybwdaisy.com` to this project. Obtain the exact CNAME target from Vercel's domain instructions, then add only the `peptides` DNS record at Alibaba Cloud. Do not guess the target or change apex/homepage records.
-5. Merge/deploy the approved SHA. Confirm TLS, redirects, real status codes, robots allowing indexing, canonical URLs and sitemap URLs on the production hostname.
-6. Complete production analytics acceptance and Search Console submission. Record the launch date and exclude developer/acceptance events from demand evidence.
+Alibaba Cloud DNS has an enabled `peptides` CNAME to `757213d368615bb6.vercel-dns-017.com` (TTL 10 minutes). Vercel reports configured correctly and verified; HTTPS returns 200. Apex, www, other verification records and nameservers were preserved.
+
+## Analytics hold
+
+Real Google SDK acceptance found extra automatic page views, including a concrete library slug/title, despite the application's manual sanitization. Only this project's production `PUBLIC_GA_MEASUREMENT_ID` was removed, followed by a fresh source deployment. Production now has analytics disabled; consent and tools remain functional. Restoring the ID requires successful privacy verification, not just enabling the environment variable.
+
+The owner chose reuse of the existing main-site stream and subsequently explicitly authorized disabling its Enhanced measurement. This was completed and verified off after the initial approval rejection. The application also applies global privacy defaults before tag initialization. Candidate SDK verification is distinct from production acceptance; keep collection paused until the full check passes. See `analytics-setup.md`.
+
+## Future releases
+
+Use a new branch and PR, required CI and relevant browser checks. Source deployments currently use the authenticated Vercel CLI. The Vercel GitHub App lacks access to this private repository, so automatic deployments on push are not configured. Do not make the repository public to solve this.
+
+Before an analytics-enabled release, verify actual Google request payloads, counts, Realtime/DebugView, processed reports and consent withdrawal. Complete Search Console verification and sitemap submission separately. Public accessibility does not prove indexing.
 
 ## Preview behavior
 
-Preview has noindex/nofollow, disallows crawling and does not load GA4. Protocols in preview storage do not transfer to production automatically; use JSON export/import if transferring test data deliberately.
+Preview has noindex/nofollow, disallows crawling and does not load GA4. Default Vercel aliases cannot enable analytics because of the exact runtime origin gate. Browser-local protocols do not transfer between origins; JSON backup/restore is available when deliberate transfer is needed.
 
-Vercel automatically classified the project's first CLI deployment as production despite `--environment preview`. An explicit REST `target: staging` request with automatic custom-domain assignment disabled was also reclassified as production. Both exact deployments were removed; the project was verified to have no remaining deployments or production target. Remote review deployment remains pending a supported safe first-deploy workflow or the owner's approval for initial production setup. Do not retry these commands as previews. Default Vercel aliases cannot enable analytics because of the independent runtime origin gate.
-
-Vercel Git repository connection requires granting its GitHub App access to this new private repository; source deployment does not establish Git integration.
+Before production approval, Vercel unexpectedly classified two first-deploy preview/staging attempts as production; both exact deployments were removed. The current production deployments above were subsequently authorized and must be retained.
 
 ## Rollback
 
-Record the first stable production deployment ID after launch. For later releases, use Vercel rollback to that recorded deployment or revert the responsible commit through a PR. Static source rollback does not restore browser data; preserve the version-1 importer and storage key. No automatic downgrade or clearing of local data is implemented.
+The current known-safe deployment is `dpl_GcAv1Qj82ywP11kKNp5GKTSUnNyk` (tools available, analytics paused). Use Vercel rollback to this deployment or revert a later source change through a PR. An earlier deployment retains its own build-time environment values, so removing the current environment variable does not sanitize an older deployment.
 
-For the first release with no prior stable version, remove the subdomain assignment or show a deliberately reviewed maintenance build rather than directing it at an unrelated homepage. Never delete saved local data as part of a release rollback.
+Static rollback does not restore browser-local data. Preserve the version-1 importer and storage key. Never clear saved protocols or redirect the subdomain to an unrelated homepage as part of rollback.
