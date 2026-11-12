@@ -9,7 +9,7 @@ Date: 2026-11-12. This report distinguishes local checks, browser simulation and
 - Four recurrence rules, inclusive cycle dates, time-zone-aware instants, DST-gap errors and first repeated-time occurrence.
 - Local save/load/delete, validated version-1 JSON backup/restore, corruption protection, ICS without alarms, full-cycle printing.
 - Consent-first event integration, fixed parameter allowlists, generic reference page analytics, preview exclusion, withdrawal reload.
-- Independent private GitHub repository and Vercel project. PR #1 merged with owner authorization; production and the custom domain are live. GA collection is currently paused after real Google SDK acceptance failed the privacy requirements.
+- Independent private GitHub repository and Vercel project. PR #1 merged with owner authorization; production and the custom domain are live. Production GA4 collection is active after PR #2 fixed the real-SDK privacy issue and final acceptance passed.
 
 ## Passed locally
 
@@ -34,34 +34,25 @@ An initial developer-server test encountered toolbar overlays and WebKit action 
 
 The real HTTPS custom hostname passed Chrome and WebKit/iPhone 13 simulation checks: seven primary routes, calculator output, schedule generation, browser save, ICS download start, canonical URLs, indexing flags, overflow and real 404 status. No page errors or Google requests occurred after declining consent. This does not constitute a physical-iPhone test.
 
-After analytics was paused, a fresh production Chrome session accepted analytics and successfully calculated 0.05 mL from the test inputs; `data-analytics-enabled` was `false` and Google request count was zero (2026-11-12T11:23:13Z).
+The final production collection test used a fresh headed Chrome profile, actual deployed code and the real Google SDK. All nine business event types and exact counts passed; every inspected packet had generic locations/titles and allowed parameters. No Google requests occurred before consent or after withdrawal. Realtime and DebugView received the acceptance events, including the three key events and print intent. See `analytics-setup.md` and `docs/evidence/` for timestamps, counts and limitations.
 
-## Analytics: partial configuration, acceptance failed
+## Analytics and search configuration
 
-The owner selected the existing main-site stream `16326517771`, Measurement ID `G-B34CBGW0EF`, under property `494048879`. The property also contains PolicyPilot; existing events and reports were preserved.
+- Existing owner-selected main stream `16326517771` / `G-B34CBGW0EF`; shared property `494048879`. PolicyPilot's separate stream/reports preserved.
+- Enhanced measurement off with explicit owner authorization; generic global privacy defaults set before tag initialization. PR #2 passed CI, including the full browser suite.
+- Three custom dimensions and three key events saved. Seven-tab acquisition/tools analysis and separate daily retention analysis saved and reopened for verification.
+- Every business view uses an event-scoped exact-hostname segment, excluding launch QA date 20261112. Successful-calculator MAU uses **Total users only**; validation failure share uses success/error Event count in a doughnut. Confirm current dates before review; retention range needs 31–60 days to inspect day 30.
+- Report configuration and live collection acceptance are complete. Processed custom dimensions, real 7/30-day returns and organic performance need time and real visitors; QA counts are not demand evidence.
+- Search Console URL-prefix ownership auto verified; sitemap reports Success with 22 discovered pages. Calculator and reference initial inspections were unknown to Google. An indexing-request receipt was not confirmed; actual crawling/indexing remains pending.
 
-Saved and confirmed in the backend:
+## Remaining external/device checks
 
-- Event-scoped dimensions `Peptides page group` (`page_group`), `Peptides error category` (`error_code`), `Peptides export type` (`export_type`).
-- Key events `calculation_success`, `schedule_generated`, `protocol_saved`, once per event with no default monetary value.
-- Saved comparison `Peptides — peptides.ybwdaisy.com`: hostname contains the full subdomain. New hostname values are not yet available in the standard comparison's exact-match value list.
-- A separate Tools exploration is being configured with an exact hostname filter. Completed tabs and remaining definitions are recorded in `analytics-setup.md`.
+- Physical iPhone Safari and import into the owner's chosen calendar application. Chrome/WebKit iPhone simulation passed, not physical-device acceptance.
+- Actual OS print dialog and paper output. Final analytics trace intercepted the print API, verifying invocation and SDK intent only; print layouts were checked separately.
+- Vercel GitHub App repository access for automatic Git deployment. Authenticated CLI deployment works and production is live.
+- Natural Google crawling/indexing, processed reports and mature day-7/day-30 cohorts.
 
-The earlier automated tests stubbed the tag download; those tests verify the app's command contract, not Google's automatic behavior. A real production browser test on 2026-11-12T11:19:13Z–11:19:32Z used fictitious canary inputs and the unmodified Google SDK. Collection responses returned 204 for manual calculation/planner events, but extra automatic `page_view` and `form_start` events also appeared. An automatic library page view included the real `/library/cjc-1295` path and specific page title. No canary protocol/item content appeared in the captured requests. These QA events are not demand evidence.
-
-The attempted debug queue flags were not present in outgoing events, and DebugView did not show a debugging device. Neither 204 collection responses nor report setup counts as a successful Realtime/DebugView acceptance. Export, print, exact counts, withdrawal and processed reports still need live re-verification after configuration is corrected.
-
-Enhanced measurement was disabled on the shared stream after explicit owner confirmation; the off state was checked in the UI. An additional application change sets global privacy defaults before tag initialization. A safe synthetic-page candidate test with the real SDK produced one generic page view. Four targeted Chrome regressions, 18 unit tests, type checking and build passed. Only this Vercel project's public Measurement ID was removed and production rebuilt to pause collection. Restoration still requires full request sanitization/count verification and backend acceptance.
-
-Still required:
-
-- Full candidate and production network/Realtime/DebugView acceptance; restore collection only after privacy/count checks pass.
-- All acquisition, funnel, 7/30-day retention, rolling-30-day unique calculator users and error reports saved and verified with valid data. Exclude QA traffic.
-- Search Console page-level indexing follow-up: URL-prefix ownership auto verified; sitemap submitted with Success and 22 discovered pages. Calculator initially unknown to Google; an indexing request was initiated. Reference inspection and actual indexing are not yet complete.
-- Physical iPhone Safari acceptance and importing ICS into the owner's chosen calendar application.
-- Vercel GitHub App repository access for automatic deployments. CLI production deployment works.
-
-No Google passwords, session cookies or tokens were requested or copied. Administrative work used already authenticated visible UI controls.
+No Google passwords, session cookies or tokens were requested or copied. Administrative work used authenticated visible UI controls.
 
 ## Independent review resolution
 
@@ -72,4 +63,4 @@ No stock media, invented testimonials or customer metrics are used. No imagery s
 
 ## Release boundary
 
-Production release and the custom subdomain are complete with owner authorization. GA4 live acceptance and page-level indexing remain incomplete; Search Console ownership and sitemap submission are complete. See `release.md` for deployment IDs, DNS and rollback, and `analytics-setup.md` for account configuration and remaining acceptance.
+Production, custom domain, GA4 live event acceptance, saved analysis views, Search Console ownership and sitemap submission are complete. Actual indexing and mature visitor/retention results are pending external processing and usage. See `release.md` for deployment/DNS/rollback and `analytics-setup.md` for report links, definitions and evidence.

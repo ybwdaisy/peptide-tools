@@ -1,77 +1,105 @@
 # Analytics configuration and acceptance
 
-## Current account and collection status
+Updated: 2026-11-12. **Production collection and live backend acceptance passed.** Business reports are saved; a newly launched site has no established acquisition or retention results yet.
 
-- Account `ybwdaisy`: `359267445`; shared property `ybwdaisy`: `494048879`.
-- Existing main-site stream `主站`, URL `https://ybwdaisy.com`, stream `16326517771`, Measurement ID `G-B34CBGW0EF`.
-- The owner explicitly selected reuse of this stream with site-level hostname filtering. Do not change its URL/name to the peptide site or create a replacement property without a new decision.
-- PolicyPilot has a separate stream in the same property. Its existing events, comparisons and exploration must be preserved.
-- **Collection is currently paused only for Peptide Tools.** Its production `PUBLIC_GA_MEASUREMENT_ID` was removed and the site redeployed after real Google SDK testing exposed extra automatic events and a concrete library path/title. Do not restore the ID until actual network privacy/count verification passes.
-- Preview/local builds and Vercel aliases are excluded by environment and exact-origin gates. Visitor consent is required before tag loading. With the current paused build, even an affirmative analytics choice sends zero Google requests.
+## Account and privacy settings
 
-## Saved GA4 configuration
+- Account `ybwdaisy` (`359267445`), shared property `494048879`.
+- Owner-selected existing main-site stream `主站`, URL `https://ybwdaisy.com`, stream `16326517771`, Measurement ID `G-B34CBGW0EF`.
+- Filter Peptide Tools by exact hostname `peptides.ybwdaisy.com`. Do not rename the shared stream or treat its unfiltered totals as this site's results.
+- The owner explicitly authorized turning off Enhanced measurement on this shared stream; the off state was verified. PolicyPilot's separate stream and existing reports/key events were preserved.
+- Property-wide Signals, advertising links, retention and traffic filters were not changed. The application supplies Google Signals/ad-personalization disabling flags and denied advertising consent; this does not imply those property-wide administrative settings were changed.
+- Production ID is active again. Preview/local and Vercel aliases cannot collect because both production configuration and exact runtime origin are required. The Google tag loads only after affirmative analytics consent.
 
-1. Event-scoped custom dimensions: `Peptides page group` → `page_group`, `Peptides error category` → `error_code`, `Peptides export type` → `export_type`.
-2. Key events: `calculation_success`, `schedule_generated`, `protocol_saved`; once per event, no default monetary value. Existing five key events were retained.
-3. Saved comparison `Peptides — peptides.ybwdaisy.com`: hostname **contains** `peptides.ybwdaisy.com`. Standard comparison exact-match values currently omit the new hostname; refine to exact match when processed data makes it available. Each new Tools exploration tab uses an **exact** hostname filter independently.
-4. Tools exploration: calculator and planner funnels plus acquisition/usage tables are being saved. Backend persistence and remaining tabs are tracked below; setup alone is not data acceptance.
+A real-SDK check exposed automatic specific-reference page views despite per-stream defaults. PR #2 fixed this by setting generic page metadata and privacy defaults globally **before SDK initialization**, alongside per-stream/per-event controls. Candidate privacy/count checks passed before production collection resumed; final production checks also passed.
 
-## Shared-setting approval and remaining work
+## Saved backend configuration
 
-The owner subsequently explicitly authorized disabling Enhanced measurement on the reused main-site stream. The switch and confirmation were completed and checked as off; PolicyPilot's separate stream was not changed. Initial approval review had rejected the shared change, and it was not retried until this explicit permission arrived.
+Event-scoped dimensions:
 
-A follow-up diagnostic still showed an automatic specific reference page view, so the application now applies global privacy defaults **before** the Google tag initializes, as well as per-stream and per-event defaults. A safe candidate test on synthetic `/library/detail` with the real SDK produced one generic page view, with no unsafe packet sent. Full live acceptance and restoration of the production Measurement ID remain pending.
-
-Property-wide Signals, advertising links, retention and traffic filters were not changed because this property also serves PolicyPilot. The app supplies no-ad/Signals flags; confirm the real tag honors them. Do not represent those client flags as proof of property-wide administrative settings.
-
-After privacy correction, confirm all event names, exact counts, export/print actions and withdrawal with the real SDK. Enable documented debug mode in the configuration/event commands for a QA browser without reordering dataLayer commands. Check Realtime and DebugView as well as processed reports. Configure QA exclusion without disrupting legitimate main-site/PolicyPilot traffic.
-
-## Reports and funnel definitions
-
-| Report | Definition |
+| Display name | Parameter |
 |---|---|
-| Acquisition | Total users, sessions, source/medium, landing page group; pair with GSC organic clicks |
-| Calculator funnel | `page_view` on home/calculator → `calculator_start` → `calculation_success`; open funnel for directly returning users |
-| Planner funnel | `page_view` on planner → `planner_start` → `schedule_generated` → `protocol_saved` → `export_completed` (ICS or JSON); open funnel because saving can also happen without first generating |
-| Retention | GA4 new/returning browser cohorts with 7/30-day return activity; consent-limited pseudonymous coverage |
-| Calculator MAU | Total users who triggered `calculation_success` in the trailing 30 days |
-| Friction | `calculation_error` / (`calculation_success` + `calculation_error`), breakdown by error_code |
+| Peptides page group | `page_group` |
+| Peptides error category | `error_code` |
+| Peptides export type | `export_type` |
 
-Public event names and allowed values are defined in `src/lib/analytics-policy.ts`. Start events are once per **tab session**, not an exact reconstruction of GA4's server-defined session timeout. Browser restarts, cookies, consent and cross-device behavior can affect user estimates.
+`calculation_success`, `schedule_generated` and `protocol_saved` are key events, once per event, with no default monetary value. Existing key events were retained.
 
-## Source attribution
+The saved standard comparison `Peptides — peptides.ybwdaisy.com` uses hostname **contains** the full hostname. It is a raw site comparison and includes launch QA. Use the stricter business explorations below when evaluating demand.
 
-Only these UTM values are retained:
+Every business tab and the retention report use the event-scoped segment **Peptides events (exclude launch QA day)**:
 
-- source: google, bing, reddit, newsletter, direct, github, x
-- medium: organic, social, email, referral
-- campaign: launch, tools, reference
+```
+Hostname exactly matches peptides.ybwdaisy.com
+AND Date is not 20261112
+```
 
-Never put a peptide, dose, person's name or protocol in UTM values. Internal referrers are blanked. External referrers retain only their origin. Generic detail locations (`/library/detail`) intentionally prevent GA4 per-peptide path analysis; use public Search Console page data for SEO.
+The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. Future acceptance traffic also needs explicit exclusion. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
+
+## Open the reports
+
+- [Acquisition and tools — 30-day analysis](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA)
+- [7/30-day retention — set dates](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/ZJ3t4DjYRJ-D1kuSPxXHZg)
+
+The main analysis has seven tabs, in this order:
+
+| Tab | Definition |
+|---|---|
+| 1. Calculator conversion | Open funnel: home/calculator page view → calculator start → successful calculation |
+| 2. Planner conversion | Open funnel: planner page view → start → generate schedule → save → export JSON/ICS |
+| 3. Acquisition by channel | Session default channel group, total users and sessions |
+| 4. Usage by event and page | Event name and generic page group; use page views for generic page traffic |
+| 5. Calculator unique users | `calculation_success` only; **Total users is the sole metric**, not Active users or event count |
+| 6. Calculator outcomes and error types | Success/error event counts, page group and error category |
+| 7. Validation error share | Doughnut: Event count by event name, restricted to `^calculation_(success|error)$` |
+
+The native doughnut's `calculation_error` slice percentage is exactly errors / (successes + errors). These are submission attempts, not distinct people. The expression shown in GA4 uses the unescaped alternation `^calculation_(success|error)$`.
+
+Before interpreting a report, confirm its dates. The main report was saved with **Past 30 days**, showing 2026-10-13 through 2026-11-11 at acceptance. Calculator MAU is Total users with at least one successful calculation over the latest 30 complete property days. Do not substitute raw event counts or assume a saved custom date range moves automatically.
+
+Retention is a daily cohort, first-touch inclusion and any-event return, using the same event segment, with no cross-site/user-scope comparison or breakdown. Select a **31–60 day** range to inspect day 30 as well as day 7. Selecting 90 days was clamped by GA4 to a custom 2026-09-12–2026-11-11 range; shared property retention was deliberately left unchanged. Check/advance these dates when reviewing. Day-30 results cannot exist before cohorts mature.
+
+The configuration was checked after navigating away and reopening saved reports. See [report evidence](evidence/ga-reports-20261112.json). Report availability and event reception do not imply that processed custom dimensions, real acquisition or retention data already exist.
+
+## Event and attribution boundaries
+
+Public application events/parameters are defined in `src/lib/analytics-policy.ts`. There are nine application event types. Standard Google SDK events such as `first_visit`, `session_start` or `user_engagement` can also exist; they do not represent extra tool actions.
+
+- Start events fire once per **tab session**, which is not identical to GA4's server-defined session timeout.
+- Generic reference location/title are `/library/detail` and `Peptide Tools: library detail`.
+- No peptide, search text, dose, concentration, protocol, note, filename or raw error is sent.
+- Exports mean file creation and download initiation; print means a print request, not completed saving/printing.
+- Allowed UTM sources: google, bing, reddit, newsletter, direct, github, x; mediums: organic, social, email, referral; campaigns: launch, tools, reference.
+- External referrers retain origin only; internal referrers are blank. Never put health inputs or personal data in UTM values.
+- Consent, blocking and cross-device behavior limit pseudonymous user estimates. GA4 cannot provide per-peptide path analysis; use public Search Console page reports for SEO.
+
+## Actual production acceptance
+
+Fresh headed Chrome, deployed production code and the real Google SDK, 2026-11-12T13:03:58Z–13:04:26Z. No production HTML, application bundle or SDK replacement. A QA-only facade added documented `debug_mode` to tag commands. Synthetic reference path and fictitious inputs were used; packets were checked before forwarding.
+
+| Event | Exact accepted count |
+|---|---:|
+| `page_view` | 3 |
+| `calculator_start` | 1 |
+| `calculation_error` | 2 (required/capacity_exceeded) |
+| `calculation_success` | 1 |
+| `planner_start` | 1 |
+| `schedule_generated` | 1 |
+| `protocol_saved` | 1 |
+| `export_completed` | 2 (JSON/ICS) |
+| `print_requested` | 1 |
+
+All 13 business requests returned 204, all expected counts matched, and all inspected locations/titles/parameters were generic/allowed. Zero Google requests before consent and after withdrawal; no page errors. See [production SDK trace](evidence/production-sdk-trace-20261112.json). Candidate isolation is separately documented in [candidate trace](evidence/candidate-sdk-trace-20261112.json).
+
+Realtime and DebugView subsequently displayed production acceptance events, including the three key events and `print_requested`. DebugView showed 15 total: the 13 business events plus `first_visit` and `session_start`, with `non_personalized_ads = 1`. See [backend evidence](evidence/ga-debugview-20261112.json). These are QA events, excluded from business reports.
+
+The acceptance test intercepted the print API to avoid an OS dialog. It verified API invocation and actual SDK intent emission, **not** a real print dialog, printer or paper output.
 
 ## Search Console
 
-- URL-prefix resource `https://peptides.ybwdaisy.com/` was added and ownership **auto verified** through the existing parent Domain property's DNS verification.
-- Submitted `https://peptides.ybwdaisy.com/sitemap.xml`; Google reports **Success**, last read 2026-11-12, **22 discovered pages**, 0 videos.
-- Calculator inspection: **URL is not on Google / URL is unknown to Google** at initial release. An indexing request was initiated; its final result and a reference-page inspection still need recording.
-- Performance/indexing reports initially say processing data; availability of the sitemap is not proof of indexing. Measure only this hostname, Search type Web.
+- URL-prefix property `https://peptides.ybwdaisy.com/` ownership auto verified through existing parent Domain DNS verification.
+- Sitemap `https://peptides.ybwdaisy.com/sitemap.xml`: **Success**, last read 2026-11-12, **22 discovered pages**, 0 videos.
+- Calculator and `/library/cjc-1295` initially inspected as **URL is not on Google / URL is unknown to Google**. Calculator Request indexing was attempted, but a final successful receipt was not observed; do not claim it completed.
+- Property setup and submission are complete; actual crawling/indexing and search performance await Google. Use this hostname and Search type Web when evaluating the 60-day trial.
 
-The native controls required an unlocked Mac and a real mouse event. Ownership and submission were confirmed in Google's UI, not inferred from public robots/sitemap checks. No password, cookie or token extraction was used.
-
-## Actual collection evidence and completion gate
-
-Real production QA ran at 2026-11-12T11:19:13Z–11:19:32Z with fictitious inputs. Google collection endpoints returned 204 for manual events, but extra automatic page views/form start were also observed, including a specific library slug/title. Attempted QA debug flags did not appear in outgoing events; DebugView showed no debug device. A later Realtime view contained no available data, so backend reception is not confirmed. Treat these QA events as test traffic, never acquisition evidence.
-
-After the hold deployment, a fresh browser check at 2026-11-12T11:23:13Z confirmed production analytics disabled, zero Google requests even after affirmative consent, and a successful calculator result.
-
-Before marking instrumentation complete, verify:
-
-- zero Google requests before consent and after denial/withdrawal;
-- only the nine approved application event names, plus any explicitly accepted SDK-required automatic events, with no duplicate page views;
-- generic reference location/title in **every** actual Google request, never entered values, concrete slugs/titles, arbitrary queries or filenames;
-- success/error, schedule/save, JSON/ICS and print event counts from deliberate UI actions;
-- Realtime, DebugView, key events and processed reports for this hostname;
-- 7/30-day returns and trailing-30-day unique successful calculator users, excluding QA;
-- Search Console property verification, sitemap submission and actual indexing status.
-
-**Current status: website released; Search Console ownership and sitemap complete; page indexing and GA4 live acceptance remain incomplete; Peptide Tools collection paused.**
+Administrative work used authenticated visible UI; no passwords, session cookies or tokens were extracted. No property-wide Search Console link was replaced in the shared GA4 property.

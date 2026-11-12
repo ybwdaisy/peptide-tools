@@ -1,39 +1,45 @@
 # Production release and rollback
 
-## Published release
+Updated: 2026-11-12. The owner authorized merging, production deployment and subdomain setup.
 
-The owner explicitly authorized merging, production deployment and subdomain/DNS setup on 2026-11-12.
+## Current production
 
-- Live site: https://peptides.ybwdaisy.com
-- Merged PR: https://github.com/ybwdaisy/peptide-tools/pull/1
-- Main/source commit: `c5c0ed4ec9576074c0cf1262db22de542f0e8517`.
-- Main CI: https://github.com/ybwdaisy/peptide-tools/actions/runs/43202654613 (passed).
-- Vercel project: `peptide-tools`, scope `ybwdaisys-projects`, Node 24, Astro, `npm run build`, output `dist`.
-- Current production: `dpl_GcAv1Qj82ywP11kKNp5GKTSUnNyk`, deployed from the same source commit with analytics paused.
-- Initial authorized production: `dpl_GSurr16iGtwrEMsjt4U6yKbxXF36`. **Do not roll back to this configuration while the Google tag privacy defect remains unresolved.**
+- Live: https://peptides.ybwdaisy.com
+- MVP: https://github.com/ybwdaisy/peptide-tools/pull/1
+- Real-SDK privacy fix: https://github.com/ybwdaisy/peptide-tools/pull/2
+- Deployed source main commit: `24c32d76dd6ef00570951f62a6f04105b3a4d5f0`.
+- Passing source CI: https://github.com/ybwdaisy/peptide-tools/actions/runs/43218006404
+- Vercel project `peptide-tools`, scope `ybwdaisys-projects`; Node 24, Astro, `npm run build`, output `dist`.
+- Active production `dpl_ERqBeqyQ8FdwY3FuAZELCwWLEzCX`.
+- Deployment URL: https://peptide-tools-h323puk16-ybwdaisys-projects.vercel.app
+- Public Measurement ID `G-B34CBGW0EF` is active in production only. Final production privacy/count checks and GA4 Realtime/DebugView reception passed; see `analytics-setup.md`.
 
-Alibaba Cloud DNS has an enabled `peptides` CNAME to `757213d368615bb6.vercel-dns-017.com` (TTL 10 minutes). Vercel reports configured correctly and verified; HTTPS returns 200. Apex, www, other verification records and nameservers were preserved.
+Alibaba Cloud has an enabled `peptides` CNAME to `757213d368615bb6.vercel-dns-017.com`, TTL 10 minutes. Vercel verified correct configuration, valid HTTPS and public HTTP 200. Apex, www, verification records and nameservers were preserved.
 
-## Analytics hold
-
-Real Google SDK acceptance found extra automatic page views, including a concrete library slug/title, despite the application's manual sanitization. Only this project's production `PUBLIC_GA_MEASUREMENT_ID` was removed, followed by a fresh source deployment. Production now has analytics disabled; consent and tools remain functional. Restoring the ID requires successful privacy verification, not just enabling the environment variable.
-
-The owner chose reuse of the existing main-site stream and subsequently explicitly authorized disabling its Enhanced measurement. This was completed and verified off after the initial approval rejection. The application also applies global privacy defaults before tag initialization. Candidate SDK verification is distinct from production acceptance; keep collection paused until the full check passes. See `analytics-setup.md`.
+Search Console URL-prefix ownership is verified. Sitemap submission reports Success and 22 discovered pages. Initial calculator/reference inspections were unknown to Google; submission does not prove indexing.
 
 ## Future releases
 
-Use a new branch and PR, required CI and relevant browser checks. Source deployments currently use the authenticated Vercel CLI. The Vercel GitHub App lacks access to this private repository, so automatic deployments on push are not configured. Do not make the repository public to solve this.
+Use a new branch and PR, required CI and relevant browser checks. Authenticated CLI source deployment:
 
-Before an analytics-enabled release, verify actual Google request payloads, counts, Realtime/DebugView, processed reports and consent withdrawal. Complete Search Console verification and sitemap submission separately. Public accessibility does not prove indexing.
+```sh
+vercel deploy --prod --yes --scope ybwdaisys-projects --project peptide-tools --verify
+```
 
-## Preview behavior
+The Vercel GitHub App lacks access to the private repository, so automatic Git deployments are not connected. CLI deployments work. Do not make the repository public to solve this. Documentation-only commits do not require redeploying the accepted runtime.
 
-Preview has noindex/nofollow, disallows crawling and does not load GA4. Default Vercel aliases cannot enable analytics because of the exact runtime origin gate. Browser-local protocols do not transfer between origins; JSON backup/restore is available when deliberate transfer is needed.
-
-Before production approval, Vercel unexpectedly classified two first-deploy preview/staging attempts as production; both exact deployments were removed. The current production deployments above were subsequently authorized and must be retained.
+Preview/local builds have noindex/nofollow, disallow crawling and omit production GA4 configuration. Default Vercel aliases cannot collect because of the exact-origin gate. Local browser protocols do not transfer between origins; use deliberate JSON backup/restore when needed.
 
 ## Rollback
 
-The current known-safe deployment is `dpl_GcAv1Qj82ywP11kKNp5GKTSUnNyk` (tools available, analytics paused). Use Vercel rollback to this deployment or revert a later source change through a PR. An earlier deployment retains its own build-time environment values, so removing the current environment variable does not sanitize an older deployment.
+Known privacy-safe analytics-paused fallback:
 
-Static rollback does not restore browser-local data. Preserve the version-1 importer and storage key. Never clear saved protocols or redirect the subdomain to an unrelated homepage as part of rollback.
+- `dpl_GcAv1Qj82ywP11kKNp5GKTSUnNyk`
+- https://peptide-tools-ew76abpu1-ybwdaisys-projects.vercel.app
+- Source `c5c0ed4ec9576074c0cf1262db22de542f0e8517`, built with the Measurement ID absent; tools remain available.
+
+Roll back in Vercel to this exact deployment, or revert source through a PR and deploy. **Do not promote initial `dpl_GSurr16iGtwrEMsjt4U6yKbxXF36` with analytics enabled**: it predates the real-SDK privacy fix. An old deployment retains its build-time environment; changing today's variable does not sanitize it.
+
+For a collection incident, remove this project's production `PUBLIC_GA_MEASUREMENT_ID` and rebuild, then verify zero Google requests even after consent. Preserve shared main-site/PolicyPilot configuration unless explicitly authorized otherwise.
+
+Static rollback does not restore browser-local protocols. Preserve version-1 imports and the storage key; do not clear data or redirect to an unrelated homepage.
