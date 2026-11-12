@@ -15,6 +15,8 @@ test('English is the default and explicit Chinese paths preserve the current des
   assert.equal(localePath('/zh', 'en'), '/');
   assert.equal(translate('Calculate volume', 'en'), 'Calculate volume');
   assert.equal(translate('Calculate volume', 'zh'), '计算体积');
+  assert.equal(translate('constructor', 'zh'), 'constructor');
+  assert.equal(translate('__proto__', 'zh'), '__proto__');
   assert.equal(formatMessage('Delete saved protocol {name}', 'zh', { name: '<Delete> {zone}' }), '删除已保存协议 <Delete> {zone}');
 });
 
