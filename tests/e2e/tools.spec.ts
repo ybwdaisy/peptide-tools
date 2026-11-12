@@ -113,7 +113,7 @@ test('declining consent makes no analytics requests and preview cannot enable co
 });
 test('consented event contract sends only allowlisted data and withdrawal stops the tag', async ({ page }) => {
   await page.route('**/calculator?**', async route => {
-    const response = await route.fetch(); const html = (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', 'data-analytics-origin="http://127.0.0.1:4321"').replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"');
+    const response = await route.fetch(); const html = (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', `data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"');
     await route.fulfill({ response, body: html });
   });
   const analytics: string[] = [];
@@ -169,7 +169,7 @@ test('all main routes render without overflow or uncaught application errors', a
 test('planner analytics records successful actions once and never sends restored inputs', async ({ page }) => {
   await page.route('**/planner', async route => {
     const response = await route.fetch();
-    await route.fulfill({ response, body: (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', 'data-analytics-origin="http://127.0.0.1:4321"').replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"') });
+    await route.fulfill({ response, body: (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', `data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"') });
   });
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* no real collection */' }));
   await fillProtocol(page);

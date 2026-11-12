@@ -9,7 +9,7 @@ await walk(root);
 const errors = [];
 for (const file of pages) {
   const html = await readFile(file, 'utf8');
-  for (const [label, regex] of [['language', /<html[^>]+lang="en"/], ['title', /<title>[^<]+<\/title>/], ['description', /name="description"/], ['viewport', /name="viewport"/], ['canonical', /rel="canonical"/]]) if (!regex.test(html)) errors.push(`${file}: missing ${label}`);
+  for (const [label, regex] of [['language', file.includes(`${path.sep}zh${path.sep}`) ? /<html[^>]+lang="zh-CN"/ : /<html[^>]+lang="en"/], ['title', /<title>[^<]+<\/title>/], ['description', /name="description"/], ['viewport', /name="viewport"/], ['canonical', /rel="canonical"/]]) if (!regex.test(html)) errors.push(`${file}: missing ${label}`);
   for (const [, raw] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     if (/^(?:https?:|data:|mailto:|#)/.test(raw)) continue;
     const pathname = raw.split(/[?#]/)[0];
@@ -17,10 +17,10 @@ for (const file of pages) {
     const target = pathname.startsWith('/') ? path.join(root, pathname) : path.resolve(path.dirname(file), pathname);
     if (!(await exists(target)) && !(await exists(`${target}.html`)) && !(await exists(path.join(target, 'index.html')))) errors.push(`${file}: missing ${raw}`);
   }
-  if (process.env.VERCEL_ENV === 'production' && !file.endsWith('/404.html') && html.includes('noindex')) errors.push(`${file}: production page is noindex`);
+  if (process.env.VERCEL_ENV === 'production' && !/(?:^|\/)404(?:\/index)?\.html$/.test(file) && html.includes('noindex')) errors.push(`${file}: production page is noindex`);
 }
 const sitemap = await readFile(path.join(root, 'sitemap.xml'), 'utf8');
-assert.equal((sitemap.match(/<loc>/g) ?? []).length, 22);
-assert.equal(pages.length, 23);
+assert.equal((sitemap.match(/<loc>/g) ?? []).length, 44);
+assert.equal(pages.length, 46);
 if (errors.length) throw new Error(errors.join('\n'));
-console.log(`Verified ${pages.length} pages, local assets/links, metadata and 22 sitemap URLs.`);
+console.log(`Verified ${pages.length} pages, local assets/links, metadata and 44 sitemap URLs.`);
