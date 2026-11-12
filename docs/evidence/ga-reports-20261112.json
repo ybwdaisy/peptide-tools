@@ -1,0 +1,136 @@
+{
+  "observedAt": "2026-11-12T13:41:24.552881+00:00",
+  "method": "Visible GA4 UI read after closing and reopening saved explorations; no private API or application internals.",
+  "main": [
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "漏斗探索 1",
+      "tabs": [
+        "漏斗探索 1",
+        "P\nPlanner conversion",
+        "A\nAcquisition by channel",
+        "U\nUsage by event and page",
+        "C\nCalculator unique users (set 30d)",
+        "C\nCalculator outcomes and error types",
+        "C\nCalculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n漏斗探索\t\n可视化图表 \n标准漏斗\t\n设为开放漏斗\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n步骤\ndrag_indicator\nCalculator page\ndrag_indicator\nCalculator started\ndrag_indicator\nCalculation succeeded\n细分维度\ndrag_indicator\n设备类别\n每维度行数 \n5\t\n显示所用时间\n下一项操作\nadd\n放置或选择维度\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\nadd\n放置或选择维度或指标\nP\nPlanner conversion\nA\nAcquisition by channel\nU\nUsage by event and page\nC\nCalculator unique users (set 30d)\nC\nCalculator outcomes and error types\nC\nCalculator outcomes and error types\n"
+    },
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "Planner conversion",
+      "tabs": [
+        "漏\n漏斗探索 1",
+        "Planner conversion",
+        "A\nAcquisition by channel",
+        "U\nUsage by event and page",
+        "C\nCalculator unique users (set 30d)",
+        "C\nCalculator outcomes and error types",
+        "C\nCalculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n漏斗探索\t\n可视化图表 \n标准漏斗\t\n设为开放漏斗\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n步骤\ndrag_indicator\nPlanner page\ndrag_indicator\nPlanner started\ndrag_indicator\nSchedule generated\ndrag_indicator\nProtocol saved\ndrag_indicator\nExport requested (ICS/JSON)\n细分维度\ndrag_indicator\n设备类别\n每维度行数 \n5\t\n显示所用时间\n下一项操作\nadd\n放置或选择维度\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\nadd\n放置或选择维度或指标\n漏\n漏斗探索 1\nA\nAcquisition by channel\nU\nUsage by event and page\nC\nCalculator unique users (set 30d)\nC\nCalculator outcomes and error types\nC\nCalculator outcomes and error types\n"
+    },
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "Acquisition by channel",
+      "tabs": [
+        "漏\n漏斗探索 1",
+        "P\nPlanner conversion",
+        "Acquisition by channel",
+        "U\nUsage by event and page",
+        "C\nCalculator unique users (set 30d)",
+        "C\nCalculator outcomes and error types",
+        "C\nCalculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n自由形式\t\n可视化图表\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n数据透视 \n首列\t\n行\ndrag_indicator\n带来会话的默认渠道组\nadd\n放置或选择维度\n起始行 \n显示行数 \n10\t\n嵌套行 \nNo\t\n列\nadd\n放置或选择维度\n起始列组 \n显示列组数 \n5\t\n值\ndrag_indicator\n活跃用户\ndrag_indicator\n用户总数\ndrag_indicator\n会话数\ndrag_indicator\n事件数\nadd\n放置或选择指标\n单元格类型 \n条形图\t\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\nadd\n放置或选择维度或指标\n漏\n漏斗探索 1\nP\nPlanner conversion\nU\nUsage by event and page\nC\nCalculator unique users (set 30d)\nC\nCalculator outcomes and error types\nC\nCalculator outcomes and error types\n"
+    },
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "Usage by event and page",
+      "tabs": [
+        "漏\n漏斗探索 1",
+        "P\nPlanner conversion",
+        "A\nAcquisition by channel",
+        "Usage by event and page",
+        "C\nCalculator unique users (set 30d)",
+        "C\nCalculator outcomes and error types",
+        "C\nCalculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n自由形式\t\n可视化图表\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n数据透视 \n首列\t\n行\ndrag_indicator\n事件名称\ndrag_indicator\nPeptides page group\nadd\n放置或选择维度\n起始行 \n显示行数 \n10\t\n嵌套行 \nNo\t\n列\nadd\n放置或选择维度\n起始列组 \n显示列组数 \n5\t\n值\ndrag_indicator\n活跃用户\ndrag_indicator\n用户总数\ndrag_indicator\n会话数\ndrag_indicator\n事件数\nadd\n放置或选择指标\n单元格类型 \n条形图\t\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\nadd\n放置或选择维度或指标\n漏\n漏斗探索 1\nP\nPlanner conversion\nA\nAcquisition by channel\nC\nCalculator unique users (set 30d)\nC\nCalculator outcomes and error types\nC\nCalculator outcomes and error types\n"
+    },
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "Calculator unique users (set 30d)",
+      "tabs": [
+        "漏\n漏斗探索 1",
+        "P\nPlanner conversion",
+        "A\nAcquisition by channel",
+        "U\nUsage by event and page",
+        "Calculator unique users (set 30d)",
+        "C\nCalculator outcomes and error types",
+        "C\nCalculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n自由形式\t\n可视化图表\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n数据透视 \n首列\t\n行\ndrag_indicator\n事件名称\nadd\n放置或选择维度\n起始行 \n显示行数 \n10\t\n嵌套行 \nNo\t\n列\nadd\n放置或选择维度\n起始列组 \n显示列组数 \n5\t\n值\ndrag_indicator\n用户总数\nadd\n放置或选择指标\n单元格类型 \n条形图\t\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\n事件名称 完全匹配 calculation_success\nadd\n放置或选择维度或指标\n漏\n漏斗探索 1\nP\nPlanner conversion\nA\nAcquisition by channel\nU\nUsage by event and page\nC\nCalculator outcomes and error types\nC\nCalculator outcomes and error types\n"
+    },
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "Calculator outcomes and error types",
+      "tabs": [
+        "漏\n漏斗探索 1",
+        "P\nPlanner conversion",
+        "A\nAcquisition by channel",
+        "U\nUsage by event and page",
+        "C\nCalculator unique users (set 30d)",
+        "Calculator outcomes and error types",
+        "C\nCalculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n自由形式\t\n可视化图表\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n数据透视 \n首列\t\n行\ndrag_indicator\n事件名称\ndrag_indicator\nPeptides page group\ndrag_indicator\nPeptides error category\nadd\n放置或选择维度\n起始行 \n显示行数 \n10\t\n嵌套行 \nNo\t\n列\nadd\n放置或选择维度\n起始列组 \n显示列组数 \n5\t\n值\ndrag_indicator\n活跃用户\ndrag_indicator\n用户总数\ndrag_indicator\n会话数\ndrag_indicator\n事件数\nadd\n放置或选择指标\n单元格类型 \n条形图\t\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\n事件名称 匹配正则表达式 ^calculation_(success|error)$\nadd\n放置或选择维度或指标\n漏\n漏斗探索 1\nP\nPlanner conversion\nA\nAcquisition by channel\nU\nUsage by event and page\nC\nCalculator unique users (set 30d)\nC\nCalculator outcomes and error types\n"
+    },
+    {
+      "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+      "name": "Peptides | Acquisition and tools (30 days)",
+      "date": "过去 30 天\n10月13日 - 2026年11月11日",
+      "tab": "Calculator outcomes and error types",
+      "tabs": [
+        "漏\n漏斗探索 1",
+        "P\nPlanner conversion",
+        "A\nAcquisition by channel",
+        "U\nUsage by event and page",
+        "C\nCalculator unique users (set 30d)",
+        "C\nCalculator outcomes and error types",
+        "Calculator outcomes and error types",
+        ""
+      ],
+      "settings": "设置\n分析法\n自由形式\t\n可视化图表\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n细分维度\ndrag_indicator\n事件名称\n每维度扇区数 \n10\t\n值\ndrag_indicator\n事件数\n过滤器\n主机名 完全匹配 peptides.ybwdaisy.com\n事件名称 匹配正则表达式 ^calculation_(success|error)$\nadd\n放置或选择维度或指标\n漏\n漏斗探索 1\nP\nPlanner conversion\nA\nAcquisition by channel\nU\nUsage by event and page\nC\nCalculator unique users (set 30d)\nC\nCalculator outcomes and error types\n"
+    }
+  ],
+  "retention": {
+    "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/ZJ3t4DjYRJ-D1kuSPxXHZg",
+    "name": "Peptides | 7/30-day retention (set dates)",
+    "date": "自定义\n9月12日 - 2026年11月11日",
+    "tab": "Calculator outcomes and error types",
+    "tabs": [
+      "Calculator outcomes and error types",
+      ""
+    ],
+    "settings": "设置\n分析法\n同类群组探索\t\n细分比较对象\ndrag_indicator\nPeptides events (exclude launch QA day)\nadd\n放置或选择细分\n同类群组计入条件\n计入回访同类群组的条件\n同类群组粒度 \n每日\t\n计算类型 \n标准\t\n细分维度\nadd\n放置或选择维度\n每维度行数 \n5\t\n值\ndrag_indicator\n活跃用户\n指标类型 \n总和\t\n"
+  }
+}

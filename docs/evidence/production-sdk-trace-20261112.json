@@ -1,0 +1,222 @@
+{
+  "start": "2026-11-12T13:03:58.963Z",
+  "end": "2026-11-12T13:04:26.127Z",
+  "method": "Deployed production code in a fresh headed Chrome profile; no HTML, app bundle or Google SDK replacement. QA facade only adds documented debug_mode to config/event calls. Synthetic library path and fictitious inputs; all packets checked before forwarding. Print API intercepted solely to avoid an OS dialog; its invocation and SDK intent event are verified, not physical printing.",
+  "counts": {
+    "page_view": 3,
+    "calculator_start": 1,
+    "calculation_error": 2,
+    "calculation_success": 1,
+    "planner_start": 1,
+    "schedule_generated": 1,
+    "protocol_saved": 1,
+    "export_completed": 2,
+    "print_requested": 1
+  },
+  "beforeConsentGoogleRequests": 0,
+  "afterWithdrawalGoogleRequests": 0,
+  "printApiIntercepted": true,
+  "afterWithdrawalRequests": 0,
+  "errors": [],
+  "packets": [
+    {
+      "event": "page_view",
+      "location": "https://peptides.ybwdaisy.com/calculator",
+      "title": "Peptide Tools: calculator",
+      "params": {
+        "ep.page_group": "calculator",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "calculator_start",
+      "location": "https://peptides.ybwdaisy.com/calculator",
+      "title": "Peptide Tools: calculator",
+      "params": {
+        "ep.page_group": "calculator",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "calculation_error",
+      "location": "https://peptides.ybwdaisy.com/calculator",
+      "title": "Peptide Tools: calculator",
+      "params": {
+        "ep.page_group": "calculator",
+        "ep.error_code": "required",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "calculation_success",
+      "location": "https://peptides.ybwdaisy.com/calculator",
+      "title": "Peptide Tools: calculator",
+      "params": {
+        "ep.page_group": "calculator",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "calculation_error",
+      "location": "https://peptides.ybwdaisy.com/calculator",
+      "title": "Peptide Tools: calculator",
+      "params": {
+        "ep.page_group": "calculator",
+        "ep.error_code": "capacity_exceeded",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "page_view",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "planner_start",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "schedule_generated",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "protocol_saved",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "export_completed",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.export_type": "json",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "export_completed",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.export_type": "ics",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "print_requested",
+      "location": "https://peptides.ybwdaisy.com/planner",
+      "title": "Peptide Tools: planner",
+      "params": {
+        "ep.page_group": "planner",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    },
+    {
+      "event": "page_view",
+      "location": "https://peptides.ybwdaisy.com/library/detail",
+      "title": "Peptide Tools: library detail",
+      "params": {
+        "ep.page_group": "library_detail",
+        "ep.debug_mode": "true"
+      },
+      "debug": null,
+      "hasClientId": true,
+      "hasSessionId": true,
+      "measurement": "G-B34CBGW0EF",
+      "forwarded": true,
+      "status": 204
+    }
+  ]
+}

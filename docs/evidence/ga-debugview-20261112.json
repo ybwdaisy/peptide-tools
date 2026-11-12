@@ -1,0 +1,9 @@
+{
+  "observedAt": "2026-11-12T13:12:32.117915+00:00",
+  "report": "https://analytics.google.com/analytics/web/#/a359267445p494048879/admin/debugview/overview?params=_u..nav%3Dmaui",
+  "containsPrintRequested": true,
+  "containsCalculationSuccess": true,
+  "containsScheduleGenerated": true,
+  "containsProtocolSaved": true,
+  "debugViewText": "调试设备\n0\n9:09 下午\n9:08 下午\n9:07 下午\n9:06 下午\n9:05 下午\n9:04 下午\n15\n9:03 下午\n9:02 下午\n9:01 下午\n9:00 下午\n8:59 下午\n8:58 下午\n8:57 下午\n8:56 下午\n8:55 下午\n8:54 下午\n8:53 下午\n8:52 下午\n8:51 下午\n8:50 下午\n8:49 下午\n8:48 下午\n8:47 下午\n8:46 下午\n8:45 下午\n8:44 下午\n8:43 下午\n8:42 下午\n8:41 下午\n0\n33 秒\n21:11:00\n60 秒\n21:10:00\n60 秒\n21:09:00\n60 秒\n21:08:00\n60 秒\n21:07:00\n60 秒\n21:06:00\n60 秒\n21:05:00\n37 秒\n21:04:23\npage_view\n21:04:22\n6 秒\n21:04:16\nprint_requested\nexport_completed\nexport_completed\n21:04:15\n4 秒\n21:04:11\nprotocol_saved\nplanner_start\npage_view\nschedule_generated\n21:04:10\n1 秒\n21:04:09\ncalculation_error\n21:04:08\n4 秒\n21:04:04\ncalculation_success\ncalculator_start\ncalculation_error\n21:04:03\nsession_start\npage_view\nfirst_visit\nnon_personalized_ads = 1\n21:04:02\n点击即可暂停\n热门事件\n过去 30 分钟\n总计 15 个\n12\n3\n0\npage_view\n3\ncalculation_error\n2\nexport_completed\n2\ncalculation_success\n1\ncalculator_start\n1\nfirst_visit\n1\nplanner_start\n1\nprint_requested\n1\nprotocol_saved\n1\nschedule_generated\n1\nsession_start\n1\n用户属性目前有效\nnon_personalized_ads\n1\n"
+}
