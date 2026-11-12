@@ -9,7 +9,7 @@ Date: 2026-11-12. This report distinguishes local checks, browser simulation and
 - Four recurrence rules, inclusive cycle dates, time-zone-aware instants, DST-gap errors and first repeated-time occurrence.
 - Local save/load/delete, validated version-1 JSON backup/restore, corruption protection, ICS without alarms, full-cycle printing.
 - Consent-first event integration, fixed parameter allowlists, generic reference page analytics, preview exclusion, withdrawal reload.
-- Independent private GitHub repository and independent Vercel project. Production GA4 Measurement ID configured. Two first-deploy attempts were unexpectedly classified as production by Vercel and removed; there is no retained production release or custom-domain assignment.
+- Independent private GitHub repository and Vercel project. PR #1 merged with owner authorization; production and the custom domain are live. GA collection is currently paused after real Google SDK acceptance failed the privacy requirements.
 
 ## Passed locally
 
@@ -30,22 +30,38 @@ Browser scenarios include success/error, device capacity, storage unavailable/co
 
 An initial developer-server test encountered toolbar overlays and WebKit action timeouts. Those captures were replaced and final browser verification ran against the static build preview, with no Astro developer toolbar. This is not a physical-iPhone test.
 
-## Analytics: implemented versus verified
+## Production browser acceptance
 
-Configured public identifiers: stream `16326517771`, Measurement ID `G-B34CBGW0EF`. Only the production Vercel environment holds the Measurement ID.
+The real HTTPS custom hostname passed Chrome and WebKit/iPhone 13 simulation checks: seven primary routes, calculator output, schedule generation, browser save, ICS download start, canonical URLs, indexing flags, overflow and real 404 status. No page errors or Google requests occurred after declining consent. This does not constitute a physical-iPhone test.
 
-Automated analytics acceptance stubs the Google tag download and inspects the actual application's dataLayer command contract. No real Google collection requests are sent by these tests. This verifies consent gating, allowlists and action counts; it does **not** prove real GA4 reception, automatic Google-tag behavior, key-event configuration or processed reports.
+After analytics was paused, a fresh production Chrome session accepted analytics and successfully calculated 0.05 mL from the test inputs; `data-analytics-enabled` was `false` and Google request count was zero (2026-11-12T11:23:13Z).
 
-Pending before launch:
+## Analytics: partial configuration, acceptance failed
 
-- Google account/property access and confirmation of stream website.
-- GA4 Enhanced measurement and advertising settings, custom dimensions, key events, funnels and return-usage reports.
-- Search Console property access/verification and sitemap submission.
-- Production domain/DNS/TLS, approved merge/release, actual outgoing Google requests, Realtime/DebugView and processed-report verification.
-- Physical iPhone Safari acceptance and import into the owner's chosen calendar application. Generated ICS syntax, instants, downloads and no-alarm behavior are tested locally.
-- A remote review deployment: the platform forced both requested Preview and explicit staging first-deploy attempts to production, so both were removed rather than retained as previews. Local static preview and PR remain available. The Vercel GitHub App also lacks access to this new private repository.
+The owner selected the existing main-site stream `16326517771`, Measurement ID `G-B34CBGW0EF`, under property `494048879`. The property also contains PolicyPilot; existing events and reports were preserved.
 
-The computer-use connection timed out when opening Google Analytics. No Google credentials were requested or copied; administrative actions remain unverified. See `analytics-setup.md` for the concrete remaining steps.
+Saved and confirmed in the backend:
+
+- Event-scoped dimensions `Peptides page group` (`page_group`), `Peptides error category` (`error_code`), `Peptides export type` (`export_type`).
+- Key events `calculation_success`, `schedule_generated`, `protocol_saved`, once per event with no default monetary value.
+- Saved comparison `Peptides — peptides.ybwdaisy.com`: hostname contains the full subdomain. New hostname values are not yet available in the standard comparison's exact-match value list.
+- A separate Tools exploration is being configured with an exact hostname filter. Completed tabs and remaining definitions are recorded in `analytics-setup.md`.
+
+The earlier automated tests stubbed the tag download; those tests verify the app's command contract, not Google's automatic behavior. A real production browser test on 2026-11-12T11:19:13Z–11:19:32Z used fictitious canary inputs and the unmodified Google SDK. Collection responses returned 204 for manual calculation/planner events, but extra automatic `page_view` and `form_start` events also appeared. An automatic library page view included the real `/library/cjc-1295` path and specific page title. No canary protocol/item content appeared in the captured requests. These QA events are not demand evidence.
+
+The attempted debug queue flags were not present in outgoing events, and DebugView did not show a debugging device. Neither 204 collection responses nor report setup counts as a successful Realtime/DebugView acceptance. Export, print, exact counts, withdrawal and processed reports still need live re-verification after configuration is corrected.
+
+Enhanced measurement was disabled on the shared stream after explicit owner confirmation; the off state was checked in the UI. An additional application change sets global privacy defaults before tag initialization. A safe synthetic-page candidate test with the real SDK produced one generic page view. Four targeted Chrome regressions, 18 unit tests, type checking and build passed. Only this Vercel project's public Measurement ID was removed and production rebuilt to pause collection. Restoration still requires full request sanitization/count verification and backend acceptance.
+
+Still required:
+
+- Full candidate and production network/Realtime/DebugView acceptance; restore collection only after privacy/count checks pass.
+- All acquisition, funnel, 7/30-day retention, rolling-30-day unique calculator users and error reports saved and verified with valid data. Exclude QA traffic.
+- Search Console page-level indexing follow-up: URL-prefix ownership auto verified; sitemap submitted with Success and 22 discovered pages. Calculator initially unknown to Google; an indexing request was initiated. Reference inspection and actual indexing are not yet complete.
+- Physical iPhone Safari acceptance and importing ICS into the owner's chosen calendar application.
+- Vercel GitHub App repository access for automatic deployments. CLI production deployment works.
+
+No Google passwords, session cookies or tokens were requested or copied. Administrative work used already authenticated visible UI controls.
 
 ## Independent review resolution
 
@@ -56,4 +72,4 @@ No stock media, invented testimonials or customer metrics are used. No imagery s
 
 ## Release boundary
 
-The custom subdomain and production remain pending owner approval. Preview deployment, PR and CI results are recorded in the delivery message; a completed local check is never used as a substitute for remote CI or production acceptance.
+Production release and the custom subdomain are complete with owner authorization. GA4 live acceptance and page-level indexing remain incomplete; Search Console ownership and sitemap submission are complete. See `release.md` for deployment IDs, DNS and rollback, and `analytics-setup.md` for account configuration and remaining acceptance.
