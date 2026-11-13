@@ -5,15 +5,17 @@ import Reference from '../library/[slug].astro';
 import Planner from '../planner.astro';
 import Privacy from '../privacy.astro';
 import Disclaimer from '../disclaimer.astro';
+import Products from '../products/index.astro';
+import ProductEntry from '../products/new.astro';
 import { peptides } from '../../data/peptides';
 export function getStaticPaths() {
   return [
-    ...['calculator', 'library', 'planner', 'privacy', 'disclaimer'].map(path => ({ params: { path }, props: { page: path, peptide: undefined } })),
+    ...['calculator', 'library', 'planner', 'privacy', 'disclaimer', 'products', 'products/new'].map(path => ({ params: { path }, props: { page: path, peptide: undefined } })),
     ...peptides.map(peptide => ({ params: { path: `library/${peptide.slug}` }, props: { page: 'reference', peptide } })),
   ];
 }
 const { page, peptide } = Astro.props;
-const pages = { calculator: Calculator, library: Library, planner: Planner, privacy: Privacy, disclaimer: Disclaimer, reference: Reference };
+const pages = { calculator: Calculator, library: Library, planner: Planner, privacy: Privacy, disclaimer: Disclaimer, reference: Reference, products: Products, 'products/new': ProductEntry };
 const Page = pages[page as keyof typeof pages];
 ---
 <Page peptide={peptide!} />

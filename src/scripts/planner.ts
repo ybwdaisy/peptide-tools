@@ -2,9 +2,11 @@ import { takeLanguageDraft, type DraftItem } from '../lib/language-draft';
 import { ui, uiError, browserLocale } from '../lib/i18n';
 import { Temporal } from '@js-temporal/polyfill';
 import { calendarMonth, generateSchedule, today, validateProtocol, type Protocol, type ProtocolItem, type Occurrence, type Frequency } from '../lib/planner';
-import { parseBackup, serializeBackup, STORAGE_KEY } from '../lib/backup';
+import { parseBackup, STORAGE_KEY } from '../lib/backup';
 import { exportCalendar } from '../lib/ical';
 import { track, trackStart } from './analytics';
+import { readWorkspace, saveProtocols, exportWorkspace, replaceWorkspace, clearProtocols } from '../lib/workspace';
+import { productSummary, validateProduct, type Product } from '../lib/products';
 
 function download(text: string, type: string, filename: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -17,6 +19,7 @@ function element<K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, c
 export function initPlanner() {
   const form = document.querySelector<HTMLFormElement>('#planner-form');
   if (!form) return;
+  window.addEventListener('hashchange', () => location.reload());
   const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const input = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
   const items = el('protocol-items');
@@ -27,7 +30,11 @@ export function initPlanner() {
   const zones = [...new Set(['UTC', Intl.DateTimeFormat().resolvedOptions().timeZone, ...Intl.supportedValuesOf('timeZone')])].sort();
   zone.replaceChildren(...zones.map(z => { const option = element('option', z); option.value = z; return option; }));
   zone.value = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  input('startDate').value = today(zone.value);
+  function setZone(value: string) { if (![...zone.options].some(o => o.value === value)) zone.append(new Option(value, value)); zone.value = value; }
+  const itemBasis = (item: ProtocolItem) => item.product?.kind === 'blend' ? (item.doseBasis === 'total' ? ui('Total mixture') : item.product.components[Number(item.doseBasis)]?.name ?? '') : '';
+  const snapshots = new WeakMap<HTMLFieldSetElement, Product>();
+  const hash = new URLSearchParams(location.hash.slice(1));
+  if (!hash.has('product')) input('startDate').value = today(zone.value);
 
   function dirty() {
     trackStart('planner_start'); current = undefined; events = [];
@@ -40,6 +47,10 @@ export function initPlanner() {
     const fragment = (el<HTMLTemplateElement>('protocol-item-template')).content.cloneNode(true) as DocumentFragment;
     const row = fragment.querySelector<HTMLFieldSetElement>('fieldset')!;
     const id = data?.id ?? (draft?.id && /^[\w-]{1,80}$/.test(draft.id) ? draft.id : crypto.randomUUID()); row.dataset.id = id;
+    const productSelect = row.querySelector<HTMLSelectElement>('[data-field="productId"]')!;
+    try {
+      for (const p of readWorkspace().products) { const option = element('option', p.name); option.value = p.id; productSelect.append(option); }
+    } catch { /* The storage warning below reports unreadable records. Custom items still work. */ }
     row.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-field]').forEach(field => {
       field.id = `item-${id}-${field.dataset.field}`; field.name = field.id;
       row.querySelector(`[data-label-for="${field.dataset.field}"]`)?.setAttribute('for', field.id);
@@ -47,6 +58,40 @@ export function initPlanner() {
     });
     const frequency = row.querySelector<HTMLSelectElement>('[data-field="frequency"]')!;
     const interval = row.querySelector<HTMLInputElement>('[data-field="interval"]')!;
+    function attach(product?: Product) {
+      const summary = row.querySelector<HTMLElement>('[data-product-summary]')!;
+      const warning = row.querySelector<HTMLElement>('[data-product-warning]')!;
+      const basisSection = row.querySelector<HTMLElement>('[data-basis-section]')!;
+      const basis = row.querySelector<HTMLSelectElement>('[data-field="doseBasis"]')!;
+      basis.replaceChildren(new Option(ui('Choose an ingredient or total mixture'), ''));
+      basisSection.hidden = product?.kind !== 'blend';
+      if (!product) { snapshots.delete(row); delete row.dataset.product; summary.textContent = ''; warning.textContent = ''; return; }
+      snapshots.set(row, product); row.dataset.product = JSON.stringify(product);
+      if (![...productSelect.options].some(o => o.value === product.id)) productSelect.append(new Option(product.name, product.id));
+      productSelect.value = product.id;
+      summary.textContent = `${product.name}. ${productSummary(product, browserLocale())}`;
+      if (product.kind === 'blend') { product.components.forEach((c, n) => basis.append(new Option(c.name, String(n)))); basis.append(new Option(ui('Total mixture'), 'total')); }
+      try {
+        const latest = readWorkspace().products.find(p => p.id === product.id);
+        warning.textContent = !latest || latest.revision !== product.revision ? ui('This plan keeps an earlier product label. Select the current product to update it explicitly.') : !product.identityConfirmed ? ui('Product version needs confirmation. This schedule only records your own entries.') : '';
+      } catch { warning.textContent = ui('Saved product labels could not be read. The plan keeps its saved label.'); }
+    }
+    productSelect.addEventListener('change', () => {
+      try {
+        const selected = readWorkspace().products.find(p => p.id === productSelect.value);
+        attach(selected); if (selected) {
+          row.querySelector<HTMLInputElement>('[data-field="label"]')!.value = selected.name;
+          row.querySelector<HTMLInputElement>('[data-field="dose"]')!.value = '';
+          row.querySelector<HTMLInputElement>('[data-field="time"]')!.value = '';
+          for (const [field, label] of [['unit', ui('Select')], ['frequency', ui('Choose a rule')]]) {
+            const select = row.querySelector<HTMLSelectElement>(`[data-field="${field}"]`)!;
+            if (![...select.options].some(o => o.value === '')) select.prepend(new Option(label, ''));
+            select.value = '';
+          }
+          showRule();
+        }
+      } catch (caught) { error.textContent = uiError(caught); }
+    });
     function showRule() {
       row.querySelector<HTMLElement>('[data-interval-section]')!.hidden = frequency.value !== 'interval';
       interval.disabled = frequency.value !== 'interval';
@@ -61,6 +106,10 @@ export function initPlanner() {
     if (draft) {
       row.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-field]').forEach(field => { const value = draft[field.dataset.field!]; if (typeof value === 'string') field.value = value; });
       row.querySelectorAll<HTMLInputElement>('[data-weekday]').forEach(field => field.checked = draft.weekdays?.split(',').includes(field.value) ?? false);
+    }
+    if (data?.product) { attach(data.product); row.querySelector<HTMLSelectElement>('[data-field="doseBasis"]')!.value = data.doseBasis ?? ''; }
+    else if (draft?.product) {
+      try { attach(validateProduct(JSON.parse(draft.product))); row.querySelector<HTMLSelectElement>('[data-field="doseBasis"]')!.value = draft.doseBasis ?? ''; } catch { error.textContent = ui('The product draft could not be restored. Choose the product again.'); }
     }
     showRule(); frequency.addEventListener('change', showRule);
     row.querySelector('[data-remove]')!.addEventListener('click', () => {
@@ -77,7 +126,7 @@ export function initPlanner() {
     const data: ProtocolItem[] = Array.from(items.querySelectorAll<HTMLFieldSetElement>('.protocol-item')).map(row => {
       const val = (field: string) => row.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-field="${field}"]`)!.value;
       const kind = val('frequency') as Frequency['kind'];
-      return { id: row.dataset.id!, label: val('label'), dose: val('dose'), unit: val('unit') as ProtocolItem['unit'], time: val('time'), frequency: { kind, ...(kind === 'interval' ? { interval: Number(val('interval')) } : {}), ...(kind === 'weekdays' ? { weekdays: Array.from(row.querySelectorAll<HTMLInputElement>('[data-weekday]:checked')).map(c => Number(c.value)) } : {}) } };
+      return { id: row.dataset.id!, label: val('label'), dose: val('dose'), unit: val('unit') as ProtocolItem['unit'], time: val('time'), frequency: { kind, ...(kind === 'interval' ? { interval: Number(val('interval')) } : {}), ...(kind === 'weekdays' ? { weekdays: Array.from(row.querySelectorAll<HTMLInputElement>('[data-weekday]:checked')).map(c => Number(c.value)) } : {}) }, ...(snapshots.has(row) ? { product: snapshots.get(row), doseBasis: val('doseBasis') } : {}) };
     });
     return validateProtocol({ id: editingId, name: input('protocolName').value, timeZone: zone.value, startDate: input('startDate').value, endDate: input('endDate').value, items: data });
   }
@@ -90,7 +139,10 @@ export function initPlanner() {
   function rows(limit: number) {
     const fragment = document.createDocumentFragment();
     for (const event of events.slice(0, limit)) {
-      const tr = element('tr'); tr.append(element('td', `${event.date} ${event.time}`), element('td', event.label), element('td', `${event.dose} ${event.unit}`)); fragment.append(tr);
+      const tr = element('tr'); const itemCell = element('td', event.label);
+      const item = current?.items.find(i => i.id === event.itemId);
+      if (item?.product) itemCell.append(element('small', productSummary(item.product, browserLocale()), 'entry-context'), element('small', itemBasis(item), 'entry-context'));
+      tr.append(element('td', `${event.date} ${event.time}`), itemCell, element('td', `${event.dose} ${event.unit}`)); fragment.append(tr);
     }
     el('schedule-rows').replaceChildren(fragment);
     el('show-more').hidden = limit >= events.length;
@@ -106,10 +158,37 @@ export function initPlanner() {
       const entries = byDate.get(date) ?? [];
       const cell = element('div', undefined, `calendar-day${date.startsWith(month) ? '' : ' outside-month'}${entries.length ? '' : ' no-events'}`);
       const time = element('time', new Intl.DateTimeFormat(document.documentElement.lang, { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T12:00:00Z`))); time.dateTime = date; cell.append(time);
-      for (const entry of entries) { const line = element('div', undefined, 'calendar-event'); line.append(element('strong', `${entry.time} ${entry.label}`), element('span', `${entry.dose} ${entry.unit}`)); cell.append(line); }
+      for (const entry of entries) { const line = element('div', undefined, 'calendar-event'); line.append(element('strong', `${entry.time} ${entry.label}`), element('span', `${entry.dose} ${entry.unit}`)); const item = current.items.find(i => i.id === entry.itemId); if (item && itemBasis(item)) line.append(element('small', itemBasis(item), 'entry-context')); cell.append(line); }
       fragment.append(cell);
     }
     el('calendar-grid').replaceChildren(fragment);
+  }
+  function renderAgenda() {
+    if (!current) return;
+    const date = el<HTMLInputElement>('agenda-date').value;
+    let day: Temporal.PlainDate;
+    try { day = Temporal.PlainDate.from(date); } catch { return; }
+    const monday = day.subtract({ days: day.dayOfWeek - 1 });
+    const week = document.createDocumentFragment();
+    for (let n = 0; n < 7; n++) {
+      const d = monday.add({ days: n }), value = d.toString();
+      const button = element('button', undefined, 'agenda-day');
+      button.append(element('span', new Intl.DateTimeFormat(document.documentElement.lang, { weekday: 'short', timeZone: 'UTC' }).format(new Date(`${value}T12:00:00Z`))), element('span', String(d.day)));
+      button.type = 'button'; button.setAttribute('aria-pressed', String(value === date));
+      button.addEventListener('click', () => { el<HTMLInputElement>('agenda-date').value = value; renderAgenda(); }); week.append(button);
+    }
+    el('agenda-week').replaceChildren(week);
+    el('day-agenda-title').textContent = date === today(current.timeZone) ? ui('Today in my plan') : new Intl.DateTimeFormat(document.documentElement.lang, { dateStyle: 'full', timeZone: 'UTC' }).format(new Date(`${date}T12:00:00Z`));
+    const entries = events.filter(e => e.date === date); el('agenda-empty').hidden = entries.length > 0;
+    const list = document.createDocumentFragment();
+    for (const entry of entries) {
+      const li = element('li'), heading = element('h3', entry.label), details = element('p', undefined, 'agenda-entry-values');
+      details.append(element('span', entry.time), element('span', `${entry.dose} ${entry.unit}`));
+      const item = current.items.find(i => i.id === entry.itemId)!; li.append(heading, details);
+      if (item.product) { li.append(element('p', productSummary(item.product, browserLocale()), 'small')); if (itemBasis(item)) li.append(element('p', itemBasis(item), 'small')); }
+      list.append(li);
+    }
+    el('agenda-entries').replaceChildren(list);
   }
   function showSchedule(p: Protocol) {
     const generated = generateSchedule(p);
@@ -123,23 +202,24 @@ export function initPlanner() {
     el('calendar-summary').textContent = ui('{count} entries, {start} to {end}, {zone}', { count: events.length, start: p.startDate, end: p.endDate, zone: p.timeZone });
     el('print-title').textContent = p.name; el('print-context').textContent = ui('{start} to {end}. Time zone: {zone}.', { start: p.startDate, end: p.endDate, zone: p.timeZone });
     el('calendar-empty').hidden = true; el('generated-calendar').hidden = false;
-    rows(shown); renderMonth();
+    el<HTMLInputElement>('agenda-date').value = hash.has('protocol') ? today(p.timeZone) : p.startDate;
+    rows(shown); renderMonth(); renderAgenda();
   }
-  function persist(list: Protocol[], confirmedReplacement = false) {
-    if (unreadableSavedData && !confirmedReplacement) throw new Error('Unreadable saved data must be restored or cleared before saving.');
-    localStorage.setItem(STORAGE_KEY, serializeBackup(list));
+  function persist(list: Protocol[]) {
+    if (unreadableSavedData) throw new Error('Unreadable saved data must be restored or cleared before saving.');
+    saveProtocols(list);
     unreadableSavedData = false; protocols = list; renderSaved();
   }
   function renderSaved() {
     el('saved-empty').hidden = protocols.length > 0;
-    el<HTMLButtonElement>('backup-export').disabled = !protocols.length;
+    let hasProducts = false; try { hasProducts = readWorkspace().products.length > 0; } catch { /* Keep export disabled for unreadable data. */ }
+    el<HTMLButtonElement>('backup-export').disabled = !protocols.length && !hasProducts;
     const fragment = document.createDocumentFragment();
     for (const p of protocols) {
       const li = element('li'); const open = element('button', p.name, 'text-button'); open.type = 'button';
       open.addEventListener('click', () => {
         if ((input('protocolName').value || items.querySelector<HTMLInputElement>('[data-field="label"]')?.value) && !current && !confirm(ui('Replace the unsaved form with this saved protocol?'))) return;
-        editingId = p.id; form!.dataset.editingId = editingId; input('protocolName').value = p.name; zone.value = p.timeZone;
-        if (!zone.value) { const option = element('option', p.timeZone); option.value = p.timeZone; zone.append(option); zone.value = p.timeZone; }
+        editingId = p.id; form!.dataset.editingId = editingId; input('protocolName').value = p.name; setZone(p.timeZone);
         input('startDate').value = p.startDate; input('endDate').value = p.endDate; items.replaceChildren(); p.items.forEach(item => addItem(item)); error.textContent = ''; status.textContent = ui('Loaded from this browser. No usage event was recorded for loading.');
         try { showSchedule(p); } catch (e) { current = undefined; el('generated-calendar').hidden = true; el('calendar-empty').hidden = false; showError(e); }
       });
@@ -156,12 +236,40 @@ export function initPlanner() {
   if (draft) {
     if (draft.editingId && /^[\w-]{1,80}$/.test(draft.editingId)) editingId = draft.editingId;
     for (const name of ['protocolName', 'timeZone', 'startDate', 'endDate']) {
-      if (typeof draft.values[name] === 'string') input(name).value = draft.values[name];
+      if (typeof draft.values[name] === 'string') { if (name === 'timeZone') setZone(draft.values[name]); else input(name).value = draft.values[name]; }
     }
     if (draft.items.length) draft.items.forEach(item => addItem(undefined, item)); else addItem();
     if (draft.generated) { try { showSchedule(readForm()); } catch { /* Keep incomplete inputs available without recording an action. */ } }
   } else addItem();
   form.dataset.editingId = editingId;
+  if (!draft && hash.has('product')) {
+    try {
+      const selected = readWorkspace().products.find(p => p.id === hash.get('product'));
+      if (!selected) throw new Error('This product is not available in this browser. Open My products to choose another.');
+      const row = items.querySelector<HTMLFieldSetElement>('.protocol-item')!;
+      const select = row.querySelector<HTMLSelectElement>('[data-field="productId"]')!;
+      select.value = selected.id; select.dispatchEvent(new Event('change'));
+      const carried = sessionStorage.getItem('peptide-tools.calculation-draft.v1');
+      if (carried) {
+        sessionStorage.removeItem('peptide-tools.calculation-draft.v1');
+        const d = JSON.parse(carried);
+        if (d.productId === selected.id && d.revision === selected.revision && Number.isFinite(d.expires) && d.expires > Date.now() && d.expires <= Date.now() + 300_000 && typeof d.dose === 'string' && ['mg','mcg'].includes(d.unit)) {
+          row.querySelector<HTMLInputElement>('[data-field="dose"]')!.value = d.dose;
+          row.querySelector<HTMLSelectElement>('[data-field="unit"]')!.value = d.unit;
+          row.querySelector<HTMLSelectElement>('[data-field="doseBasis"]')!.value = d.basis;
+        }
+      }
+    } catch (caught) { error.textContent = uiError(caught); }
+  }
+  if (!draft && hash.has('protocol')) {
+    const p = protocols.find(p => p.id === hash.get('protocol'));
+    if (p) {
+      editingId = p.id; form.dataset.editingId = editingId; input('protocolName').value = p.name; setZone(p.timeZone);
+      input('startDate').value = p.startDate; input('endDate').value = p.endDate; items.replaceChildren(); p.items.forEach(item => addItem(item));
+      try { showSchedule(p); } catch (caught) { showError(caught); }
+      el('calendar-section').tabIndex = -1; el('calendar-section').focus();
+    } else error.textContent = ui('This saved schedule is not available in this browser.');
+  }
   form.addEventListener('input', dirty); form.addEventListener('change', dirty);
   el('add-item').addEventListener('click', () => { dirty(); addItem(); items.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
   form.addEventListener('submit', event => { event.preventDefault(); error.textContent = ''; trackStart('planner_start'); try { showSchedule(readForm()); track('schedule_generated'); status.textContent = ui('Calendar generated from your entries. Save it separately to keep it in this browser.'); } catch (e) { showError(e); } });
@@ -178,16 +286,17 @@ export function initPlanner() {
     form.reset(); editingId = crypto.randomUUID(); form.dataset.editingId = editingId; zone.value = Intl.DateTimeFormat().resolvedOptions().timeZone; input('startDate').value = today(zone.value); items.replaceChildren(); addItem(); dirty(); input('protocolName').focus();
   });
   el('calendar-month').addEventListener('change', renderMonth);
+  el('agenda-date').addEventListener('change', renderAgenda);
   el('show-more').addEventListener('click', () => { shown += 100; rows(shown); });
   el('export-ics').addEventListener('click', () => { if (!current) return; download(exportCalendar(current, events, new Date(), browserLocale()), 'text/calendar;charset=utf-8', 'peptide-tools-calendar.ics'); track('export_completed', { export_type: 'ics' }); });
-  el('backup-export').addEventListener('click', () => { if (!protocols.length) return; download(serializeBackup(protocols), 'application/json', 'peptide-tools-backup.json'); track('export_completed', { export_type: 'json' }); });
+  el('backup-export').addEventListener('click', () => { try { download(exportWorkspace(), 'application/json', 'peptide-tools-backup.json'); track('export_completed', { export_type: 'json' }); } catch (caught) { storageStatus.textContent = uiError(caught); } });
   el<HTMLInputElement>('backup-import').addEventListener('change', async event => {
     const field = event.target as HTMLInputElement, file = field.files?.[0]; if (!file) return;
-    try { if (file.size > 1024 * 1024) throw new Error('Use a backup smaller than 1 MB.'); const data = parseBackup(await file.text()); if (!confirm(ui('Replace all saved protocols in this browser with {count} protocol(s) from this backup?', { count: data.protocols.length }))) return; persist(data.protocols, true); storageStatus.textContent = ui('Backup restored. Open a saved protocol to view it. The open form has not changed.'); }
+    try { if (file.size > 1024 * 1024) throw new Error('Use a backup smaller than 1 MB.'); const raw = await file.text(); const data = parseBackup(raw); if (!confirm(ui('Replace all saved products and schedules with this backup? Download a backup first.'))) return; replaceWorkspace(raw); protocols = data.protocols; unreadableSavedData = false; renderSaved(); track('backup_restored'); storageStatus.textContent = ui('Backup restored. Open a saved protocol to view it. The open form has not changed.'); }
     catch (e) { storageStatus.textContent = ui('Restore failed: {message}', { message: uiError(e) }); }
     finally { field.value = ''; }
   });
-  el('clear-data').addEventListener('click', () => { if (!confirm(ui('Delete all saved protocols from this browser? Download a backup first if you need a copy.'))) return; try { localStorage.removeItem(STORAGE_KEY); unreadableSavedData = false; protocols = []; renderSaved(); storageStatus.textContent = ui('Saved protocols cleared. The open form and downloaded files are unchanged.'); } catch { storageStatus.textContent = ui('Storage is unavailable. Saved data could not be cleared.'); } });
+  el('clear-data').addEventListener('click', () => { if (!confirm(ui('Delete all saved protocols from this browser? Download a backup first if you need a copy.'))) return; try { if (unreadableSavedData) { if (!confirm(ui('Unreadable data cannot be separated. Clear all local products and schedules?'))) return; localStorage.removeItem(STORAGE_KEY); } else clearProtocols(); unreadableSavedData = false; protocols = []; renderSaved(); storageStatus.textContent = ui('Saved protocols cleared. The open form and downloaded files are unchanged.'); } catch { storageStatus.textContent = ui('Storage is unavailable. Saved data could not be cleared.'); } });
   el('print-calendar').addEventListener('click', () => { if (current) { rows(events.length); track('print_requested'); window.print(); } });
   window.addEventListener('beforeprint', () => { if (current) rows(events.length); });
   window.addEventListener('afterprint', () => { if (current) rows(shown); });

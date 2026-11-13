@@ -1,0 +1,32 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import '../../styles/products.css';
+import { getLocale, localePath, translate } from '../../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
+---
+<Shell title={t('My peptide products')} description={t('Keep your product labels and personal schedules together in this browser.')} active="/products" noindex>
+  <div class="product-workspace" id="product-workspace">
+    <p id="workspace-loading" class="small" role="status">{t('Reading your local records…')}</p>
+    <p id="workspace-error" class="error-message" role="alert"></p>
+    <section id="product-overview" aria-labelledby="products-heading">
+      <div class="page-heading"><h1 id="products-heading">{t('My products')}</h1><p>{t('Saved in this browser.')}</p></div>
+      <div id="products-empty" class="product-empty"><h2>{t('Start with a product you already have.')}</h2><p>{t('Copy its label, keep the details, and add your existing plan when you are ready.')}</p><a class="button" href={localePath('/products/new', locale)}>{t('Add my first product')}</a></div>
+      <ul id="product-list" class="product-list" aria-label={t('Saved products')}></ul>
+      <section class="product-schedules" aria-labelledby="product-schedules-heading"><h2 id="product-schedules-heading">{t('My schedules')}</h2><p id="product-schedules-empty" class="small">{t('Choose a product to create your first schedule, or open the planner for a custom entry.')}</p><ul id="product-schedule-list" class="product-list"></ul><a class="text-link" href={localePath('/planner', locale)}>{t('Open the planner')}</a></section>
+      <div class="product-add-action" id="product-add-action" hidden><a class="button secondary" href={localePath('/products/new', locale)}>{t('Add another product')}</a></div>
+    </section>
+    <section id="product-detail" class="product-detail" aria-labelledby="product-detail-name" hidden>
+      <a href={localePath('/products', locale)} class="text-link">{t('Back to my products')}</a>
+      <div class="page-heading"><h1 id="product-detail-name" tabindex="-1"></h1><p id="product-detail-brand"></p></div>
+      <h2>{t('Your product record')}</h2><dl id="product-detail-facts" class="label-facts"></dl>
+      <div id="product-detail-ingredients" class="product-ingredients" hidden><h2>{t('Ingredients on your label')}</h2><dl id="product-ingredient-facts" class="label-facts"></dl></div>
+      <p id="product-detail-notice" class="product-note"></p>
+      <div class="product-detail-actions"><a id="product-plan-link" class="button" href={localePath('/planner', locale)}>{t('Add to my schedule')}</a><a id="product-calculate-link" class="button secondary" href={localePath('/calculator', locale)} hidden>{t('Calculate volume')}</a><button type="button" id="product-calculate-disabled" class="button secondary" disabled>{t('Calculate volume')}</button><a id="product-edit-link" class="text-link" href={localePath('/products/new', locale)}>{t('Edit label and concentration')}</a><a id="product-reference-link" class="text-link" href={localePath('/library', locale)} hidden>{t('Read the matching reference')}</a><p id="product-reference-unmatched" class="small">{t('No exact reference is linked. Check the identity and version on your label.')}</p></div>
+      <div id="product-related-schedules" class="product-schedules"><h2>{t('Schedules using this product')}</h2><ul id="product-related-list" class="product-list"></ul><p id="product-related-empty" class="small">{t('No schedule linked yet.')}</p></div>
+      <button type="button" id="product-delete" class="text-button danger">{t('Delete product record')}</button>
+    </section>
+    <details class="workspace-data"><summary id="workspace-data-heading">{t('Your local data')}</summary><p class="small">{t('Products and schedules stay in this browser. Clearing browser data removes them. Keep a JSON backup separately.')}</p><div class="actions"><button type="button" id="workspace-backup-export" class="button secondary" disabled>{t('Download JSON backup')}</button><button type="button" id="workspace-clear" class="text-button danger">{t('Clear products and schedules')}</button></div><div class="workspace-import"><label for="workspace-backup-import">{t('Restore a products and schedules backup')}</label><input id="workspace-backup-import" type="file" accept=".json,application/json" aria-describedby="workspace-data-help" /><p class="field-help" id="workspace-data-help">{t('Version 1 schedule backups are supported. Restoring replaces the saved records after confirmation.')}</p></div><p id="workspace-status" class="status-message" role="status"></p></details>
+  </div>
+  <script>import { initProducts } from '../../scripts/products'; initProducts();</script>
+</Shell>

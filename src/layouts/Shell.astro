@@ -1,7 +1,5 @@
 ---
 import '../styles/app.css';
-import '@fontsource-variable/instrument-sans';
-import '@fontsource-variable/schibsted-grotesk';
 import { getLocale, localePath, translate } from '../lib/i18n';
 interface Props { title: string; description: string; active?: string; noindex?: boolean }
 const { title, description, active, noindex = false } = Astro.props;
@@ -9,7 +7,7 @@ const isProduction = import.meta.env.VERCEL_ENV === 'production';
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? '';
 const verification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 const canonical = new URL(localePath(Astro.url.pathname, getLocale(Astro.url.pathname)), Astro.site);
-const nav = [['Calculator', '/calculator'], ['Reference library', '/library'], ['Protocol planner', '/planner']] as const;
+const nav = [['My products', '/products'], ['Reference library', '/library']] as const;
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
@@ -19,7 +17,7 @@ const t = (message: string) => translate(message, locale);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f8f7ef" />
+    <meta name="theme-color" content="#f0f1ee" />
     <meta name="referrer" content="no-referrer" />
     {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
     {verification && <meta name="google-site-verification" content={verification} />}
@@ -31,14 +29,12 @@ const t = (message: string) => translate(message, locale);
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/ibm-plex-sans.ttf" as="font" type="font/ttf" crossorigin />
     <meta name="apple-mobile-web-app-title" content="Peptide Tools" />
     <meta property="og:title" content={`${title} | Peptide Tools`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <script is:inline>
-      try { if (location.pathname === '/' && localStorage.getItem('peptide-tools.language.v1') === 'zh') { document.documentElement.dataset.languageRedirect = 'true'; location.replace('/zh' + location.search + location.hash); } } catch { /* Default remains English without storage. */ }
-    </script>
     <title>{title} | Peptide Tools</title>
   </head>
   <body data-ga-id={gaId} data-analytics-origin="https://peptides.ybwdaisy.com" data-analytics-enabled={String(isProduction && /^G-[A-Z0-9]+$/.test(gaId))}>
@@ -51,7 +47,7 @@ const t = (message: string) => translate(message, locale);
     <main id="main" class="container"><slot /></main>
     <footer class="site-footer container">
       <p>{t("Tools for arithmetic and personal organization. No medical advice.")}</p>
-      <nav aria-label={t("Footer")}><a href={localePath("/privacy", locale)}>{t("Privacy")}</a><a href={localePath("/disclaimer", locale)}>{t("Disclaimer")}</a><button type="button" class="text-button" data-open-consent>{t("Analytics preferences")}</button></nav>
+      <nav aria-label={t("Footer")}><a href={localePath('/calculator', locale)}>{t('Calculator')}</a><a href={localePath('/planner', locale)}>{t('Protocol planner')}</a><a href={localePath("/privacy", locale)}>{t("Privacy")}</a><a href={localePath("/disclaimer", locale)}>{t("Disclaimer")}</a><button type="button" class="text-button" data-open-consent>{t("Analytics preferences")}</button></nav>
       <p id="analytics-status" class="small">{t("Optional analytics: off.")}</p>
     </footer>
     <section id="analytics-choice" class="consent-bar" aria-label={t("Optional analytics preferences")} hidden>
