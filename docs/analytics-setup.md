@@ -17,7 +17,7 @@ A real-SDK check exposed automatic specific-reference page views despite per-str
 
 ## Saved backend configuration
 
-Event-scoped dimensions:
+Event-scoped dimensions (all seven are registered; the four new ones are imported into the main analysis):
 
 | Display name | Parameter |
 |---|---|
@@ -48,7 +48,7 @@ The definition was reopened and verified. This conservatively excludes the entir
 - [Acquisition and tools — 30-day analysis](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA)
 - [7/30-day retention — set dates](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/ZJ3t4DjYRJ-D1kuSPxXHZg)
 
-The main analysis has the following saved tabs (numbered display names may appear in a different visual order):
+The main analysis now has ten saved tabs (numbered display names may appear in a different visual order):
 
 | Tab | Definition |
 |---|---|
@@ -60,7 +60,8 @@ The main analysis has the following saved tabs (numbered display names may appea
 | 06. Calculator unique users | `calculation_success` only; **Total users is the sole metric**, not Active users or event count |
 | 07. Calculator outcomes and error types | Success/error event counts, page group and error category |
 | 08. Validation error share | Doughnut: Event count by event name, restricted to `^calculation_(success|error)$` |
-| 09. Product entry (including edits) | Closed funnel: product-entry page view → product entry start → successful product save. Explicitly includes edits until the new operation dimension becomes selectable. |
+| 09. Product entry (including edits) | Closed funnel: product-entry page view → product entry start → successful product save. Includes edits, retained as the direct-entry/all-saves baseline. |
+| 10. First product activation | Closed, indirectly followed: add_product navigation action → create entry start → create label view → create product save. Each condition uses event-scoped fixed enums; edits are excluded. |
 
 The native doughnut's `calculation_error` slice percentage is exactly errors / (successes + errors). These are submission attempts, not distinct people. The expression shown in GA4 uses the unescaped alternation `^calculation_(success|error)$`.
 
