@@ -1,6 +1,6 @@
 # Analytics configuration and acceptance
 
-Updated: 2026-11-13. **PR #8 is deployed; latest production analytics acceptance is incomplete because navigation-time events were lost. A delivery fix is awaiting review/release.** The November 12 real-SDK acceptance below applies to the earlier release. Backend funnels have been revised for the new site; report availability is not evidence of customer demand.
+Updated: 2026-11-13. **PR #9 is merged/deployed as `d93ee74`; native real-SDK acceptance and GA4 Realtime confirm create/update saves and navigation events.** The usage report now also splits operation, tool context and action. The November 12 acceptance below applies to the earlier release; current evidence and remaining limits are recorded separately. Report availability and QA activity are not evidence of customer demand.
 
 See [product journey event contract and remaining acceptance](analytics-product-journey.md).
 
@@ -41,7 +41,7 @@ AND Date is not 20261112
 EXCLUDE events where Peptides page group exactly matches qa
 ```
 
-The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: the candidate code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion while new dimensions propagate. The query itself is never uploaded. The November 13 real-SDK acceptance used QA traffic; its captured events are excluded. That acceptance found missing navigation/save events and is recorded as incomplete, not as customer evidence. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
+The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: production code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion. The query itself is never uploaded. November 13 acceptance used QA traffic. The first HAR was incomplete; the later PR #9 run confirms navigation/save reception in Realtime, despite those requests being omitted from preserved HAR. Neither run is customer evidence. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
 
 ## Open the reports
 
@@ -56,7 +56,7 @@ The main analysis now has ten saved tabs (numbered display names may appear in a
 | 02. Planner generation | Planner page view → start → generate schedule. Separate from saving. |
 | 03. Planner saving | Closed funnel: planner page view → start → successful local save. Generating a calendar and exporting are optional, not prerequisites. |
 | 04. Acquisition by channel | Session default channel group, total users and sessions |
-| 05. Usage by event and page | Event name and generic page group; includes export/print requests, product opens/deletes, and backup restores |
+| 05. Usage by event and page | Event name, generic page group, operation, tool context and action; 50 rows; includes export/print requests, product opens/deletes, and backup restores |
 | 06. Calculator unique users | `calculation_success` only; **Total users is the sole metric**, not Active users or event count |
 | 07. Calculator outcomes and error types | Success/error event counts, page group and error category |
 | 08. Validation error share | Doughnut: Event count by event name, restricted to `^calculation_(success|error)$` |
@@ -85,6 +85,18 @@ Public application events/parameters are defined in `src/lib/analytics-policy.ts
 - Consent, blocking and cross-device behavior limit pseudonymous user estimates. GA4 cannot provide per-peptide path analysis; use public Search Console page reports for SEO.
 
 ## Actual production acceptance
+
+### Current release — November 13 / PR #9
+
+Actual native Chrome incognito, production Google SDK, no HTML/SDK substitution. New/edit product saves, product and standalone calculations, direct plan save/update before generation, JSON/ICS export, backup restore, product open/delete and English/Chinese switching were exercised. A real one-page print preview displayed three calendar entries and was cancelled. Denied consent and subsequent withdrawal both preserved calculator functionality with zero Google requests.
+
+GA4 Realtime independently showed product_saved=2, operation create=1/update=1, traffic_class qa=2, generic page_location `/products/new` for both. It showed product_entry_start=2 and navigation_action=7, with each action add_product, edit_product, calculate_product, use_calculation, open_schedule, open_workspace and quick_calculator received once. Key events calculation_success=2, protocol_saved=2 and schedule_generated=1 were visible. No public product-created QA event was intentionally generated.
+
+The sanitized HAR contains 25 HTTP 204 collection requests and 27 explicit events, all labelled QA; captured payloads contain no synthetic label/ID or private query/hash. **HAR is incomplete:** navigation-time events absent from it were present in Realtime. Do not infer non-receipt or exact whole-journey counts from HAR alone. See [combined evidence](evidence/production-sdk-trace-20261113-pr9.json), [save operations](evidence/ga-pr9-save-create-update-20261113.png), [QA saves](evidence/ga-pr9-save-qa-20261113.png), [navigation](evidence/ga-pr9-navigation-actions-20261113.png), [withdrawal](evidence/production-withdrawn-20261113-pr9.png) and [saved usage configuration](evidence/ga-product-usage-breakdowns-20261113.png).
+
+The live run did not deliberately trigger product_entry_error and did not verify a fresh DebugView session. Existing automated coverage is separate. Public derived-key-event receipt awaits qualifying traffic; mature 7/30-day cohorts require elapsed time. No physical iPhone acceptance is claimed.
+
+### Earlier release — November 12
 
 Fresh headed Chrome, deployed production code and the real Google SDK, 2026-11-12T13:03:58Z–13:04:26Z. No production HTML, application bundle or SDK replacement. A QA-only facade added documented `debug_mode` to tag commands. Synthetic reference path and fictitious inputs were used; packets were checked before forwarding.
 

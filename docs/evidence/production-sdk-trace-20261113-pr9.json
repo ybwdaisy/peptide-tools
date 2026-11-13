@@ -1,0 +1,458 @@
+{
+  "date": "2026-11-13",
+  "release": "d93ee74a8649669a38f7406439c23e7160e0c365",
+  "origin": "https://peptides.ybwdaisy.com",
+  "method": "Native Chrome incognito UI, real production Google SDK; DevTools sanitized HAR and authenticated GA4 Realtime. No SDK/page replacement or alternative browser automation.",
+  "scope": "QA workflow only; excludes customer-demand evidence.",
+  "har": {
+    "collectionRequests": 25,
+    "collectionStatuses": [
+      204
+    ],
+    "explicitEventCount": 27,
+    "counts": {
+      "page_view": 10,
+      "product_entry_start": 1,
+      "product_label_view": 1,
+      "calculator_start": 2,
+      "calculation_error": 1,
+      "calculation_success": 2,
+      "planner_start": 1,
+      "protocol_saved": 2,
+      "schedule_generated": 1,
+      "export_completed": 2,
+      "print_requested": 1,
+      "backup_restored": 1,
+      "product_opened": 1,
+      "product_deleted": 1
+    },
+    "allCapturedEventsQA": true,
+    "syntheticLabelOrIdLeakObserved": false,
+    "events": [
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/",
+          "dt": "Peptide Tools: home",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products/new",
+          "dt": "Peptide Tools: product entry",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products/new",
+          "dt": "Peptide Tools: product entry",
+          "dr": "",
+          "en": "product_entry_start",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.operation": "create"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products/new",
+          "dt": "Peptide Tools: product entry",
+          "dr": "",
+          "en": "product_label_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.operation": "create"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products",
+          "dt": "Peptide Tools: products",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products/new",
+          "dt": "Peptide Tools: product entry",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "calculator_start",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "calculation_error",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.error_code": "required",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "calculation_success",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "planner_start",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "protocol_saved",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.operation": "create",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "protocol_saved",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.operation": "update",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "schedule_generated",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.tool_context": "product"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "export_completed",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.export_type": "ics"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "export_completed",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.export_type": "json"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "print_requested",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "backup_restored",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/planner",
+          "dt": "Peptide Tools: planner",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "calculator_start",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.tool_context": "standalone"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "calculation_success",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.tool_context": "standalone"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/calculator",
+          "dt": "Peptide Tools: calculator",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products",
+          "dt": "Peptide Tools: products",
+          "dr": "",
+          "en": "page_view",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products",
+          "dt": "Peptide Tools: products",
+          "dr": "",
+          "en": "product_opened",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.product_type": "single"
+        }
+      },
+      {
+        "status": 204,
+        "parameters": {
+          "npa": "1",
+          "dl": "https://peptides.ybwdaisy.com/products",
+          "dt": "Peptide Tools: products",
+          "dr": "",
+          "en": "product_deleted",
+          "ep.traffic_class": "qa",
+          "ep.debug_mode": "true",
+          "ep.page_group": "qa",
+          "ep.product_type": "single"
+        }
+      }
+    ],
+    "limitation": "Preserved Network HAR omitted navigation-time events that Realtime demonstrably received. Its event list is incomplete; absence is not evidence of non-receipt."
+  },
+  "backend": {
+    "product_saved": {
+      "count": 2,
+      "operation": {
+        "create": 1,
+        "update": 1
+      },
+      "traffic_class": {
+        "qa": 2
+      },
+      "page_location": {
+        "https://peptides.ybwdaisy.com/products/new": 2
+      }
+    },
+    "product_entry_start": 2,
+    "navigation_action": {
+      "count": 7,
+      "action": {
+        "add_product": 1,
+        "edit_product": 1,
+        "calculate_product": 1,
+        "use_calculation": 1,
+        "open_schedule": 1,
+        "open_workspace": 1,
+        "quick_calculator": 1
+      }
+    },
+    "keyEvents": {
+      "calculation_success": 2,
+      "protocol_saved": 2,
+      "schedule_generated": 1
+    },
+    "publicProductCreatedObserved": false
+  },
+  "consent": {
+    "priorDeniedRun": "production-denied-20261113-pr9.png; calculator worked and zero Google requests",
+    "withdrawalRun": "production-withdrawn-20261113-pr9.png; after withdrawal and clearing network log, calculator worked and 0/11 Google-filtered requests"
+  },
+  "ui": {
+    "productCreateAndUpdate": true,
+    "productAndStandaloneCalculation": true,
+    "directPlanSaveAndUpdateBeforeGeneration": true,
+    "calendarEntries": 3,
+    "calendarJSONAndICSExport": true,
+    "backupRestore": true,
+    "printPreviewOpenedAndCancelled": true,
+    "languageSwitch": "English to Chinese and back",
+    "physicalIPhone": false
+  },
+  "remaining": [
+    "product_entry_error was not deliberately triggered in this live run; automated contract coverage remains separate.",
+    "No public product-created event was generated for testing. Actual public receipt awaits qualifying traffic.",
+    "Realtime reception does not guarantee immediate processed exploration availability; 7/30-day cohorts require elapsed time."
+  ]
+}
