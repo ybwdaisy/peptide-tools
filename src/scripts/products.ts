@@ -13,7 +13,7 @@ export function initProducts() {
   const path = (route: string) => localePath(route, browserLocale());
   let workspace: Workspace = { version: 2, products: [], protocols: [] };
   let readable = false;
-  function link(label: string, href: string, cls = 'text-link') { const a = node('a', label, cls); a.href = href; return a; }
+  function link(label: string, href: string, cls = 'text-link') { const a = node('a', label, cls); a.href = href; if (href.includes('#protocol=')) a.dataset.analyticsAction = 'open_schedule'; return a; }
   function amount(product: Product) { return product.amountMg ? ui(product.kind === 'blend' ? '{amount} mg total in one vial' : '{amount} mg in one vial', { amount: product.amountMg }) : ui('Amount not added'); }
   function formName(product: Product) { return ui(({ powder: 'Lyophilized powder', solution: 'Solution', other: 'Other / not specified' } as const)[product.form]); }
   function state(product: Product) {

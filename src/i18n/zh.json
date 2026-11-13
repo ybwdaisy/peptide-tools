@@ -295,7 +295,7 @@
   "Enter a value greater than zero.": "请输入大于零的数值。",
   "Existing saved data could not be read. Restore a valid backup or explicitly clear saved protocols before saving. Nothing has been overwritten.": "无法读取现有数据。保存前请恢复有效备份，或明确清除已保存协议。现有数据未被覆盖。",
   "Give each item a name of 1 to 80 characters.": "请为每个项目填写 1 至 80 个字符的名称。",
-  "Loaded from this browser. No usage event was recorded for loading.": "已从此浏览器读取；读取操作未记为使用事件。",
+  "Loaded from this browser.": "已从此浏览器读取。",
   "Local storage is unavailable or full. Your form is still here; generate a calendar and export it, or enable browser storage before saving.": "本地存储不可用或已满。当前表单仍保留；可先生成并导出日历，或启用浏览器存储后再保存。",
   "No dates match these repeat rules. Adjust your dates or selected weekdays.": "所选日期内没有符合重复规则的条目，请调整日期或星期。",
   "No dates match this schedule. Adjust the dates or repeat rules.": "所选日期内没有符合排程的条目，请调整日期或重复规则。",

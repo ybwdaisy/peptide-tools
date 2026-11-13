@@ -13,7 +13,7 @@ export function initProductEntry() {
   const error = el('product-entry-error'), status = el('product-entry-status'), components = el('product-components');
   const initialId = new URLSearchParams(location.hash.slice(1)).get('edit');
   let editing: Product | undefined;
-  let blocked = false;
+  let blocked = false, labelViewed = false;
   form.dataset.editingId = crypto.randomUUID();
 
   function showStep(step: 'name' | 'label', focus = false) {
@@ -44,7 +44,7 @@ export function initProductEntry() {
     row.querySelector<HTMLInputElement>('[data-component-amount]')!.value = data?.amountMg ?? '';
     row.querySelector('[data-remove-component]')!.addEventListener('click', () => {
       if (components.children.length <= 2) return;
-      row.remove(); field('concentrationVerified').checked = false; renumber(); trackStart('product_entry_start');
+      row.remove(); field('concentrationVerified').checked = false; renumber(); trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
     });
     components.append(fragment); renumber();
   }
@@ -54,11 +54,14 @@ export function initProductEntry() {
     components.querySelectorAll<HTMLInputElement>('[data-component-name], [data-component-amount]').forEach(input => input.disabled = !blend);
   }
   function continueToLabel() {
+    trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
     error.textContent = '';
     if (!field('productName').value.trim()) {
+      track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'invalid_label' });
       error.textContent = ui('Use a name between 1 and 80 characters.'); field('productName').setAttribute('aria-invalid', 'true'); field('productName').focus(); return;
     }
     showType(); showStep('label', true);
+    if (!labelViewed) { labelViewed = true; track('product_label_view', { operation: editing ? 'update' : 'create' }); }
   }
   try {
     const workspace = readWorkspace();
@@ -96,21 +99,29 @@ export function initProductEntry() {
   el<HTMLButtonElement>('product-save').disabled = blocked;
   el('product-continue').addEventListener('click', continueToLabel);
   el('product-back').addEventListener('click', () => showStep('name', true));
-  el('product-add-component').addEventListener('click', () => { addComponent(); showType(); field('concentrationVerified').checked = false; trackStart('product_entry_start'); components.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
+  el('product-add-component').addEventListener('click', () => { addComponent(); showType(); field('concentrationVerified').checked = false; trackStart('product_entry_start', { operation: editing ? 'update' : 'create' }); components.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
   field('kind').addEventListener('change', showType);
   form.addEventListener('input', event => {
-    trackStart('product_entry_start');
+    trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
     if (!blocked) error.textContent = '';
     form.querySelectorAll('[aria-invalid]').forEach(input => input.removeAttribute('aria-invalid'));
     const input = event.target as HTMLInputElement;
     if (['productName', 'kind'].includes(input.name)) field('identityConfirmed').checked = false;
     if (['productName', 'kind', 'form', 'amountMg', 'concentrationMgMl'].includes(input.name) || input.hasAttribute('data-component-name') || input.hasAttribute('data-component-amount')) field('concentrationVerified').checked = false;
   });
+  let nativeErrorReported = false;
+  form.addEventListener('invalid', () => {
+    if (nativeErrorReported) return;
+    nativeErrorReported = true;
+    queueMicrotask(() => { nativeErrorReported = false; });
+    trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
+    track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'invalid_label' });
+  }, true);
   form.addEventListener('submit', event => {
     event.preventDefault();
-    trackStart('product_entry_start');
+    trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
     if (form.dataset.step === 'name') { continueToLabel(); return; }
-    if (blocked) return;
+    if (blocked) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'unreadable_data' }); return; }
     error.textContent = '';
     const raw = {
       id: form.dataset.editingId!, revision: crypto.randomUUID(), name: field('productName').value.trim(), brand: field('brand').value.trim(), kind: field('kind').value,
@@ -120,10 +131,10 @@ export function initProductEntry() {
     };
     let product: Product;
     try { product = validateProduct(raw); }
-    catch (caught) { error.textContent = uiError(caught); error.tabIndex = -1; error.focus(); return; }
+    catch (caught) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'invalid_label' }); error.textContent = uiError(caught); error.tabIndex = -1; error.focus(); return; }
     try { saveProduct(product); }
-    catch (caught) { error.textContent = uiError(caught); status.textContent = ui('Your form is still here. Nothing was saved; check browser storage before trying again.'); return; }
-    track('product_saved', { product_type: product.kind });
+    catch (caught) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'storage_unavailable' }); error.textContent = uiError(caught); status.textContent = ui('Your form is still here. Nothing was saved; check browser storage before trying again.'); return; }
+    track('product_saved', { product_type: product.kind, operation: editing ? 'update' : 'create' });
     location.assign(`${localePath('/products', browserLocale())}#product=${encodeURIComponent(product.id)}`);
   });
 }
