@@ -1,6 +1,6 @@
 # Analytics configuration and acceptance
 
-Updated: 2026-11-13. **Product-first analytics code is awaiting PR approval/deployment and new production acceptance.** The November 12 real-SDK acceptance below applies to the earlier release. Backend funnels have been revised for the new site; report availability is not evidence of customer demand.
+Updated: 2026-11-13. **PR #8 is deployed; latest production analytics acceptance is incomplete because navigation-time events were lost. A delivery fix is awaiting review/release.** The November 12 real-SDK acceptance below applies to the earlier release. Backend funnels have been revised for the new site; report availability is not evidence of customer demand.
 
 See [product journey event contract and remaining acceptance](analytics-product-journey.md).
 
@@ -33,7 +33,7 @@ Event-scoped dimensions:
 
 The saved standard comparison `Peptides — peptides.ybwdaisy.com` uses hostname **contains** the full hostname. It is a raw site comparison and includes launch QA. Use the stricter business explorations below when evaluating demand.
 
-The main analysis now uses the event-scoped segment **Peptides events (exclude launch day and QA)**:
+The main and retention analyses now use the event-scoped segment **Peptides events (exclude launch day and QA)**:
 
 ```
 Hostname exactly matches peptides.ybwdaisy.com
@@ -41,7 +41,7 @@ AND Date is not 20261112
 EXCLUDE events where Peptides page group exactly matches qa
 ```
 
-The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: the candidate code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion while new dimensions propagate. The query itself is never uploaded. November 13 backend editing/local offline tests did not send new production business events. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
+The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: the candidate code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion while new dimensions propagate. The query itself is never uploaded. The November 13 real-SDK acceptance used QA traffic; its captured events are excluded. That acceptance found missing navigation/save events and is recorded as incomplete, not as customer evidence. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
 
 ## Open the reports
 

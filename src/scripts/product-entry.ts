@@ -2,7 +2,7 @@ import { browserLocale, localePath, ui, uiError } from '../lib/i18n';
 import { validateProduct, type Product, type ProductComponent } from '../lib/products';
 import { readWorkspace, saveProduct } from '../lib/workspace';
 import { takeLanguageDraft } from '../lib/language-draft';
-import { track, trackStart } from './analytics';
+import { track, trackStart, trackThenNavigate } from './analytics';
 
 export function initProductEntry() {
   const form = document.querySelector<HTMLFormElement>('#product-form');
@@ -13,7 +13,7 @@ export function initProductEntry() {
   const error = el('product-entry-error'), status = el('product-entry-status'), components = el('product-components');
   const initialId = new URLSearchParams(location.hash.slice(1)).get('edit');
   let editing: Product | undefined;
-  let blocked = false, labelViewed = false;
+  let blocked = false, labelViewed = false, leaving = false;
   form.dataset.editingId = crypto.randomUUID();
 
   function showStep(step: 'name' | 'label', focus = false) {
@@ -119,6 +119,7 @@ export function initProductEntry() {
   }, true);
   form.addEventListener('submit', event => {
     event.preventDefault();
+    if (leaving) return;
     trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
     if (form.dataset.step === 'name') { continueToLabel(); return; }
     if (blocked) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'unreadable_data' }); return; }
@@ -134,7 +135,7 @@ export function initProductEntry() {
     catch (caught) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'invalid_label' }); error.textContent = uiError(caught); error.tabIndex = -1; error.focus(); return; }
     try { saveProduct(product); }
     catch (caught) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'storage_unavailable' }); error.textContent = uiError(caught); status.textContent = ui('Your form is still here. Nothing was saved; check browser storage before trying again.'); return; }
-    track('product_saved', { product_type: product.kind, operation: editing ? 'update' : 'create' });
-    location.assign(`${localePath('/products', browserLocale())}#product=${encodeURIComponent(product.id)}`);
+    leaving = true; el<HTMLButtonElement>('product-save').disabled = true;
+    trackThenNavigate('product_saved', { product_type: product.kind, operation: editing ? 'update' : 'create' }, `${localePath('/products', browserLocale())}#product=${encodeURIComponent(product.id)}`);
   });
 }

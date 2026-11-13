@@ -1,0 +1,377 @@
+{
+  "observedAt": "2026-11-13",
+  "sourceCommit": "caf8cd54b06bdcc91ed6f1f2dcc462b73122a2f9",
+  "productionDeployment": "dpl_5FaPQmj21FXbE8xp7zUyADrksAW2",
+  "method": "Real production SDK, native Chrome incognito, Network HAR sanitized export; only fixed application fields retained. No SDK replacement.",
+  "status": "INCOMPLETE: navigation_action and product_saved absent despite explicit UI actions; not a passing analytics acceptance.",
+  "summary": {
+    "requestCount": 21,
+    "statusCounts": {
+      "204": 21
+    },
+    "eventCounts": {
+      "page_view": 9,
+      "product_entry_start": 1,
+      "product_label_view": 1,
+      "calculator_start": 2,
+      "calculation_success": 2,
+      "planner_start": 1,
+      "protocol_saved": 2,
+      "schedule_generated": 1,
+      "export_completed": 2,
+      "print_requested": 1
+    },
+    "pageLocations": [
+      "https://peptides.ybwdaisy.com/",
+      "https://peptides.ybwdaisy.com/calculator",
+      "https://peptides.ybwdaisy.com/planner",
+      "https://peptides.ybwdaisy.com/products",
+      "https://peptides.ybwdaisy.com/products/new"
+    ],
+    "appParameterKeys": [
+      "ep.debug_mode",
+      "ep.export_type",
+      "ep.operation",
+      "ep.page_group",
+      "ep.tool_context",
+      "ep.traffic_class"
+    ],
+    "privateFixtureLeaked": false,
+    "qaTaggedEvents": 22,
+    "eventCount": 22,
+    "contexts": {
+      "none": 14,
+      "product": 6,
+      "standalone": 2
+    },
+    "operations": {
+      "none": 18,
+      "create": 3,
+      "update": 1
+    }
+  },
+  "events": [
+    {
+      "time": "2026-11-13T06:40:04.072Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/",
+        "dt": "Peptide Tools: home",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:40:40.351Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/products/new",
+        "dt": "Peptide Tools: product entry",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:42:20.618Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/products/new",
+        "dt": "Peptide Tools: product entry",
+        "dr": "",
+        "en": "product_entry_start",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.operation": "create"
+      }
+    },
+    {
+      "time": "2026-11-13T06:42:20.618Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/products/new",
+        "dt": "Peptide Tools: product entry",
+        "dr": "",
+        "en": "product_label_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.operation": "create"
+      }
+    },
+    {
+      "time": "2026-11-13T06:43:27.427Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/products",
+        "dt": "Peptide Tools: products",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:44:35.533Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/products/new",
+        "dt": "Peptide Tools: product entry",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:45:19.924Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/products",
+        "dt": "Peptide Tools: products",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:45:33.840Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/calculator",
+        "dt": "Peptide Tools: calculator",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:46:18.271Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/calculator",
+        "dt": "Peptide Tools: calculator",
+        "dr": "",
+        "en": "calculator_start",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.tool_context": "product"
+      }
+    },
+    {
+      "time": "2026-11-13T06:46:18.271Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/calculator",
+        "dt": "Peptide Tools: calculator",
+        "dr": "",
+        "en": "calculation_success",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.tool_context": "product"
+      }
+    },
+    {
+      "time": "2026-11-13T06:46:50.593Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:47:57.660Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "planner_start",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.tool_context": "product"
+      }
+    },
+    {
+      "time": "2026-11-13T06:51:02.434Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "protocol_saved",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.operation": "create",
+        "ep.tool_context": "product"
+      }
+    },
+    {
+      "time": "2026-11-13T06:51:03.261Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "protocol_saved",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.operation": "update",
+        "ep.tool_context": "product"
+      }
+    },
+    {
+      "time": "2026-11-13T06:51:03.863Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "schedule_generated",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.tool_context": "product"
+      }
+    },
+    {
+      "time": "2026-11-13T06:51:33.686Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "export_completed",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.export_type": "ics"
+      }
+    },
+    {
+      "time": "2026-11-13T06:52:49.130Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "export_completed",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.export_type": "json"
+      }
+    },
+    {
+      "time": "2026-11-13T06:53:48.494Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "print_requested",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:53:56.231Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/planner",
+        "dt": "Peptide Tools: planner",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:54:55.098Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/calculator",
+        "dt": "Peptide Tools: calculator",
+        "dr": "",
+        "en": "page_view",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa"
+      }
+    },
+    {
+      "time": "2026-11-13T06:55:44.097Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/calculator",
+        "dt": "Peptide Tools: calculator",
+        "dr": "",
+        "en": "calculator_start",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.tool_context": "standalone"
+      }
+    },
+    {
+      "time": "2026-11-13T06:55:44.098Z",
+      "status": 204,
+      "fields": {
+        "npa": "1",
+        "dl": "https://peptides.ybwdaisy.com/calculator",
+        "dt": "Peptide Tools: calculator",
+        "dr": "",
+        "en": "calculation_success",
+        "ep.traffic_class": "qa",
+        "ep.debug_mode": "true",
+        "ep.page_group": "qa",
+        "ep.tool_context": "standalone"
+      }
+    }
+  ]
+}

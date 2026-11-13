@@ -37,9 +37,24 @@ function initialize() {
   document.head.append(script);
   track('page_view');
 }
+function canCollect(event: AnalyticsEvent) { return consent && ready && configuration() && EVENT_NAMES.includes(event); }
+function parameters(event: AnalyticsEvent, values: Record<string, unknown>) { return { ...traffic, ...pageMetadata(), page_referrer: referrer, ...campaign, ...eventParams(event, values) }; }
 export function track(event: AnalyticsEvent, values: Record<string, unknown> = {}) {
-  if (!consent || !ready || !configuration() || !EVENT_NAMES.includes(event)) return;
-  window.gtag?.('event', event, { ...traffic, ...pageMetadata(), page_referrer: referrer, ...campaign, ...eventParams(event, values) });
+  if (canCollect(event)) window.gtag?.('event', event, parameters(event, values));
+}
+/** Let the tag process the event before unloading this document. Never block the tool on analytics. */
+export function trackThenNavigate(event: AnalyticsEvent, values: Record<string, unknown>, destination: string) {
+  if (!canCollect(event) || !window.gtag) { location.assign(destination); return; }
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true; clearTimeout(timeout);
+    // Finish the original click dispatch first (e.g. the calculator's local draft handler).
+    setTimeout(() => location.assign(destination), 0);
+  };
+  const timeout = setTimeout(finish, 1000);
+  try { window.gtag('event', event, { ...parameters(event, values), event_callback: finish, event_timeout: 1000 }); }
+  catch { finish(); }
 }
 export function trackStart(event: 'calculator_start' | 'planner_start' | 'product_entry_start', values: Record<string, unknown> = {}) {
   const params = eventParams(event, values);
@@ -58,11 +73,22 @@ function clearAnalyticsCookies() {
 export function initAnalytics() {
   try { const saved = JSON.parse(sessionStorage.getItem(STARTS_KEY) ?? '[]'); if (Array.isArray(saved)) starts = new Set(saved.filter(x => typeof x === 'string' && /^(calculator_start|planner_start|product_entry_start):(create|update|standalone|product)?$/.test(x))); } catch { /* Fresh session. */ }
   document.addEventListener('click', event => {
-    if (event.defaultPrevented || event instanceof MouseEvent && event.button !== 0) return;
+    if (event instanceof MouseEvent && event.button !== 0) return;
     const control = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-analytics-action]') : null;
     const action = control?.dataset.analyticsAction;
-    if (control && !control.matches(':disabled, [aria-disabled="true"]') && NAVIGATION_ACTIONS.includes(action as typeof NAVIGATION_ACTIONS[number])) track('navigation_action', { action });
-  });
+    if (!control || control.matches(':disabled, [aria-disabled="true"]') || !NAVIGATION_ACTIONS.includes(action as typeof NAVIGATION_ACTIONS[number])) return;
+    const anchor = control.closest<HTMLAnchorElement>('a[href]');
+    const modified = event instanceof MouseEvent && (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey);
+    if (!event.defaultPrevented && !modified && anchor && !anchor.download && (!anchor.target || anchor.target === '_self') && canCollect('navigation_action') && action !== 'view_label_example') {
+      const destination = new URL(anchor.href);
+      if (destination.origin === location.origin && destination.href !== location.href) {
+        event.preventDefault();
+        trackThenNavigate('navigation_action', { action }, destination.href);
+        return;
+      }
+    }
+    track('navigation_action', { action });
+  }, { capture: true });
   const panel = document.querySelector<HTMLElement>('#analytics-choice');
   const status = document.querySelector<HTMLElement>('#analytics-status');
   const choice = readChoice();
