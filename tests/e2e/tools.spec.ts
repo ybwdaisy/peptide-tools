@@ -104,7 +104,7 @@ test('references stay readable with JavaScript disabled', async ({ browser }) =>
 });
 test('declining consent makes no analytics requests and preview cannot enable collection', async ({ page }) => {
   const analytics: string[] = []; page.on('request', request => { if (/google-analytics|googletagmanager/.test(request.url())) analytics.push(request.url()); });
-  await page.goto('/calculator'); await expect(page.locator('#analytics-choice')).toBeVisible();
+  await page.goto('/calculator?analytics_test=1'); await expect(page.locator('#analytics-choice')).toBeVisible();
   expect(analytics).toEqual([]); await page.getByRole('button', { name: 'No thanks', exact: true }).click();
   await page.getByLabel('Concentration', { exact: false }).fill('5'); await page.getByLabel('Target dose', { exact: true }).fill('250');
   await page.getByRole('button', { name: 'Calculate volume', exact: true }).click(); await expect(page.locator('#result-volume')).toHaveText('0.05');

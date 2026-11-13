@@ -72,3 +72,12 @@ test('product analytics strips identities, paths, labels, concentrations and arb
   assert.deepEqual(eventParams('product_saved', { product_type: 'blend', name: 'BPC-157', id: 'p1', concentration: '2', error: 'private text' }), { product_type: 'blend' });
   assert.deepEqual(eventParams('product_entry_start', { product_type: 'single', name: 'Private' }), {});
 });
+
+ test('journey analytics accepts only contextual enums, never arbitrary actions or entry values', () => {
+  assert.deepEqual(eventParams('navigation_action', { action: 'add_product', href: '/private', name: 'Private' }), { action: 'add_product' });
+  assert.deepEqual(eventParams('navigation_action', { action: 'Private product', operation: 'create' }), {});
+  assert.deepEqual(eventParams('product_saved', { operation: 'create', product_type: 'single', name: 'Private' }), { product_type: 'single', operation: 'create' });
+  assert.deepEqual(eventParams('protocol_saved', { operation: 'update', tool_context: 'product', protocol: 'Private' }), { operation: 'update', tool_context: 'product' });
+  assert.deepEqual(eventParams('product_entry_error', { error_code: 'storage_unavailable', operation: 'create', error: 'Private' }), { operation: 'create', error_code: 'storage_unavailable' });
+  assert.deepEqual(eventParams('calculation_success', { operation: 'create', tool_context: 'private-label', traffic_class: 'qa', debug_mode: true }), {});
+});

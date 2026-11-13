@@ -36,8 +36,9 @@ export function initPlanner() {
   const hash = new URLSearchParams(location.hash.slice(1));
   if (!hash.has('product')) input('startDate').value = today(zone.value);
 
+  const toolContext = () => [...items.querySelectorAll<HTMLFieldSetElement>('fieldset')].some(row => snapshots.has(row)) ? 'product' : 'standalone';
   function dirty() {
-    trackStart('planner_start'); current = undefined; events = [];
+    trackStart('planner_start', { tool_context: toolContext() }); current = undefined; events = [];
     el('generated-calendar').hidden = true; el('calendar-empty').hidden = false;
     error.textContent = ''; status.textContent = '';
     form!.querySelectorAll('[aria-invalid]').forEach(field => field.removeAttribute('aria-invalid'));
@@ -219,8 +220,9 @@ export function initPlanner() {
       const li = element('li'); const open = element('button', p.name, 'text-button'); open.type = 'button';
       open.addEventListener('click', () => {
         if ((input('protocolName').value || items.querySelector<HTMLInputElement>('[data-field="label"]')?.value) && !current && !confirm(ui('Replace the unsaved form with this saved protocol?'))) return;
+        track('navigation_action', { action: 'open_schedule' });
         editingId = p.id; form!.dataset.editingId = editingId; input('protocolName').value = p.name; setZone(p.timeZone);
-        input('startDate').value = p.startDate; input('endDate').value = p.endDate; items.replaceChildren(); p.items.forEach(item => addItem(item)); error.textContent = ''; status.textContent = ui('Loaded from this browser. No usage event was recorded for loading.');
+        input('startDate').value = p.startDate; input('endDate').value = p.endDate; items.replaceChildren(); p.items.forEach(item => addItem(item)); error.textContent = ''; status.textContent = ui('Loaded from this browser.');
         try { showSchedule(p); } catch (e) { current = undefined; el('generated-calendar').hidden = true; el('calendar-empty').hidden = false; showError(e); }
       });
       const remove = element('button', ui('Delete'), 'text-button'); remove.type = 'button'; remove.setAttribute('aria-label', ui('Delete saved protocol {name}', { name: p.name }));
@@ -272,14 +274,15 @@ export function initPlanner() {
   }
   form.addEventListener('input', dirty); form.addEventListener('change', dirty);
   el('add-item').addEventListener('click', () => { dirty(); addItem(); items.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
-  form.addEventListener('submit', event => { event.preventDefault(); error.textContent = ''; trackStart('planner_start'); try { showSchedule(readForm()); track('schedule_generated'); status.textContent = ui('Calendar generated from your entries. Save it separately to keep it in this browser.'); } catch (e) { showError(e); } });
+  form.addEventListener('submit', event => { event.preventDefault(); error.textContent = ''; trackStart('planner_start', { tool_context: toolContext() }); try { showSchedule(readForm()); track('schedule_generated', { tool_context: toolContext() }); status.textContent = ui('Calendar generated from your entries. Save it separately to keep it in this browser.'); } catch (e) { showError(e); } });
   el('save-protocol').addEventListener('click', () => {
-    error.textContent = ''; trackStart('planner_start');
+    error.textContent = ''; trackStart('planner_start', { tool_context: toolContext() });
     if (unreadableSavedData) { error.textContent = ui('Existing saved data could not be read. Restore a valid backup or explicitly clear saved protocols before saving. Nothing has been overwritten.'); return; }
     let p: Protocol;
     try { p = readForm(); const check = generateSchedule(p); if (!check.length) throw new Error('No dates match this schedule. Adjust the dates or repeat rules.'); } catch (e) { showError(e); return; }
     if (!protocols.some(x => x.id === p.id) && protocols.length >= 20) { error.textContent = ui('This browser holds 20 protocols. Delete one before saving another.'); return; }
-    try { persist([...protocols.filter(x => x.id !== p.id), p]); status.textContent = ui('Saved in this browser. Download a JSON backup to keep a separate copy.'); track('protocol_saved'); } catch { error.textContent = ui('Local storage is unavailable or full. Your form is still here; generate a calendar and export it, or enable browser storage before saving.'); }
+    const operation = protocols.some(x => x.id === p.id) ? 'update' : 'create';
+    try { persist([...protocols.filter(x => x.id !== p.id), p]); status.textContent = ui('Saved in this browser. Download a JSON backup to keep a separate copy.'); track('protocol_saved', { operation, tool_context: p.items.some(item => item.product) ? 'product' : 'standalone' }); } catch { error.textContent = ui('Local storage is unavailable or full. Your form is still here; generate a calendar and export it, or enable browser storage before saving.'); }
   });
   el('new-protocol').addEventListener('click', () => {
     if (!confirm(ui('Clear the open form and start a new protocol? Saved protocols will remain.'))) return;

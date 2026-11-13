@@ -1,9 +1,16 @@
 import { ui } from '../lib/i18n';
-import { EVENT_NAMES, eventParams, safeCampaign, safePage, safeReferrer, type AnalyticsEvent } from '../lib/analytics-policy';
+import { EVENT_NAMES, NAVIGATION_ACTIONS, eventParams, safeCampaign, safePage, safeReferrer, type AnalyticsEvent } from '../lib/analytics-policy';
 
 declare global { interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void } }
 const CONSENT_KEY = 'peptide-tools.analytics-consent.v1';
-const STARTS_KEY = 'peptide-tools.analytics-starts.v1';
+const STARTS_KEY = 'peptide-tools.analytics-starts.v2';
+// Explicit acceptance sessions are labelled throughout navigation, never inferred from user inputs.
+const QA_KEY = 'peptide-tools.analytics-qa.v1';
+let qa = new URLSearchParams(location.search).get('analytics_test') === '1';
+try { qa ||= sessionStorage.getItem(QA_KEY) === '1'; if (qa) sessionStorage.setItem(QA_KEY, '1'); } catch { /* Current-page QA label still applies. */ }
+// Existing page_group reports can exclude QA immediately, before a new GA4 dimension propagates.
+const pageMetadata = () => ({ ...safePage(location.pathname), ...(qa ? { page_group: 'qa' } : {}) });
+const traffic = { traffic_class: qa ? 'qa' : 'public', ...(qa ? { debug_mode: true } : {}) };
 let consent = false, ready = false;
 let starts = new Set<string>();
 const campaign = safeCampaign(location.search);
@@ -19,9 +26,9 @@ function initialize() {
   window.gtag = function (..._args: unknown[]) { window.dataLayer!.push(arguments); };
   window.gtag('consent', 'default', { analytics_storage: 'granted', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
   // Apply privacy defaults before the tag initializes any remotely configured destination.
-  window.gtag('set', { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, ...safePage(location.pathname), page_referrer: referrer, ...campaign });
+  window.gtag('set', { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, ...traffic, ...pageMetadata(), page_referrer: referrer, ...campaign });
   window.gtag('js', new Date());
-  window.gtag('config', id, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, cookie_domain: location.hostname, cookie_flags: 'SameSite=Lax;Secure', ...safePage(location.pathname), page_referrer: referrer, ...campaign });
+  window.gtag('config', id, { send_page_view: false, allow_google_signals: false, allow_ad_personalization_signals: false, cookie_domain: location.hostname, cookie_flags: 'SameSite=Lax;Secure', ...traffic, ...pageMetadata(), page_referrer: referrer, ...campaign });
   const script = document.createElement('script');
   script.async = true;
   script.referrerPolicy = 'no-referrer';
@@ -32,13 +39,15 @@ function initialize() {
 }
 export function track(event: AnalyticsEvent, values: Record<string, unknown> = {}) {
   if (!consent || !ready || !configuration() || !EVENT_NAMES.includes(event)) return;
-  window.gtag?.('event', event, { ...safePage(location.pathname), page_referrer: referrer, ...campaign, ...eventParams(event, values) });
+  window.gtag?.('event', event, { ...traffic, ...pageMetadata(), page_referrer: referrer, ...campaign, ...eventParams(event, values) });
 }
-export function trackStart(event: 'calculator_start' | 'planner_start' | 'product_entry_start') {
-  if (!consent || starts.has(event) || !ready) return;
-  starts.add(event);
+export function trackStart(event: 'calculator_start' | 'planner_start' | 'product_entry_start', values: Record<string, unknown> = {}) {
+  const params = eventParams(event, values);
+  const key = `${event}:${params.operation ?? params.tool_context ?? ''}`;
+  if (!consent || starts.has(key) || !ready) return;
+  starts.add(key);
   try { sessionStorage.setItem(STARTS_KEY, JSON.stringify([...starts])); } catch { /* Fall back to this page. */ }
-  track(event);
+  track(event, params);
 }
 function clearAnalyticsCookies() {
   for (const cookie of document.cookie.split(';')) {
@@ -47,7 +56,13 @@ function clearAnalyticsCookies() {
   }
 }
 export function initAnalytics() {
-  try { const saved = JSON.parse(sessionStorage.getItem(STARTS_KEY) ?? '[]'); if (Array.isArray(saved)) starts = new Set(saved.filter(x => ['calculator_start', 'planner_start', 'product_entry_start'].includes(x))); } catch { /* Fresh session. */ }
+  try { const saved = JSON.parse(sessionStorage.getItem(STARTS_KEY) ?? '[]'); if (Array.isArray(saved)) starts = new Set(saved.filter(x => typeof x === 'string' && /^(calculator_start|planner_start|product_entry_start):(create|update|standalone|product)?$/.test(x))); } catch { /* Fresh session. */ }
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event instanceof MouseEvent && event.button !== 0) return;
+    const control = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-analytics-action]') : null;
+    const action = control?.dataset.analyticsAction;
+    if (control && !control.matches(':disabled, [aria-disabled="true"]') && NAVIGATION_ACTIONS.includes(action as typeof NAVIGATION_ACTIONS[number])) track('navigation_action', { action });
+  });
   const panel = document.querySelector<HTMLElement>('#analytics-choice');
   const status = document.querySelector<HTMLElement>('#analytics-status');
   const choice = readChoice();

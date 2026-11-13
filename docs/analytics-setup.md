@@ -1,6 +1,8 @@
 # Analytics configuration and acceptance
 
-Updated: 2026-11-12. **Production collection and live backend acceptance passed.** Business reports are saved; a newly launched site has no established acquisition or retention results yet.
+Updated: 2026-11-13. **Product-first analytics code is awaiting PR approval/deployment and new production acceptance.** The November 12 real-SDK acceptance below applies to the earlier release. Backend funnels have been revised for the new site; report availability is not evidence of customer demand.
+
+See [product journey event contract and remaining acceptance](analytics-product-journey.md).
 
 ## Account and privacy settings
 
@@ -22,36 +24,43 @@ Event-scoped dimensions:
 | Peptides page group | `page_group` |
 | Peptides error category | `error_code` |
 | Peptides export type | `export_type` |
+| Peptides action | `action` |
+| Peptides operation | `operation` |
+| Peptides tool context | `tool_context` |
+| Peptides traffic class | `traffic_class` |
 
 `calculation_success`, `schedule_generated` and `protocol_saved` are key events, once per event, with no default monetary value. Existing key events were retained.
 
 The saved standard comparison `Peptides — peptides.ybwdaisy.com` uses hostname **contains** the full hostname. It is a raw site comparison and includes launch QA. Use the stricter business explorations below when evaluating demand.
 
-Every business tab and the retention report use the event-scoped segment **Peptides events (exclude launch QA day)**:
+The main analysis now uses the event-scoped segment **Peptides events (exclude launch day and QA)**:
 
 ```
 Hostname exactly matches peptides.ybwdaisy.com
 AND Date is not 20261112
+EXCLUDE events where Peptides page group exactly matches qa
 ```
 
-The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. Future acceptance traffic also needs explicit exclusion. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
+The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: the candidate code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion while new dimensions propagate. The query itself is never uploaded. November 13 backend editing/local offline tests did not send new production business events. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
 
 ## Open the reports
 
 - [Acquisition and tools — 30-day analysis](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA)
 - [7/30-day retention — set dates](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/ZJ3t4DjYRJ-D1kuSPxXHZg)
 
-The main analysis has seven tabs, in this order:
+The main analysis has the following saved tabs (numbered display names may appear in a different visual order):
 
 | Tab | Definition |
 |---|---|
-| 1. Calculator conversion | Open funnel: home/calculator page view → calculator start → successful calculation |
-| 2. Planner conversion | Open funnel: planner page view → start → generate schedule → save → export JSON/ICS |
-| 3. Acquisition by channel | Session default channel group, total users and sessions |
-| 4. Usage by event and page | Event name and generic page group; use page views for generic page traffic |
-| 5. Calculator unique users | `calculation_success` only; **Total users is the sole metric**, not Active users or event count |
-| 6. Calculator outcomes and error types | Success/error event counts, page group and error category |
-| 7. Validation error share | Doughnut: Event count by event name, restricted to `^calculation_(success|error)$` |
+| 01. Calculator conversion | Closed funnel: calculator page view only → calculator start → successful calculation. Home is no longer counted as a calculator visit. |
+| 02. Planner generation | Planner page view → start → generate schedule. Separate from saving. |
+| 03. Planner saving | Closed funnel: planner page view → start → successful local save. Generating a calendar and exporting are optional, not prerequisites. |
+| 04. Acquisition by channel | Session default channel group, total users and sessions |
+| 05. Usage by event and page | Event name and generic page group; includes export/print requests, product opens/deletes, and backup restores |
+| 06. Calculator unique users | `calculation_success` only; **Total users is the sole metric**, not Active users or event count |
+| 07. Calculator outcomes and error types | Success/error event counts, page group and error category |
+| 08. Validation error share | Doughnut: Event count by event name, restricted to `^calculation_(success|error)$` |
+| 09. Product entry (including edits) | Closed funnel: product-entry page view → product entry start → successful product save. Explicitly includes edits until the new operation dimension becomes selectable. |
 
 The native doughnut's `calculation_error` slice percentage is exactly errors / (successes + errors). These are submission attempts, not distinct people. The expression shown in GA4 uses the unescaped alternation `^calculation_(success|error)$`.
 
@@ -63,9 +72,10 @@ The configuration was checked after navigating away and reopening saved reports.
 
 ## Event and attribution boundaries
 
-Public application events/parameters are defined in `src/lib/analytics-policy.ts`. There are nine application event types. Standard Google SDK events such as `first_visit`, `session_start` or `user_engagement` can also exist; they do not represent extra tool actions.
+Public application events/parameters are defined in `src/lib/analytics-policy.ts`. The product-first event contract is enumerated in that file; do not infer the current count from the older acceptance table below. Standard Google SDK events such as `first_visit`, `session_start` or `user_engagement` can also exist; they do not represent extra tool actions.
 
-- Start events fire once per **tab session**, which is not identical to GA4's server-defined session timeout.
+- Start events fire once per **tab session and context**: calculator/planner distinguish `product` versus `standalone`; entry distinguishes `create` versus `update`. These are not GA4 server-defined sessions. A version-2 deduplication key begins fresh counts at the analytics release.
+- Saves count successful user actions, not unique products or schedules. Separate `operation=create` from `update` to evaluate first activation. Opening/restoring a saved record does not emit start, generation or save conversions.
 - Generic reference location/title are `/library/detail` and `Peptide Tools: library detail`.
 - No peptide, search text, dose, concentration, protocol, note, filename or raw error is sent.
 - Exports mean file creation and download initiation; print means a print request, not completed saving/printing.

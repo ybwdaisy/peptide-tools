@@ -28,6 +28,7 @@ export function initCalculator() {
       document.querySelector('#calculation-product-name')!.textContent = product.name;
       document.querySelector('#calculation-product-spec')!.textContent = productSummary(product, browserLocale());
       const edit = document.querySelector<HTMLAnchorElement>('#calculation-product-edit')!;
+      edit.dataset.analyticsAction = 'edit_product';
       edit.href = `${localePath('/products/new', browserLocale())}#edit=${product.id}`;
       blocked = !canCalculateProduct(product);
       document.querySelector('#calculation-product-note')!.textContent = blocked ? ui('Verify the label, concentration and ingredient amounts before calculating.') : product.kind === 'blend' ? ui('The saved concentration is for the total mixture. Choose an ingredient to calculate its share.') : ui('Using the concentration you verified for this product.');
@@ -55,7 +56,7 @@ export function initCalculator() {
     form.dispatchEvent(new Event('input', { bubbles: true }));
   });
   form.addEventListener('input', () => {
-    trackStart('calculator_start');
+    trackStart('calculator_start', { tool_context: product ? 'product' : 'standalone' });
     error.textContent = '';
     form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
     result.hidden = true;
@@ -66,7 +67,7 @@ export function initCalculator() {
   });
   form.addEventListener('submit', event => {
     event.preventDefault();
-    trackStart('calculator_start');
+    trackStart('calculator_start', { tool_context: product ? 'product' : 'standalone' });
     error.textContent = '';
     try {
       if (blocked) throw new InputError('required', 'Verify the label, concentration and ingredient amounts before calculating.', 'concentration');
@@ -93,6 +94,7 @@ export function initCalculator() {
       const plan = document.querySelector<HTMLAnchorElement>('#calculation-plan-link')!;
       plan.hidden = !product;
       if (product) {
+        plan.dataset.analyticsAction = 'use_calculation';
         plan.href = `${localePath('/planner', browserLocale())}#product=${product.id}`;
         plan.onclick = () => {
           try { sessionStorage.setItem('peptide-tools.calculation-draft.v1', JSON.stringify({ productId: product!.id, revision: product!.revision, dose: value('dose'), unit: value('unit'), basis: basis.value, expires: Date.now() + 300_000 })); } catch { /* Plan remains usable; amounts can be entered again. */ }
@@ -100,7 +102,7 @@ export function initCalculator() {
       }
       result.hidden = false;
       document.querySelector<HTMLElement>('#result-empty')!.hidden = true;
-      track('calculation_success');
+      track('calculation_success', { tool_context: product ? 'product' : 'standalone' });
     } catch (caught) {
       const e = caught instanceof InputError ? caught : new InputError('invalid_number', 'Check the entered numbers and try again.', 'concentration');
       result.hidden = true;
@@ -108,7 +110,7 @@ export function initCalculator() {
       error.textContent = uiError(e);
       const field = form.elements.namedItem(e.field) as HTMLInputElement | null;
       field?.setAttribute('aria-invalid', 'true'); field?.focus();
-      track('calculation_error', { error_code: e.code });
+      track('calculation_error', { error_code: e.code, tool_context: product ? 'product' : 'standalone' });
     }
   });
 }
