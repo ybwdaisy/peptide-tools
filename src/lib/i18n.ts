@@ -1,4 +1,4 @@
-import chinese from '../i18n/zh.json';
+import chinese from '../i18n/zh.json' with { type: 'json' };
 export type Locale = 'en' | 'zh';
 export const LANGUAGE_KEY = 'peptide-tools.language.v1';
 export const messages: Record<string, string> = chinese;

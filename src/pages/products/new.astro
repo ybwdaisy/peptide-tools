@@ -1,0 +1,39 @@
+---
+import Shell from '../../layouts/Shell.astro';
+import '../../styles/products.css';
+import { peptides } from '../../data/peptides';
+import { getLocale, localePath, translate } from '../../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
+---
+<Shell title={t('Add your peptide product')} description={t('Copy the name, ingredients and amounts from your own product label.')} active="/products" noindex>
+  <section class="product-entry">
+    <a class="text-link" href={localePath('/products', locale)}>{t('Back to my products')}</a>
+    <form id="product-form" data-step="name" novalidate>
+      <section id="product-name-step" aria-labelledby="product-entry-heading">
+        <div class="page-heading"><h1 id="product-entry-heading">{t('What product do you have?')}</h1><p>{t('Use the name printed on your label.')}</p></div>
+        <div class="product-field"><label for="product-name">{t('Product name')}</label><input id="product-name" name="productName" maxlength="80" required autocomplete="off" list="product-name-options" aria-describedby="product-name-help product-entry-error" /><datalist id="product-name-options">{peptides.map(p => <option value={p.name} />)}</datalist><p class="field-help" id="product-name-help">{t('Suggestions match names only. You can enter any product; confirm its exact version on your own label.')}</p></div>
+        <div class="product-field"><label for="product-brand">{t('Brand (optional)')}</label><input id="product-brand" name="brand" maxlength="80" autocomplete="off" /><p class="field-help">{t('As printed on the label.')}</p></div>
+        <div class="product-field"><label for="product-kind">{t('Product type')}</label><select id="product-kind" name="kind"><option value="single">{t('Single ingredient')}</option><option value="blend">{t('Blend')}</option></select><p class="field-help">{t('A blend contains more than one ingredient.')}</p></div>
+        <button type="button" class="button" id="product-continue">{t('Continue to label')}</button>
+      </section>
+      <section id="product-label-step" aria-labelledby="product-label-heading" hidden>
+        <button type="button" class="text-button" id="product-back">{t('Back to name and type')}</button>
+        <div class="page-heading"><h1 id="product-label-heading" tabindex="-1">{t('Read your product label')}</h1><p id="product-entry-name"></p></div>
+        <div class="product-field"><label for="product-form-type">{t('Form on the label')}</label><select id="product-form-type" name="form" required aria-describedby="product-entry-error"><option value="">{t('Select the label form')}</option><option value="powder">{t('Lyophilized powder')}</option><option value="solution">{t('Solution')}</option><option value="other">{t('Other / not specified')}</option></select></div>
+        <div class="product-field"><label for="product-amount">{t('Amount in one vial (mg)')}</label><input id="product-amount" name="amountMg" inputmode="decimal" autocomplete="off" placeholder={t('Leave blank if unknown')} aria-describedby="product-amount-help product-entry-error" /><p class="field-help" id="product-amount-help">{t('This is the total amount in the vial, not a concentration. Convert a label in mcg to mg by dividing by 1,000.')}</p></div>
+        <fieldset class="product-components" id="product-components-section" hidden><legend>{t('Ingredients on your label')}</legend><p class="field-help">{t('Enter each ingredient separately. Leave an amount blank if your label does not provide it. Do not guess a blend ratio.')}</p><div id="product-components"></div><button type="button" class="button secondary" id="product-add-component">{t('Add ingredient')}</button></fieldset>
+        <label class="checkbox-label product-verification"><input type="checkbox" id="product-identity" name="identityConfirmed" />{t('I checked the exact name and version on my label, including DAC / NO DAC where relevant.')}</label>
+        <p class="field-help">{t('You can save an unconfirmed label to review later. Confirming the name does not verify the product’s quality or safety.')}</p>
+        <section class="product-concentration" aria-labelledby="product-concentration-heading"><h2 id="product-concentration-heading">{t('Concentration, when verified')}</h2><p class="small">{t('You can save this product now and add the concentration later.')}</p><label for="product-concentration">{t('Concentration (mg/mL)')}</label><input id="product-concentration" name="concentrationMgMl" inputmode="decimal" autocomplete="off" placeholder={t('Add when verified')} aria-describedby="product-concentration-help product-entry-error" /><p class="field-help" id="product-concentration-help">{t('For a blend, this is the total mixture concentration. The calculator will ask which ingredient your amount refers to.')}</p><label class="checkbox-label"><input type="checkbox" id="product-concentration-verified" name="concentrationVerified" />{t('I independently verified this concentration for this specific solution.')}</label></section>
+        <p class="small">{t('Volume calculations stay unavailable until the label, concentration and blend amounts are verified.')}</p>
+        <button type="submit" class="button" id="product-save">{t('Save product')}</button>
+      </section>
+      <p id="product-entry-error" class="error-message" role="alert"></p>
+      <p id="product-entry-status" class="status-message" role="status"></p>
+    </form>
+    <p class="product-entry-footer small">{t('Use your actual label. No dose is suggested.')}</p>
+  </section>
+  <template id="product-component-template"><div data-component class="product-component"><div><label data-component-name-label>{t('Ingredient name')}</label><input data-component-name maxlength="80" autocomplete="off" aria-describedby="product-entry-error" /></div><div><label data-component-amount-label>{t('Amount (mg)')}</label><input data-component-amount inputmode="decimal" autocomplete="off" placeholder={t('Unknown')} aria-describedby="product-entry-error" /></div><button type="button" class="text-button" data-remove-component>{t('Remove ingredient')}</button></div></template>
+  <script>import { initProductEntry } from '../../scripts/product-entry'; initProductEntry();</script>
+</Shell>

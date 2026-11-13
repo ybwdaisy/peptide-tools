@@ -5,10 +5,11 @@ import { STORAGE_KEY } from '../../src/lib/backup';
 test('new Chinese-browser visitors start in English; switching preserves inputs and remembers the choice', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ baseURL, locale: 'zh-CN' }); const page = await context.newPage();
   await page.goto('/'); await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await page.getByRole('link', { name: 'Quick calculator', exact: true }).click();
   await page.locator('#concentration').fill('5'); await page.locator('#dose').fill('250');
   await page.locator('[data-language="zh"]').click();
-  await expect(page).toHaveURL(/\/zh$/); await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('让肽类单位换算更清楚。');
+  await expect(page).toHaveURL(/\/zh\/calculator$/); await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('剂量与体积换算');
   await expect(page.locator('#concentration')).toHaveValue('5'); await expect(page.locator('#dose')).toHaveValue('250');
   await page.getByRole('button', { name: '计算体积', exact: true }).click(); await expect(page.locator('#result-volume')).toHaveText('0.05');
   await page.locator('#dose').fill('0'); await page.getByRole('button', { name: '计算体积', exact: true }).click();

@@ -1,15 +1,42 @@
 ---
 import Shell from '../layouts/Shell.astro';
-import Calculator from '../components/Calculator.astro';
+import { Image } from 'astro:assets';
+import labelExample from '../assets/label-example.png';
 import { getLocale, localePath, translate } from '../lib/i18n';
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
-<Shell title={t("Peptide calculator and local planner")} description={t("Convert a specified dose to volume, read sourced peptide references, and organize a private browser-local schedule.")}>
-  <div class="page-heading"><h1>{t("Peptide arithmetic, made clear.")}</h1><p>{t("Convert your inputs. Read the evidence. Keep your schedule local.")}</p></div>
-  <Calculator compact />
-  <section class="next-tools" aria-label={t("More tools")}>
-    <a href={localePath("/library", locale)}><div><h2>{t("Read the reference library")}</h2><p>{t("Study context, source links and what remains unknown.")}</p></div><span aria-hidden="true">↗</span></a>
-    <a href={localePath("/planner", locale)}><div><h2>{t("Build your own schedule")}</h2><p>{t("A calendar you fill in, save locally and export.")}</p></div><span aria-hidden="true">↗</span></a>
+<Shell title={t('Your peptide products and schedule')} description={t('Start with the products you already have. Read your label, check a calculation and organize your own browser-local schedule.')}>
+  <section id="home-return" class="home-return" aria-labelledby="home-return-heading" hidden>
+    <div><h2 id="home-return-heading">{t('Pick up where you left off.')}</h2><p>{t('Your saved products and schedules are in this browser.')}</p></div>
+    <a class="button" href={localePath('/products', locale)}>{t('Open my products')}</a>
   </section>
+  <div class="home-workspace">
+    <section class="home-intro" aria-labelledby="home-heading">
+      <h1 id="home-heading">{locale === 'en' ? <><span>Your peptide products</span>{' '}<span>and schedule,</span>{' '}<span>in one place.</span></> : t('Your peptide products and schedule, in one place.')}</h1>
+      <p>{t('Add what you already have. Read the label, check a calculation, and organize your existing plan.')}</p>
+      <div class="home-actions"><a class="button" href={localePath('/products/new', locale)}>{t('Add my first product')}</a><a class="home-example-link" href="#label-example">{t('See a product example')}</a></div>
+    </section>
+    <figure id="label-example" class="label-example" aria-labelledby="example-caption">
+      <figcaption id="example-caption">{t('Example only')}</figcaption>
+      <div class="label-example-content">
+        <Image src={labelExample} alt={t('Generic vial illustration for the label example.')} width={256} height={384} format="webp" quality={80} decoding="async" />
+        <div class="label-example-record"><h2>BPC-157</h2><p class="small example-form">{t('Lyophilized powder')}</p><dl><div><dt>{t('Amount in one vial')}</dt><dd class="num">5 mg</dd></div><div><dt>{t('Concentration')}</dt><dd>{t('Not provided')}</dd></div></dl></div>
+      </div>
+      <p class="small">{t('5 mg is the amount in the vial, not a concentration.')}</p>
+    </figure>
+  </div>
+  <section class="home-help" aria-label={t('Help and quick tools')}>
+    <div class="quick-calculator"><a href={localePath('/calculator', locale)}>{t('Quick calculator')}</a><p>{t('Already know your concentration?')}</p></div>
+    <details class="peptide-definition" open><summary>{t('What are peptides?')}</summary><p>{t('Peptides are chains of amino acids. This tool helps you organize specific products and your own plan.')}</p></details>
+    <p class="small local-note">{t('Saved in this browser. No account needed.')}</p>
+  </section>
+  <section class="next-tools" aria-label={t('More tools')}>
+    <a href={localePath('/library', locale)}><div><h2>{t('Read the reference library')}</h2><p>{t('Study context, source links and what remains unknown.')}</p></div></a>
+    <a href={localePath('/planner', locale)}><div><h2>{t('Build your own schedule')}</h2><p>{t('A calendar you fill in, save locally and export.')}</p></div></a>
+  </section>
+  <script>
+    import { initHome } from '../scripts/home';
+    initHome();
+  </script>
 </Shell>

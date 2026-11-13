@@ -1,11 +1,11 @@
 ---
 import Shell from '../layouts/Shell.astro';
-import { getLocale, translate } from '../lib/i18n';
+import { getLocale, localePath, translate } from '../lib/i18n';
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Local peptide protocol planner")} description={t("Build a schedule from your own entries, save it in this browser, and print or export a time-zone-aware calendar. No account or dose templates.")} active="/planner">
-  <div class="page-heading"><h1>{t("A schedule you define.")}</h1><p>{t("Enter your own plan. Save it in this browser. Export when you need it.")}</p></div>
+  <div class="page-heading"><h1>{t("My schedule")}</h1><p>{t("Copy the plan you already follow. Amounts, times and dates are yours.")}</p><a href={localePath('/products', locale)}>{t('Choose from My products')}</a></div>
   <div class="planner-layout">
     <form id="planner-form" class="planner-form" novalidate>
       <div class="planner-meta">
@@ -33,6 +33,13 @@ const t = (message: string) => translate(message, locale);
     <div id="generated-calendar" hidden>
       <div class="print-heading"><h1 id="print-title"></h1><p id="print-context"></p><p>{t("User-entered schedule. This is not a prescription or dose recommendation.")}</p></div>
       <div class="calendar-toolbar"><div><h2 id="calendar-title">{t("Cycle calendar")}</h2><p id="calendar-summary" class="small"></p></div><div><label for="calendar-month" class="visually-hidden">{t("Displayed month")}</label><select id="calendar-month"></select></div><div class="actions"><button type="button" class="button secondary" id="export-ics">{t("Export calendar (.ics)")}</button><button type="button" class="button secondary" id="print-calendar">{t("Print cycle")}</button></div></div>
+      <section class="day-agenda" aria-labelledby="day-agenda-title">
+        <div class="calendar-toolbar"><h2 id="day-agenda-title">{t('Today in my plan')}</h2><div><label for="agenda-date">{t('Plan date')}</label><input id="agenda-date" type="date" min="2000-01-01" max="2100-12-31" /></div></div>
+        <div id="agenda-week" class="agenda-week" role="group" aria-label={t('Choose a day')}></div>
+        <p id="agenda-empty" class="small">{t('No entries on this date. Choose another date or review your cycle calendar.')}</p>
+        <ul id="agenda-entries" class="agenda-entries"></ul>
+        <p class="small">{t('Planned entries only. No reminders or completion tracking.')}</p>
+      </section>
       <div class="calendar-grid" id="calendar-weekdays" aria-hidden="true">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => <span class="calendar-weekday">{t(day)}</span>)}</div>
       <div class="calendar-grid" id="calendar-grid" aria-label={t("Month calendar")}></div>
       <p class="small calendar-note">{t("The table below lists exact entries in the selected time zone. Exported events contain your inputs and have no reminders.")}</p>
@@ -44,6 +51,8 @@ const t = (message: string) => translate(message, locale);
     <fieldset class="protocol-item">
       <legend class="visually-hidden">{t("Schedule item")}</legend>
       <div class="item-heading"><h2 data-item-title></h2><button type="button" class="text-button" data-remove>{t("Remove item")}</button></div>
+      <div class="product-selection"><label data-label-for="productId">{t('Product')}</label><select data-field="productId"><option value="">{t('Custom schedule item')}</option></select><p class="small" data-product-summary></p><p class="small" data-product-warning role="status"></p></div>
+      <div data-basis-section hidden><label data-label-for="doseBasis">{t('My planned amount refers to')}</label><select data-field="doseBasis"><option value="">{t('Choose an ingredient or total mixture')}</option></select></div>
       <div class="item-fields">
         <div><label data-label-for="label">{t("Item name")}</label><input data-field="label" maxlength="80" autocomplete="off" placeholder={t("Name from your own plan")} required aria-describedby="planner-error" /></div>
         <div><label data-label-for="dose">{t("Dose entered")}</label><input data-field="dose" inputmode="decimal" autocomplete="off" required aria-describedby="planner-error" /></div>

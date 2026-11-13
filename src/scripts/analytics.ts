@@ -34,7 +34,7 @@ export function track(event: AnalyticsEvent, values: Record<string, unknown> = {
   if (!consent || !ready || !configuration() || !EVENT_NAMES.includes(event)) return;
   window.gtag?.('event', event, { ...safePage(location.pathname), page_referrer: referrer, ...campaign, ...eventParams(event, values) });
 }
-export function trackStart(event: 'calculator_start' | 'planner_start') {
+export function trackStart(event: 'calculator_start' | 'planner_start' | 'product_entry_start') {
   if (!consent || starts.has(event) || !ready) return;
   starts.add(event);
   try { sessionStorage.setItem(STARTS_KEY, JSON.stringify([...starts])); } catch { /* Fall back to this page. */ }
@@ -47,7 +47,7 @@ function clearAnalyticsCookies() {
   }
 }
 export function initAnalytics() {
-  try { const saved = JSON.parse(sessionStorage.getItem(STARTS_KEY) ?? '[]'); if (Array.isArray(saved)) starts = new Set(saved.filter(x => ['calculator_start', 'planner_start'].includes(x))); } catch { /* Fresh session. */ }
+  try { const saved = JSON.parse(sessionStorage.getItem(STARTS_KEY) ?? '[]'); if (Array.isArray(saved)) starts = new Set(saved.filter(x => ['calculator_start', 'planner_start', 'product_entry_start'].includes(x))); } catch { /* Fresh session. */ }
   const panel = document.querySelector<HTMLElement>('#analytics-choice');
   const status = document.querySelector<HTMLElement>('#analytics-status');
   const choice = readChoice();

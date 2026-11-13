@@ -5,6 +5,12 @@ const { compact = false } = Astro.props;
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
+<section id="calculator-product" class="product-context" hidden aria-label={t('Product for this calculation')}>
+  <h2 id="calculation-product-name"></h2><p id="calculation-product-spec" class="small"></p>
+  <p id="calculation-product-note" class="small"></p>
+  <div id="calculation-basis-wrap" hidden><label for="calculation-basis">{t('My entered amount refers to')}</label><select id="calculation-basis"><option value="">{t('Choose an ingredient')}</option></select></div>
+  <a id="calculation-product-edit" href={locale === 'zh' ? '/zh/products' : '/products'}>{t('Review this product')}</a>
+</section>
 <div class:list={['calculator-workbench', { compact }]}>
   <form id="calculator-form" class="calculator-inputs" novalidate>
     <h2>{t("Your inputs")}</h2>
@@ -32,6 +38,8 @@ const t = (message: string) => translate(message, locale);
       <p id="result-equation" class="equation"></p>
       <div id="result-markings" class="markings" hidden><p><output id="markings-value"></output> {t("U-100 markings")}</p><p id="graduation-note" class="field-help" hidden></p></div>
       <p id="result-unit-note" class="field-help"></p>
+      <div id="blend-result" hidden><h3>{t('Ingredient amounts in this volume')}</h3><ul id="blend-amounts"></ul></div>
+      <a id="calculation-plan-link" class="button secondary" hidden href={locale === 'zh' ? '/zh/planner' : '/planner'}>{t('Use in my schedule')}</a>
     </div>
     <div class="result-context"><p><strong>{t("Check the inputs, every time.")}</strong></p><p>{t("This tool converts units. It does not determine an appropriate dose or whether a product is safe to use.")}</p></div>
   </section>

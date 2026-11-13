@@ -14,8 +14,9 @@ export function positiveDecimal(value: string, field = 'value'): Decimal {
   if (!parsed.isPositive() || parsed.isZero()) throw new InputError('invalid_number', 'Enter a value greater than zero.', field);
   return parsed;
 }
-export function calculate(input: { concentration: string; dose: string; unit: DoseUnit; syringe?: { capacity: '0.3' | '0.5' | '1'; increment: '0.5' | '1' | '2' } }) {
-  const concentration = positiveDecimal(input.concentration, 'concentration');
+export function calculate(input: { concentration: string | Decimal; dose: string; unit: DoseUnit; syringe?: { capacity: '0.3' | '0.5' | '1'; increment: '0.5' | '1' | '2' } }) {
+  const concentration = input.concentration instanceof Decimal ? input.concentration : positiveDecimal(input.concentration, 'concentration');
+  if (!concentration.isFinite() || concentration.lte(0)) throw new InputError('invalid_number', 'Enter a value greater than zero.', 'concentration');
   const dose = positiveDecimal(input.dose, 'dose');
   if (input.unit !== 'mg' && input.unit !== 'mcg') throw new InputError('invalid_number', 'Select mg or mcg.', 'unit');
   const doseMg = input.unit === 'mcg' ? dose.div(1000) : dose;

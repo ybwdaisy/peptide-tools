@@ -1,8 +1,9 @@
 import { Temporal } from '@js-temporal/polyfill';
 import { positiveDecimal, type DoseUnit } from './calculator';
+import { validateProduct, type Product } from './products';
 
 export type Frequency = { kind: 'daily' | 'alternate' | 'weekdays' | 'interval'; weekdays?: number[]; interval?: number };
-export interface ProtocolItem { id: string; label: string; dose: string; unit: DoseUnit; time: string; frequency: Frequency }
+export interface ProtocolItem { id: string; label: string; dose: string; unit: DoseUnit; time: string; frequency: Frequency; product?: Product; doseBasis?: string }
 export interface Protocol { id: string; name: string; timeZone: string; startDate: string; endDate: string; items: ProtocolItem[] }
 export interface Occurrence { id: string; itemId: string; date: string; time: string; label: string; dose: string; unit: DoseUnit; instant: string }
 export const MAX_DAYS = 366;
@@ -46,7 +47,13 @@ export function validateProtocol(value: unknown): Protocol {
       if (!Array.isArray(f.weekdays) || !f.weekdays.length || f.weekdays.length > 7 || f.weekdays.some(d => !Number.isInteger(d) || d < 1 || d > 7)) throw new PlannerError('Select at least one weekday.');
       frequency.weekdays = [...new Set(f.weekdays as number[])].sort();
     }
-    return { id: i.id, label: i.label.trim(), dose: i.dose.trim(), unit: i.unit, time: i.time, frequency };
+    const product = i.product === undefined ? undefined : validateProduct(i.product);
+    let doseBasis: string | undefined;
+    if (product?.kind === 'blend') {
+      if (i.doseBasis !== 'total' && (typeof i.doseBasis !== 'string' || !/^\d+$/.test(i.doseBasis) || !product.components[Number(i.doseBasis)])) throw new PlannerError('Choose which ingredient or total mixture your planned amount refers to.');
+      doseBasis = i.doseBasis as string;
+    }
+    return { id: i.id, label: i.label.trim(), dose: i.dose.trim(), unit: i.unit, time: i.time, frequency, ...(product ? { product, ...(doseBasis ? { doseBasis } : {}) } : {}) };
   });
   return { id: p.id, name: p.name.trim(), timeZone: p.timeZone, startDate: start.toString(), endDate: end.toString(), items };
 }

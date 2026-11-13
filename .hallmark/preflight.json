@@ -1,1 +1,47 @@
-{"scanned":"2026-11-12","findings":{"framework":"Astro + TypeScript per approved plan","existingDesign":"none; new independent application","fonts":"self-hosted Instrument Sans and Schibsted Grotesk","palette":"Dose white; restrained green controls","motion":"state only"},"preserve":[],"introduce":["calculator workbench","local cycle calendar","consistent app controls","consent-first analytics"],"scope":"app","material":{"real":["arithmetic","source-linked reference","user-entered schedule"],"pictures":[],"absent":["customer metrics","testimonials","clinical claims"]}}
+{
+  "date": "2026-11-13",
+  "scope": "app",
+  "mode": "redesign",
+  "depth": "full",
+  "theme": "custom (visual-v3 approved by user)",
+  "references": [
+    "../peptide-tools-review/visual-v3/01-home-reviewed.png",
+    "../peptide-tools-review/visual-v3/02-my-products-reviewed.png"
+  ],
+  "material": {
+    "real": [
+      "product name and vial label amounts from approved examples",
+      "existing calculator, references, local protocols and exports"
+    ],
+    "pictures": [
+      "generated generic vial for a marked label example"
+    ],
+    "absent": [
+      "user testimonials",
+      "efficacy claims",
+      "supplier endorsement",
+      "invented usage metrics"
+    ]
+  },
+  "preserved": [
+    "existing calculator, planner, reference and legal routes",
+    "consent and analytics boundaries",
+    "language switching and metadata",
+    "icon assets",
+    "local data and backup handlers"
+  ],
+  "introduced": [
+    "product-first homepage",
+    "products navigation",
+    "mineral-white graphite orange palette",
+    "local IBM Plex Sans font",
+    "return-to-saved-workspace entry"
+  ],
+  "evidence": [
+    "src/layouts/Shell.astro",
+    "src/pages/index.astro",
+    "src/styles/tokens.css",
+    "src/styles/app.css"
+  ],
+  "verification": "Real browser before/after captured. 28 unit and 54 Chrome/WebKit E2E passed; independent finish review ship; design QA paired comparison passed. See qa/product-first-validation.md."
+}

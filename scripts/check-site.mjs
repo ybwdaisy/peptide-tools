@@ -17,10 +17,12 @@ for (const file of pages) {
     const target = pathname.startsWith('/') ? path.join(root, pathname) : path.resolve(path.dirname(file), pathname);
     if (!(await exists(target)) && !(await exists(`${target}.html`)) && !(await exists(path.join(target, 'index.html')))) errors.push(`${file}: missing ${raw}`);
   }
-  if (process.env.VERCEL_ENV === 'production' && !/(?:^|\/)404(?:\/index)?\.html$/.test(file) && html.includes('noindex')) errors.push(`${file}: production page is noindex`);
+  const privateTool = /\/products(?:\/new)?\/index\.html$/.test(file);
+  if (process.env.VERCEL_ENV === 'production' && !privateTool && !/(?:^|\/)404(?:\/index)?\.html$/.test(file) && html.includes('noindex')) errors.push(`${file}: production page is noindex`);
+  if (privateTool && !html.includes('noindex')) errors.push(`${file}: personal workspace must be noindex`);
 }
 const sitemap = await readFile(path.join(root, 'sitemap.xml'), 'utf8');
 assert.equal((sitemap.match(/<loc>/g) ?? []).length, 44);
-assert.equal(pages.length, 46);
+assert.equal(pages.length, 50);
 if (errors.length) throw new Error(errors.join('\n'));
 console.log(`Verified ${pages.length} pages, local assets/links, metadata and 44 sitemap URLs.`);
