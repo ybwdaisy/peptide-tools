@@ -1,0 +1,90 @@
+container 修改漏斗步骤
+									339 container
+										340 按钮 关闭构建器
+										341 文本 修改漏斗步骤
+										342 link 帮助中心, Value: support.google.com/analytics/answer/9327974?hl=zh_CN&utm_id=ad
+										343 按钮 取消
+										344 按钮 应用
+										345 container
+											346 text 1 第 1 步
+											347 文本栏 (settable) 漏斗步骤名称, Value: 01 点击添加产品, Placeholder: 名称
+											348 按钮 此步骤的更多选项
+											349 弹出式按钮 选择要用作过滤条件的概念：navigation_action
+												350 文本 navigation_action
+											351 按钮 添加参数
+											352 按钮 或
+											353 按钮 从过滤器中移除此条件
+											354 文本 且
+											355 弹出式按钮 选择要用作过滤条件的概念：Peptides action
+												356 文本 Peptides action
+											357 container
+												358 按钮 完全匹配 (=) add_product
+												359 按钮 移除过滤器
+											360 按钮 或
+											361 按钮 从过滤器中移除此条件
+											362 按钮 与
+											363 组合框 (settable) 选择下一步是否应紧跟在上一步之后发生, Value: 间接后跟
+												364 container
+													365 文本 间接后跟
+											366 按钮 设置此过滤器的时间限制
+											367 text 2 第 2 步
+											368 文本栏 (settable) 漏斗步骤名称, Value: 02 开始填写新产品, Placeholder: 名称
+											369 按钮 此步骤的更多选项
+											370 弹出式按钮 选择要用作过滤条件的概念：product_entry_start
+												371 文本 product_entry_start
+											372 按钮 添加参数
+											373 按钮 或
+											374 按钮 从过滤器中移除此条件
+											375 文本 且
+											376 弹出式按钮 选择要用作过滤条件的概念：Peptides operation
+												377 文本 Peptides operation
+											378 container
+												379 按钮 完全匹配 (=) create
+												380 按钮 移除过滤器
+											381 按钮 或
+											382 按钮 从过滤器中移除此条件
+											383 按钮 与
+											384 组合框 (settable) 选择下一步是否应紧跟在上一步之后发生, Value: 间接后跟
+												385 container
+													386 文本 间接后跟
+											387 按钮 设置此过滤器的时间限制
+											388 text 3 第 3 步
+											389 文本栏 (settable) 漏斗步骤名称, Value: 03 进入标签步骤, Placeholder: 名称
+											390 按钮 此步骤的更多选项
+											391 弹出式按钮 选择要用作过滤条件的概念：product_label_view
+												392 文本 product_label_view
+											393 按钮 添加参数
+											394 按钮 或
+											395 按钮 从过滤器中移除此条件
+											396 文本 且
+											397 弹出式按钮 选择要用作过滤条件的概念：Peptides operation
+												398 文本 Peptides operation
+											399 container
+												400 按钮 完全匹配 (=) create
+												401 按钮 移除过滤器
+											402 按钮 或
+											403 按钮 从过滤器中移除此条件
+											404 按钮 与
+											405 组合框 (settable) 选择下一步是否应紧跟在上一步之后发生, Value: 间接后跟
+												406 container
+													407 文本 间接后跟
+											408 按钮 设置此过滤器的时间限制
+											409 text 4 第 4 步
+											410 文本栏 (settable) 漏斗步骤名称, Value: 04 新产品保存成功, Placeholder: 名称
+											411 按钮 此步骤的更多选项
+											412 弹出式按钮 选择要用作过滤条件的概念：product_saved
+												413 文本 product_saved
+											414 按钮 添加参数
+											415 按钮 或
+											416 按钮 从过滤器中移除此条件
+											417 文本 且
+											418 弹出式按钮 选择要用作过滤条件的概念：Peptides operation
+												419 文本 Peptides operation
+											420 container
+												421 按钮 完全匹配 (=) create
+												422 按钮 移除过滤器
+											423 按钮 或
+											424 按钮 从过滤器中移除此条件
+											425 按钮 与
+											426 按钮 添加步骤
+											427 

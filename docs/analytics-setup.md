@@ -1,6 +1,6 @@
 # Analytics configuration and acceptance
 
-Updated: 2026-11-13. **Product-first analytics code is awaiting PR approval/deployment and new production acceptance.** The November 12 real-SDK acceptance below applies to the earlier release. Backend funnels have been revised for the new site; report availability is not evidence of customer demand.
+Updated: 2026-11-13. **PR #8 is deployed; latest production analytics acceptance is incomplete because navigation-time events were lost. A delivery fix is awaiting review/release.** The November 12 real-SDK acceptance below applies to the earlier release. Backend funnels have been revised for the new site; report availability is not evidence of customer demand.
 
 See [product journey event contract and remaining acceptance](analytics-product-journey.md).
 
@@ -17,7 +17,7 @@ A real-SDK check exposed automatic specific-reference page views despite per-str
 
 ## Saved backend configuration
 
-Event-scoped dimensions:
+Event-scoped dimensions (all seven are registered; the four new ones are imported into the main analysis):
 
 | Display name | Parameter |
 |---|---|
@@ -33,7 +33,7 @@ Event-scoped dimensions:
 
 The saved standard comparison `Peptides — peptides.ybwdaisy.com` uses hostname **contains** the full hostname. It is a raw site comparison and includes launch QA. Use the stricter business explorations below when evaluating demand.
 
-The main analysis now uses the event-scoped segment **Peptides events (exclude launch day and QA)**:
+The main and retention analyses now use the event-scoped segment **Peptides events (exclude launch day and QA)**:
 
 ```
 Hostname exactly matches peptides.ybwdaisy.com
@@ -41,14 +41,14 @@ AND Date is not 20261112
 EXCLUDE events where Peptides page group exactly matches qa
 ```
 
-The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: the candidate code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion while new dimensions propagate. The query itself is never uploaded. November 13 backend editing/local offline tests did not send new production business events. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
+The definition was reopened and verified. This conservatively excludes the entire launch QA day; earlier and later launch tests are not customer evidence. New acceptance sessions must start with `?analytics_test=1`: the candidate code sends `traffic_class=qa`, `page_group=qa` and `debug_mode=true` throughout that tab session, including after navigation. The existing page-group dimension supports immediate exclusion while new dimensions propagate. The query itself is never uploaded. The November 13 real-SDK acceptance used QA traffic; its captured events are excluded. That acceptance found missing navigation/save events and is recorded as incomplete, not as customer evidence. Event scope prevents a visitor's activity on another site in the shared property from being counted as peptide-site activity.
 
 ## Open the reports
 
 - [Acquisition and tools — 30-day analysis](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA)
 - [7/30-day retention — set dates](https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/ZJ3t4DjYRJ-D1kuSPxXHZg)
 
-The main analysis has the following saved tabs (numbered display names may appear in a different visual order):
+The main analysis now has ten saved tabs (numbered display names may appear in a different visual order):
 
 | Tab | Definition |
 |---|---|
@@ -60,7 +60,8 @@ The main analysis has the following saved tabs (numbered display names may appea
 | 06. Calculator unique users | `calculation_success` only; **Total users is the sole metric**, not Active users or event count |
 | 07. Calculator outcomes and error types | Success/error event counts, page group and error category |
 | 08. Validation error share | Doughnut: Event count by event name, restricted to `^calculation_(success|error)$` |
-| 09. Product entry (including edits) | Closed funnel: product-entry page view → product entry start → successful product save. Explicitly includes edits until the new operation dimension becomes selectable. |
+| 09. Product entry (including edits) | Closed funnel: product-entry page view → product entry start → successful product save. Includes edits, retained as the direct-entry/all-saves baseline. |
+| 10. First product activation | Closed, indirectly followed: add_product navigation action → create entry start → create label view → create product save. Each condition uses event-scoped fixed enums; edits are excluded. |
 
 The native doughnut's `calculation_error` slice percentage is exactly errors / (successes + errors). These are submission attempts, not distinct people. The expression shown in GA4 uses the unescaped alternation `^calculation_(success|error)$`.
 

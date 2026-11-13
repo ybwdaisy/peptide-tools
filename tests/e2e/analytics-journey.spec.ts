@@ -111,3 +111,44 @@ test('native label validation reports a category without a saved conversion', as
   expect(recorded.filter(e => e.name === 'product_saved')).toHaveLength(0);
   expect(JSON.stringify(recorded)).not.toMatch(/PRIVATE/);
 });
+
+test('navigation waits for delayed SDK processing and duplicate callbacks cannot duplicate saves', async ({ page }) => {
+  await collect(page);
+  const received: Array<{ name: string; params: Record<string, unknown> }> = [];
+  await page.route('https://measurement.invalid/collect', async route => {
+    received.push(JSON.parse(route.request().postData()!));
+    await route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*' } });
+  });
+  await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: `
+    const layer = window.dataLayer;
+    function process(args) {
+      if (args[0] !== 'event') return;
+      setTimeout(async () => {
+        await fetch('https://measurement.invalid/collect', { method: 'POST', body: JSON.stringify({ name: args[1], params: args[2] }) });
+        args[2].event_callback?.();
+        args[2].event_callback?.();
+      }, 100);
+    }
+    const push = layer.push.bind(layer);
+    layer.push = (...commands) => { commands.forEach(process); return push(...commands); };
+    layer.forEach(process);
+  ` }));
+  await page.goto('/?analytics_test=1');
+  await page.getByRole('link', { name: 'Add my first product', exact: true }).click();
+  await expect(page).toHaveURL(/\/products\/new$/);
+  expect(received.filter(e => e.name === 'navigation_action' && e.params.action === 'add_product')).toHaveLength(1);
+  await page.getByLabel('Product name', { exact: true }).fill('PRIVATE-FAST-SAVE');
+  await page.getByRole('button', { name: 'Continue to label', exact: true }).click();
+  await page.getByLabel('Form on the label', { exact: true }).selectOption('powder');
+  await page.getByRole('button', { name: 'Save product', exact: true }).click();
+  await expect(page).toHaveURL(/\/products#product=/);
+  expect(received.filter(e => e.name === 'product_saved')).toHaveLength(1);
+  await page.getByRole('link', { name: 'Edit label and concentration', exact: true }).click();
+  await page.getByLabel('Amount in one vial (mg)', { exact: true }).fill('17.321');
+  await page.getByRole('button', { name: 'Save product', exact: true }).click();
+  await expect(page).toHaveURL(/\/products#product=/);
+  expect(received.filter(e => e.name === 'product_entry_start').map(e => e.params.operation)).toEqual(['create', 'update']);
+  expect(received.filter(e => e.name === 'product_saved').map(e => e.params.operation)).toEqual(['create', 'update']);
+  expect(received.filter(e => e.name === 'product_saved').every(e => e.params.page_location === 'https://peptides.ybwdaisy.com/products/new')).toBe(true);
+  expect(JSON.stringify(received)).not.toMatch(/PRIVATE|17\.321|product=|edit=|analytics_test/);
+});
