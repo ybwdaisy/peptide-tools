@@ -25,7 +25,6 @@
 .workspace-data { max-width: 720px; }
 .workspace-data > p { margin-bottom: var(--space-md); }
 .workspace-import { margin-block: var(--space-lg); }
-.workspace-import input[type='file'] { min-height: 44px; width: 100%; height: auto; padding: var(--space-xs); }
 .product-detail { max-width: 720px; }
 .product-detail .page-heading { margin-top: var(--space-lg); }
 .product-detail h1 { max-width: none; }
