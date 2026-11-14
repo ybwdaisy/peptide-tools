@@ -16,13 +16,15 @@ const t = (message: string) => translate(message, locale);
     <h2>{t("Reference facts")}</h2>
     <dl class="reference-facts">
       <div><dt>{t("Half-life")}</dt><dd>{t(peptide.halfLife ?? 'Not established for general human use by the cited source.')}{peptide.halfLifeContext && <span class="small">{t(peptide.halfLifeContext)}</span>}</dd></div>
+    </dl>
+    <details class="optional-help"><summary>{t('Reference limits')}</summary><dl class="reference-facts">
       <div><dt>{t("Human dose range")}</dt><dd>{t("Not provided. This reference does not recommend a human dose.")}</dd></div>
       <div><dt>{t("Administration interval")}</dt><dd>{t("Not established by these sources. A half-life is not a dosing schedule.")}</dd></div>
       <div><dt>{t("Storage")}</dt><dd>{t("Product-specific information required. These sources do not establish a storage specification.")}</dd></div>
-    </dl>
+    </dl></details>
     <h2>{t("Safety context")}</h2><p>{t(peptide.risk)}</p><p class="small">{t("Research results and substance listings are not product approvals. The FDA overview distinguishes current Category 2 entries from withdrawn nominations; withdrawal does not establish safety.")}</p>
     <h2>{t("Sources and review method")}</h2>
-    <ol class="sources">{peptide.sources.map(source => <li><a href={source.url} target="_blank" rel="noreferrer noopener">{t(source.title)}</a></li>)}<li><a href={FDA_RISK_SOURCE.url} target="_blank" rel="noreferrer noopener">{t(FDA_RISK_SOURCE.title)}</a></li></ol>
+    <ol class="sources">{peptide.sources.map(source => <li><a href={source.url} target="_blank" rel="noreferrer noopener">{t(source.title)}</a></li>)}<li><a href={FDA_RISK_SOURCE.url} title={t(FDA_RISK_SOURCE.title)} target="_blank" rel="noreferrer noopener">{t('FDA safety overview')}</a></li></ol>
     <p>{t("These are bounded summaries of the linked sources, not systematic reviews. An unknown field means that these sources do not establish a general-use value. It does not claim that no other literature exists.")}</p>
     <div class="notice"><p>{t("The")} <a href={localePath("/calculator", locale)}>{t("calculator")}</a> {t("converts values you provide. The")} <a href={localePath("/planner", locale)}>{t("planner")}</a> {t("organizes entries you choose. Neither tool assesses whether a substance or schedule is appropriate.")}</p></div>
   </article>

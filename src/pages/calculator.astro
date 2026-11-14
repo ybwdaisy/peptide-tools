@@ -6,7 +6,6 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Peptide dose-to-volume calculator")} description={t("Convert your specified mg or mcg dose and mg/mL concentration into mL, with an optional clearly labeled U-100 syringe scale.")} active="/calculator">
-  <div class="page-heading"><h1>{t("Dose to volume calculator")}</h1><p>{t("Use a target dose and concentration you have independently verified.")}</p></div>
+  <div class="page-heading"><h1>{t("Dose to volume calculator")}</h1></div>
   <Calculator />
-  <section class="prose explanation"><h2>{t("How the arithmetic works")}</h2><p>{t("Convert mcg to mg by dividing by 1,000. Divide the resulting mg by the concentration in mg/mL to obtain mL. For an explicitly selected U-100 syringe, multiply mL by 100 to obtain scale markings.")}</p><p>{t("International Units (IU) express biological activity for specific substances. This tool does not convert peptide mass to IU. It does not calculate a dose from body weight, infer concentration from a product name, or round a result to a usable injection.")}</p><p>{t("Unit confusion can cause serious dosing errors. See the")} <a href="https://www.fda.gov/drugs/human-drug-compounding/fda-alerts-health-care-providers-compounders-and-patients-dosing-errors-associated-compounded" target="_blank" rel="noreferrer noopener">{t("FDA explanation of dose, volume and syringe-unit errors")}</a>.</p></section>
 </Shell>

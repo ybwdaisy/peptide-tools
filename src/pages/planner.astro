@@ -5,7 +5,7 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Local peptide protocol planner")} description={t("Build a schedule from your own entries, save it in this browser, and print or export a time-zone-aware calendar. No account or dose templates.")} active="/planner">
-  <div class="page-heading"><h1>{t("My schedule")}</h1><p>{t("Copy the plan you already follow. Amounts, times and dates are yours.")}</p><a href={localePath('/products', locale)}>{t('Choose from My products')}</a></div>
+  <div class="page-heading page-toolbar"><h1>{t("My schedule")}</h1><a class="text-link" href={localePath('/products', locale)}>{t('Choose from My products')}</a></div>
   <div class="planner-layout">
     <form id="planner-form" class="planner-form" novalidate>
       <div class="planner-meta">
@@ -14,25 +14,25 @@ const t = (message: string) => translate(message, locale);
         <div><label for="start-date">{t("Start date (included)")}</label><input id="start-date" name="startDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
         <div><label for="end-date">{t("End date (included)")}</label><input id="end-date" name="endDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
       </div>
-      <p id="timezone-help" class="field-help">{t("Times stay at the chosen local clock time. A repeated time uses its first occurrence; a skipped clock-change time must be changed.")}</p>
+      <details class="optional-help"><summary>{t('Time zone details')}</summary><p id="timezone-help" class="field-help">{t("Times stay at the chosen local clock time. A repeated time uses its first occurrence; a skipped clock-change time must be changed.")}</p></details>
       <div id="protocol-items"></div>
-      <div class="actions"><button type="button" class="button secondary" id="add-item">{t("Add schedule item")}</button><span class="small">{t("Up to 20 items, 366 days.")}</span></div>
+      <div class="actions"><button type="button" class="button secondary" id="add-item">{t("Add schedule item")}</button></div>
       <p id="planner-error" class="error-message" role="alert"></p>
       <div class="actions"><button type="submit" class="button">{t("Generate calendar")}</button><button type="button" class="button secondary" id="save-protocol">{t("Save in this browser")}</button><button type="button" class="text-button" id="new-protocol">{t("Start a new protocol")}</button></div>
       <p id="planner-status" class="status-message" role="status"></p>
     </form>
     <aside class="saved-aside" aria-label={t("Saved protocols and backups")}>
-      <div><h2>{t("Saved in this browser")}</h2><p id="saved-empty" class="small">{t("No saved protocols yet. Save your plan to reopen it here.")}</p><ul id="saved-list" class="saved-list"></ul></div>
-      <div class="data-actions"><h2>{t("Your data")}</h2><button type="button" class="button secondary" id="backup-export" disabled>{t("Download JSON backup")}</button><label for="backup-import" class="small">{t("Restore a JSON backup")}</label><input id="backup-import" type="file" accept=".json,application/json" aria-describedby="storage-note" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
-      <p id="storage-note" class="small">{t("Local storage is not a backup. Clearing browser data removes saved protocols. Download a backup to keep a copy.")}</p>
+      <div><h2>{t('Saved schedules')}</h2><p id="saved-empty" class="small">{t('No saved schedules.')}</p><ul id="saved-list" class="saved-list"></ul></div>
+      <div class="data-actions"><button type="button" class="button secondary" id="backup-export" disabled>{t("Download JSON backup")}</button><label for="backup-import" class="small">{t("Restore a JSON backup")}</label><input id="backup-import" type="file" accept=".json,application/json" aria-describedby="storage-note" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
+      <details class="optional-help"><summary>{t('Storage and limits')}</summary><p id="storage-note" class="small">{t("Local storage is not a backup. Clearing browser data removes saved protocols. Download a backup to keep a copy.")}</p><p class="small">{t("Up to 20 items, 366 days.")}</p></details>
       <p id="storage-status" class="status-message" role="status"></p>
     </aside>
   </div>
   <section id="calendar-section" class="calendar-section" aria-label={t("Generated cycle calendar")}>
-    <div id="calendar-empty" class="calendar-empty"><h2>{t("Your calendar starts here.")}</h2><p class="small">{t("Add an item and choose cycle dates, then generate the calendar.")}</p></div>
+    <div id="calendar-empty" class="calendar-empty"><h2>{t("Cycle calendar")}</h2></div>
     <div id="generated-calendar" hidden>
       <div class="print-heading"><h1 id="print-title"></h1><p id="print-context"></p><p>{t("User-entered schedule. This is not a prescription or dose recommendation.")}</p></div>
-      <div class="calendar-toolbar"><div><h2 id="calendar-title">{t("Cycle calendar")}</h2><p id="calendar-summary" class="small"></p></div><div><label for="calendar-month" class="visually-hidden">{t("Displayed month")}</label><select id="calendar-month"></select></div><div class="actions"><button type="button" class="button secondary" id="export-ics">{t("Export calendar (.ics)")}</button><button type="button" class="button secondary" id="print-calendar">{t("Print cycle")}</button></div></div>
+      <div class="calendar-toolbar"><div><h2 id="calendar-title">{t("Cycle calendar")}</h2><p id="calendar-summary" class="small"></p></div><div class="actions"><button type="button" class="button secondary" id="export-ics">{t("Export calendar (.ics)")}</button><button type="button" class="button secondary" id="print-calendar">{t("Print cycle")}</button></div></div>
       <section class="day-agenda" aria-labelledby="day-agenda-title">
         <div class="calendar-toolbar"><h2 id="day-agenda-title">{t('Today in my plan')}</h2><div><label for="agenda-date">{t('Plan date')}</label><input id="agenda-date" type="date" min="2000-01-01" max="2100-12-31" /></div></div>
         <div id="agenda-week" class="agenda-week" role="group" aria-label={t('Choose a day')}></div>
@@ -40,8 +40,7 @@ const t = (message: string) => translate(message, locale);
         <ul id="agenda-entries" class="agenda-entries"></ul>
         <p class="small">{t('Planned entries only. No reminders or completion tracking.')}</p>
       </section>
-      <div class="calendar-grid" id="calendar-weekdays" aria-hidden="true">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => <span class="calendar-weekday">{t(day)}</span>)}</div>
-      <div class="calendar-grid" id="calendar-grid" aria-label={t("Month calendar")}></div>
+      <details class="month-view optional-help"><summary>{t("Month calendar")}</summary><div class="calendar-toolbar"><label for="calendar-month" class="visually-hidden">{t("Displayed month")}</label><select id="calendar-month"></select></div><div class="calendar-grid" id="calendar-weekdays" aria-hidden="true">{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => <span class="calendar-weekday">{t(day)}</span>)}</div><div class="calendar-grid" id="calendar-grid" aria-label={t("Month calendar")}></div></details>
       <p class="small calendar-note">{t("The table below lists exact entries in the selected time zone. Exported events contain your inputs and have no reminders.")}</p>
       <table class="schedule-table"><caption class="visually-hidden">{t("Generated schedule entries")}</caption><thead><tr><th scope="col">{t("Date / time")}</th><th scope="col">{t("Item")}</th><th scope="col">{t("Dose entered")}</th></tr></thead><tbody id="schedule-rows"></tbody></table>
       <button type="button" class="text-button" id="show-more" hidden>{t("Show more entries")}</button>

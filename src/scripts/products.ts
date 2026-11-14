@@ -25,7 +25,7 @@ export function initProducts() {
   }
   function fact(list: HTMLElement, label: string, value: string) { const row = node('div'); row.append(node('dt', label), node('dd', value)); list.append(row); }
   function productLink(product: Product) {
-    const a = link(ui('Open product'), `${path('/products')}#product=${encodeURIComponent(product.id)}`);
+    const a = link(product.name, `${path('/products')}#product=${encodeURIComponent(product.id)}`, 'product-record-link');
     a.addEventListener('click', () => track('product_opened', { product_type: product.kind })); return a;
   }
   function render() {
@@ -39,19 +39,21 @@ export function initProducts() {
     const list = el('product-list'); list.replaceChildren();
     if (readable) for (const product of workspace.products) {
       const li = node('li', undefined, 'product-record'), main = node('div', undefined, 'product-record-main');
-      main.append(node('h2', product.name), node('p', amount(product), 'product-quantity'));
+      const title = node('h2'); title.append(productLink(product));
+      main.append(title, node('p', amount(product), 'product-quantity'));
       if (product.brand) main.append(node('p', product.brand, 'small'));
       if (product.kind === 'blend') {
         const ingredients = node('ul', undefined, 'product-ingredient-list');
         product.components.forEach(component => ingredients.append(node('li', component.amountMg ? `${component.name}: ${component.amountMg} mg` : `${component.name}: ${ui('Unknown')}`))); main.append(ingredients);
       }
-      main.append(node('p', state(product), 'small product-record-state'), productLink(product)); li.append(main); list.append(li);
+      if (!canCalculateProduct(product)) main.append(node('p', state(product), 'small product-record-state'));
+      li.append(main); list.append(li);
     }
     const schedules = el('product-schedule-list'); schedules.replaceChildren();
     el('product-schedules-empty').hidden = !readable || !!workspace.protocols.length;
     if (readable) for (const protocol of workspace.protocols) {
       const row = node('li', undefined, 'product-schedule-record'), info = node('div');
-      info.append(node('h3', protocol.name), node('p', protocol.items.map(item => item.label).join(', '), 'small'), node('p', ui('Schedule saved'), 'small'));
+      info.append(node('h3', protocol.name), node('p', protocol.items.map(item => item.label).join(', '), 'small'));
       row.append(info, link(ui('Open my schedule'), `${path('/planner')}#protocol=${encodeURIComponent(protocol.id)}`, 'button')); schedules.append(row);
     }
     renderDetail();
@@ -72,6 +74,7 @@ export function initProducts() {
     const ingredients = el('product-ingredient-facts'); ingredients.replaceChildren();
     product.components.forEach(component => fact(ingredients, component.name, component.amountMg ? `${component.amountMg} mg` : ui('Unknown')));
     const eligible = canCalculateProduct(product);
+    el<HTMLDetailsElement>('product-detail-notes').open = !eligible;
     el('product-detail-notice').textContent = eligible ? ui('These are your label inputs, not a quality or safety assessment. Enter your own planned amount to calculate volume.') : ui('You can organize a schedule now. Volume calculation needs a confirmed label, verified concentration and known blend amounts.');
     const plan = el<HTMLAnchorElement>('product-plan-link'); plan.href = `${path('/planner')}#product=${encodeURIComponent(product.id)}`;
     const calculator = el<HTMLAnchorElement>('product-calculate-link'); calculator.href = `${path('/calculator')}#product=${encodeURIComponent(product.id)}`; calculator.hidden = !eligible; el('product-calculate-disabled').hidden = eligible;

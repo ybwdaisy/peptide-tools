@@ -7,7 +7,12 @@ const isProduction = import.meta.env.VERCEL_ENV === 'production';
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? '';
 const verification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 const canonical = new URL(localePath(Astro.url.pathname, getLocale(Astro.url.pathname)), Astro.site);
-const nav = [['My products', '/products'], ['Reference library', '/library']] as const;
+const nav = [
+  ['Products', '/products', 'open_workspace'],
+  ['Schedule', '/planner', 'open_planner'],
+  ['Calculator', '/calculator', 'quick_calculator'],
+  ['Library', '/library', undefined],
+] as const;
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
@@ -17,7 +22,7 @@ const t = (message: string) => translate(message, locale);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f0f1ee" />
+    <meta name="theme-color" content="#fafbf9" />
     <meta name="referrer" content="no-referrer" />
     {(noindex || !isProduction) && <meta name="robots" content="noindex, nofollow" />}
     {verification && <meta name="google-site-verification" content={verification} />}
@@ -41,17 +46,16 @@ const t = (message: string) => translate(message, locale);
     <a class="skip-link" href="#main">{t("Skip to content")}</a>
     <header class="site-header container">
       <a class="brand" href={localePath("/", locale)} aria-label={t("Peptide Tools home")}>Peptide<span>Tools</span></a>
-      <nav aria-label={t("Main navigation")}>{nav.map(([label, href]) => <a data-analytics-action={href === "/products" ? "open_workspace" : undefined} href={localePath(href, locale)} aria-current={active === href ? 'page' : undefined}>{t(label)}</a>)}</nav>
-      <div class="header-tools"><span class="local-label">{t("Works in your browser")}</span><nav class="language-switch" aria-label={t('Language')}><a href={localePath(Astro.url.pathname, 'en')} lang="en" hreflang="en" data-language="en" aria-current={locale === 'en' ? 'true' : undefined}>EN</a><a href={localePath(Astro.url.pathname, 'zh')} lang="zh-CN" hreflang="zh-CN" data-language="zh" aria-current={locale === 'zh' ? 'true' : undefined}>中文</a></nav></div>
+      <nav aria-label={t("Main navigation")}>{nav.map(([label, href, action]) => <a data-analytics-action={action} href={localePath(href, locale)} aria-current={active === href ? 'page' : undefined}>{t(label)}</a>)}</nav>
+      <div class="header-tools"><nav class="language-switch" aria-label={t('Language')}><a href={localePath(Astro.url.pathname, 'en')} lang="en" hreflang="en" data-language="en" aria-current={locale === 'en' ? 'true' : undefined}>EN</a><a href={localePath(Astro.url.pathname, 'zh')} lang="zh-CN" hreflang="zh-CN" data-language="zh" aria-current={locale === 'zh' ? 'true' : undefined}>中文</a></nav></div>
     </header>
     <main id="main" class="container"><slot /></main>
     <footer class="site-footer container">
       <p>{t("Tools for arithmetic and personal organization. No medical advice.")}</p>
       <nav aria-label={t("Footer")}><a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}>{t('Calculator')}</a><a data-analytics-action="open_planner" href={localePath('/planner', locale)}>{t('Protocol planner')}</a><a href={localePath("/privacy", locale)}>{t("Privacy")}</a><a href={localePath("/disclaimer", locale)}>{t("Disclaimer")}</a><button type="button" class="text-button" data-open-consent>{t("Analytics preferences")}</button></nav>
-      <p id="analytics-status" class="small">{t("Optional analytics: off.")}</p>
     </footer>
     <section id="analytics-choice" class="consent-bar" aria-label={t("Optional analytics preferences")} hidden>
-      <div><strong>{t("Help improve these tools?")}</strong><p>{t("Optional usage analytics excludes your inputs. Tools work either way.")} <a href={localePath("/privacy", locale)}>{t("Details")}</a></p></div>
+      <div><strong>{t("Help improve these tools?")}</strong><p>{t("Optional usage analytics excludes your inputs. Tools work either way.")} <a href={localePath("/privacy", locale)}>{t("Details")}</a></p><p id="analytics-status" class="small">{t("Optional analytics: off.")}</p></div>
       <div class="actions"><button type="button" class="button secondary" data-consent="denied">{t("No thanks")}</button><button type="button" class="button secondary" data-consent="granted">{t("Allow analytics")}</button></div>
     </section>
     <noscript><div class="noscript-note container">{t("JavaScript is needed for calculations and local schedules. Reference pages remain readable. Analytics is off.")}</div></noscript>
