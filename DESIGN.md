@@ -1,26 +1,37 @@
-# PeptideTools visual system
+# Peptide Tools — task-first, quiet interface
 
-Approved visual target: `../peptide-tools-review/visual-v3/01-home-reviewed.png` and `02-my-products-reviewed.png` (2026-11-13).
+Approved direction: the owner's 2026-11-15 request for the clarity of Linear and Apple Notes, with simple goals, architecture, design and implementation. These are references for restraint, not copied brands.
 
-## Scope and idea
+## Product and preservation
 
-Hallmark app scope. A product label becomes a persistent local record: name, amount in one vial, composition and verified concentration stay beside calculations and schedules. Existing functionality, evidence limits, consent and browser-local storage remain.
+English-first, bilingual browser-local product labels, arithmetic and user-entered schedules. Astro + TypeScript, native HTML controls, static pages, no business backend. Keep all routes, labels used by tests, IDs, field names, data attributes, links and their destinations, forms, event triggers and parameter policy. Do not change storage schemas, restore/clear confirmations, dates, recurrence/time zones, print/export semantics, source facts, privacy text or consent wording. Keep the latest mobile date/time and file-selector fixes.
 
-## System
+Existing material constraints remain: the generated vial is a marked educational example, not a supplier or user product photograph. Never infer quantity, identity, concentration, dose, recurrence or combinations from a product name. The example's 5 mg is mass, not concentration. This request supersedes the prior mineral-gray ground and promotional home composition; IBM Plex Sans and the orange action color remain.
 
-- Mineral-white ground `#F0F1EE`, near-white surface `#FAFBF9`, graphite text `#242725`, secondary text `#646A66`.
-- Orange `#C2471D` marks the primary action. Selection and ordinary links are graphite. Unknown information stays neutral; orange is not a claim of safety or verification.
-- Local IBM Plex Sans variable font, regular 400, medium 500 and semibold 600. Use the same family for headings and controls. No uppercase tracking, decorative monospace labels or artificial bold.
-- All colors and font families resolve through `src/styles/tokens.css`; the `@font-face` declaration names the actual font file.
-- Flat grouping, open lists and rules before containers. Controls use a 4px radius and at least a 44px target. No grain, gradients, mint pills, bevels or ornamental molecular drawings.
-- Mobile-first, readable 16px body text, 14px helpers and 20px phone gutters. Desktop content is capped and centered. Every focus indicator is immediate; content remains visible without motion or scripting.
+## Visual system
 
-## Material and facts
+- Keep local IBM Plex Sans and the small orange primary-action accent. Use a near-white main canvas and quiet neutral secondary surfaces; no decorative imagery or gradients.
+- One restrained, capped top navigation. Make Products, Schedule and Calculator reachable without promotional descriptions; keep existing destinations and analytics action enums. Language control stays visible.
+- Titles name the task. Remove slogans and repeated statements of browser-local operation. A first-time empty state may retain one useful instruction and one action.
+- Forms lead with their real labels and values. Keep necessary units/confirmation controls and errors visible. Move optional explanations into semantic `details`/`summary` near the relevant form, retaining described-by targets.
+- Prefer lists, facts and tables with thin separators. No nested cards or redundant status tags. Current input values and generated calendar are the main visual objects.
+- Keep a single shared stylesheet and tokens; avoid page-specific copies of layout recipes. Use 44px minimum hit targets (48px mobile buttons), immediate visible focus, minmax(0, 1fr) tracks, shrinking field wrappers, and native pickers.
+- Preserve semantic headings, forms, labels, stable IDs, native links and explicit control states. No invisible keyword labels, custom widget framework or new dependency.
 
-Generic generated vial artwork belongs only to clearly marked educational label examples. It is not a supplier photograph or an image of a user's product. Never infer product quantities, concentration, identity, dosage, frequency or combination from the name. `5 mg` on the example vial is total mass, not concentration.
+## Decisions must improve all three experiences
 
-## Existing functionality to preserve
+| Decision | UX | DX | AX |
+|---|---|---|---|
+| Task names and direct navigation | Find the next action immediately | One shell/navigation recipe | Actual links with stable href/action metadata |
+| Remove repeated copy | Less scanning | Fewer duplicated strings and wrappers | Less competing text around controls |
+| Native optional-help disclosure | Context remains available on demand | No new state or handlers | Semantic summary, labels and described-by targets |
+| Shared neutral surfaces and form layout | Predictable spacing and hierarchy | One set of tokens and rules | Predictable landmarks and controls |
+| Preserve domain logic and tests | Existing records/workflows continue | A reviewable presentation diff | Stable action and data contracts |
 
-Calculator and U-100 distinctions; reference sources and dates; protocol repeat rules, time zones, print and exports; no-account local storage and recoverable backups; English default and Chinese; consent-gated privacy-safe analytics; icons and all public routes.
+## File plan
 
-Build, browser checks, independent finish review and limitations are recorded by the implementation owner. The approved mock images are visual targets, not verification evidence.
+Edit shared Shell.astro, app.css, products.css and tokens.css; home, product entry/detail/workspace, calculator, planner and reference presentation; existing render functions only if removing redundant presentational text. Add bilingual strings to the existing Chinese dictionary where genuinely required. Add review/evidence documents. Delete no file, route or component tree. Do not change tests to conceal regressions.
+
+## Acceptance
+
+Capture before/after at phone and desktop sizes, sweep Hallmark in app scope against the kept record, inspect real screenshots, run existing checks/build/unit/browser suites, independently review before opening a PR. Preview and new PR first; merge/production release only after owner approval. Never label static checks or desktop viewport emulation as physical iPhone acceptance.

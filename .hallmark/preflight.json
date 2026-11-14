@@ -1,47 +1,50 @@
 {
-  "date": "2026-11-13",
+  "date": "2026-11-15",
   "scope": "app",
   "mode": "redesign",
   "depth": "full",
-  "theme": "custom (visual-v3 approved by user)",
+  "theme": "existing brand, quiet workspace",
   "references": [
-    "../peptide-tools-review/visual-v3/01-home-reviewed.png",
-    "../peptide-tools-review/visual-v3/02-my-products-reviewed.png"
+    "Owner: Linear / Apple Notes restraint, simple UX + DX + AX",
+    "Existing DESIGN.md and product-first functions"
   ],
   "material": {
     "real": [
-      "product name and vial label amounts from approved examples",
-      "existing calculator, references, local protocols and exports"
+      "local product labels",
+      "verified arithmetic",
+      "user-entered schedule",
+      "sourced references"
     ],
     "pictures": [
-      "generated generic vial for a marked label example"
+      "retained marked educational vial example"
     ],
     "absent": [
-      "user testimonials",
+      "testimonials",
       "efficacy claims",
-      "supplier endorsement",
-      "invented usage metrics"
+      "invented metrics"
     ]
   },
   "preserved": [
-    "existing calculator, planner, reference and legal routes",
-    "consent and analytics boundaries",
-    "language switching and metadata",
-    "icon assets",
-    "local data and backup handlers"
+    "all routes and link destinations",
+    "input IDs/names, handlers and analytics enums",
+    "storage schemas and restore/clear confirmations",
+    "source facts, legal/consent wording, bilingual metadata and icons",
+    "native controls, mobile date/time and file selection"
   ],
   "introduced": [
-    "product-first homepage",
-    "products navigation",
-    "mineral-white graphite orange palette",
-    "local IBM Plex Sans font",
-    "return-to-saved-workspace entry"
+    "four direct task navigation links",
+    "short task headings",
+    "native optional-help disclosures",
+    "quiet shared surfaces and compact records",
+    "agenda and exact entries before optional month grid"
   ],
   "evidence": [
-    "src/layouts/Shell.astro",
-    "src/pages/index.astro",
-    "src/styles/tokens.css",
-    "src/styles/app.css"
+    "src/layouts/Shell.astro:10",
+    "src/pages/index.astro:13",
+    "src/pages/planner.astro:43",
+    "src/pages/products/index.astro:24",
+    "src/components/Calculator.astro:45",
+    "src/styles/app.css:1"
   ],
-  "verification": "Real browser before/after captured. 28 unit and 54 Chrome/WebKit E2E passed; independent finish review ship; design QA paired comparison passed. See qa/product-first-validation.md."
+  "verification": "29 unit + 64 Chrome/mobile-WebKit passed; 14 EN/ZH viewport cases; 50 built pages/44 sitemap URLs; independent finish review ship. See qa/quiet-workspace-validation.md."
 }

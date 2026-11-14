@@ -6,7 +6,7 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Peptide reference library")} description={t("Browse 16 source-linked peptide references with study context, pharmacokinetic limitations, and explicit gaps in human evidence.")} active="/library">
-  <div class="page-heading"><h1>{t("Read the evidence, with context.")}</h1><p>{t("Sixteen reference entries. Primary sources, study conditions and explicit unknowns.")}</p></div>
+  <div class="page-heading"><h1>{t('Reference library')}</h1></div>
   <div class="search-bar"><label for="library-search">{t("Find a name or alias")}</label><input id="library-search" name="library-search" type="search" autocomplete="off" placeholder={t("e.g. GHK-Cu or Epithalon")} aria-describedby="library-count" /><p id="library-count" class="field-help" role="status">{t('{count} references').replace('{count}', String(peptides.length))}</p></div>
   <ul class="reference-list" id="reference-list">
     {peptides.map(peptide => <li data-reference data-search={`${peptide.name} ${peptide.aliases.join(' ')}`.toLowerCase()}><a href={localePath(`/library/${peptide.slug}`, locale)}><div><strong>{peptide.name}</strong><p>{peptide.aliases[0]}</p></div><p class="reference-summary">{t(peptide.summary)}</p><span class="evidence-tag">{t(peptide.evidence)}</span></a></li>)}
