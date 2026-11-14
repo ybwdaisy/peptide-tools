@@ -1,0 +1,1062 @@
+[
+  {
+    "language": "zh",
+    "width": 320,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 164
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 133
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 320,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 320
+  },
+  {
+    "language": "zh",
+    "width": 375,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 219
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 133
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 375,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 375
+  },
+  {
+    "language": "zh",
+    "width": 390,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 234
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 133
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 390,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 390
+  },
+  {
+    "language": "zh",
+    "width": 430,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 274
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 133
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 430,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 430
+  },
+  {
+    "language": "zh",
+    "width": 768,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 720
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 392
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 196
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 120
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 584
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 133
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 768,
+    "overlap": false,
+    "stacked": false,
+    "viewport": 768
+  },
+  {
+    "language": "zh",
+    "width": 1280,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 848
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 477.328125
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 238.671875
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 120
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 712
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 133
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 1280,
+    "overlap": false,
+    "stacked": false,
+    "viewport": 1280
+  },
+  {
+    "language": "en",
+    "width": 320,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 164
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 159
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 320,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 320
+  },
+  {
+    "language": "en",
+    "width": 375,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 219
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 335
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 159
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 375,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 375
+  },
+  {
+    "language": "en",
+    "width": 390,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 234
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 350
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 159
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 390,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 390
+  },
+  {
+    "language": "en",
+    "width": 430,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 274
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 390
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 159
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 430,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 430
+  },
+  {
+    "language": "en",
+    "width": 768,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 352
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 720
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 392
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 196
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 120
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 584
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 159
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 768,
+    "overlap": false,
+    "stacked": false,
+    "viewport": 768
+  },
+  {
+    "language": "en",
+    "width": 1280,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 416
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 848
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 477.328125
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 238.671875
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 120
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 712
+      },
+      {
+        "contained": true,
+        "field": "calendar-month",
+        "height": 44,
+        "width": 159
+      },
+      {
+        "contained": true,
+        "field": "agenda-date",
+        "height": 44,
+        "width": 142
+      }
+    ],
+    "documentWidth": 1280,
+    "overlap": false,
+    "stacked": false,
+    "viewport": 1280
+  },
+  {
+    "language": "zh-interval",
+    "width": 320,
+    "controls": [
+      {
+        "contained": true,
+        "field": "protocol-name",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "time-zone",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "start-date",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "end-date",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-productId",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-label",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-dose",
+        "height": 44,
+        "width": 164
+      },
+      {
+        "contained": true,
+        "field": "item-unit",
+        "height": 44,
+        "width": 100
+      },
+      {
+        "contained": true,
+        "field": "item-time",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-frequency",
+        "height": 44,
+        "width": 280
+      },
+      {
+        "contained": true,
+        "field": "item-916387fb-402e-48e0-8ed5-13fd5b88729a-interval",
+        "height": 44,
+        "width": 280
+      }
+    ],
+    "documentWidth": 320,
+    "overlap": false,
+    "stacked": true,
+    "viewport": 320
+  }
+]
