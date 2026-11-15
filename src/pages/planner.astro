@@ -6,9 +6,11 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Local peptide protocol planner")} description={t("Build a schedule from your own entries, save it in this browser, and print or export a time-zone-aware calendar. No account or dose templates.")} active="/planner">
-  <div class="page-heading page-toolbar"><h1>{t("My schedule")}</h1><a class="text-link" href={localePath('/products', locale)}>{t('Choose from My products')}</a></div>
+  <div class="page-heading page-toolbar planner-heading"><h1>{t("My schedule")}</h1><a class="text-link" href={localePath('/products', locale)}>{t('Choose from My products')}</a></div>
   <div class="planner-layout">
     <form id="planner-form" class="planner-form" novalidate>
+      <section class="planner-setup" aria-labelledby="schedule-details-heading">
+      <h2 id="schedule-details-heading">{t('Schedule details')}</h2>
       <div class="planner-meta">
         <div><label for="protocol-name">{t("Protocol name")}</label><input id="protocol-name" name="protocolName" maxlength="80" autocomplete="off" required placeholder={t("Your protocol name")} aria-describedby="planner-error" /></div>
         <div><label for="time-zone">{t("Time zone")}</label><select id="time-zone" name="timeZone" aria-describedby="timezone-help planner-error"><option value="UTC">UTC</option></select></div>
@@ -16,25 +18,30 @@ const t = (message: string) => translate(message, locale);
         <div><label for="end-date">{t("End date (included)")}</label><input id="end-date" name="endDate" type="date" required min="2000-01-01" max="2100-12-31" aria-describedby="planner-error" /></div>
       </div>
       <details class="optional-help"><summary>{t('Time zone details')}</summary><p id="timezone-help" class="field-help">{t("Times stay at the chosen local clock time. A repeated time uses its first occurrence; a skipped clock-change time must be changed.")}</p></details>
-      <div id="protocol-items"></div>
-      <div class="actions"><button type="button" class="button secondary" id="add-item">{t("Add schedule item")}</button></div>
+      </section>
+      <div class="planner-items-region">
+        <div id="protocol-items"></div>
+        <div class="actions planner-add-item"><button type="button" class="button secondary" id="add-item">{t("Add schedule item")}</button></div>
+      </div>
+      <div class="planner-commit">
       <p id="planner-error" class="error-message" role="alert"></p>
       <div class="actions"><button type="submit" class="button" disabled>{t("Generate calendar")}</button><button type="button" class="button secondary" id="save-protocol" disabled>{t("Save in this browser")}</button><button type="button" class="text-button" id="new-protocol">{t("Start a new protocol")}</button></div>
       <p id="planner-status" class="status-message" role="status"></p>
+      </div>
     </form>
     <aside class="saved-aside" aria-label={t("Saved protocols and backups")}>
-      <div><h2>{t('Saved schedules')}</h2><p id="saved-empty" class="small">{t('No saved schedules.')}</p><ul id="saved-list" class="saved-list"></ul></div>
-      <div class="data-actions"><BackupControls exportId="backup-export" inputId="backup-import" statusId="storage-status" label="Restore a JSON backup" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
+      <div class="planner-saved"><h2>{t('Saved schedules')}</h2><p id="saved-empty" class="small">{t('No saved schedules.')}</p><ul id="saved-list" class="saved-list"></ul></div>
+      <div class="data-actions planner-local-data"><h2>{t('Your local data')}</h2><BackupControls exportId="backup-export" inputId="backup-import" statusId="storage-status" label="Restore a JSON backup" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
       <details class="optional-help"><summary>{t('Storage and limits')}</summary><p id="storage-note" class="small">{t("Local storage is not a backup. Clearing browser data removes saved protocols. Download a backup to keep a copy.")}</p><p class="small">{t("Up to 20 items, 366 days.")}</p></details>
       <p id="storage-status" class="status-message" role="status"></p>
     </aside>
   </div>
   <section id="calendar-section" class="calendar-section" aria-label={t("Generated cycle calendar")}>
     <div id="calendar-empty" class="calendar-empty"><h2>{t("Cycle calendar")}</h2></div>
-    <div id="generated-calendar" hidden>
+    <div id="generated-calendar" class="planner-generated" hidden>
       <div class="print-heading"><h1 id="print-title"></h1><p id="print-context"></p><p>{t("User-entered schedule. This is not a prescription or dose recommendation.")}</p></div>
       <div class="calendar-toolbar"><div><h2 id="calendar-title">{t("Cycle calendar")}</h2><p id="calendar-summary" class="small"></p></div><div class="actions"><button type="button" class="button secondary" id="export-ics">{t("Export calendar (.ics)")}</button><button type="button" class="button secondary" id="print-calendar">{t("Print cycle")}</button></div></div>
-      <section class="day-agenda" aria-labelledby="day-agenda-title">
+      <section class="day-agenda planner-agenda" aria-labelledby="day-agenda-title">
         <div class="calendar-toolbar"><h2 id="day-agenda-title">{t('Today in my plan')}</h2><div><label for="agenda-date">{t('Plan date')}</label><input id="agenda-date" type="date" min="2000-01-01" max="2100-12-31" /></div></div>
         <div id="agenda-week" class="agenda-week" role="group" aria-label={t('Choose a day')}></div>
         <p id="agenda-empty" class="small">{t('No entries on this date. Choose another date or review your cycle calendar.')}</p>
@@ -51,7 +58,7 @@ const t = (message: string) => translate(message, locale);
     <fieldset class="protocol-item">
       <legend class="visually-hidden">{t("Schedule item")}</legend>
       <div class="item-heading"><h2 data-item-title></h2><button type="button" class="text-button" data-remove>{t("Remove item")}</button></div>
-      <div class="product-selection"><label data-label-for="productId">{t('Product')}</label><select data-field="productId"><option value="">{t('Custom schedule item')}</option></select><p class="small" data-product-summary></p><p class="small" data-product-warning role="status"></p></div>
+      <div class="product-selection planner-product-selection"><label data-label-for="productId">{t('Product')}</label><select data-field="productId"><option value="">{t('Custom schedule item')}</option></select><p class="small" data-product-summary></p><p class="small" data-product-warning role="status"></p></div>
       <div data-basis-section hidden><label data-label-for="doseBasis">{t('My planned amount refers to')}</label><select data-field="doseBasis"><option value="">{t('Choose an ingredient or total mixture')}</option></select></div>
       <div class="item-fields">
         <div><label data-label-for="label">{t("Item name")}</label><input data-field="label" maxlength="80" autocomplete="off" placeholder={t("Name from your own plan")} required aria-describedby="planner-error" /></div>

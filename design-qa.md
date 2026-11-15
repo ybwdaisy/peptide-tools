@@ -1,42 +1,42 @@
-# Product-first visual QA
+# Focused product label UI — design QA
 
-Date: 2026-11-13. Scope: an existing Astro website, mobile-first product management; approved visual-v3, not a native app or a new starter.
+Date: 2026-11-15. Mode: full app redesign. The owner chose displayed option 3 and accepted smaller typography, fewer blue panels and native phone product selection.
 
-## Visual truth and browser evidence
+## Visual truth and state
 
-- Source: `../peptide-tools-review/visual-v3/01-home-reviewed.png` and `02-my-products-reviewed.png` (887 × 1774 px each).
-- Implementation: `qa/screenshots/product-home-phone-full.png` (780 × 3218 px) and `my-products-phone-full.png` (780 × 2426 px), plus the corresponding desktop captures. Mobile viewport: 390 × 780 CSS px, device scale 2. Full captures include below-the-fold retained reference links, data controls and legal footer.
-- Combined comparisons: `qa/screenshots/comparison-home.png`, `comparison-products.png`. Each puts source and implementation in the **same image** at 390 CSS px width, including a 780 px viewport crop and full scroll content. Source density normalization is 887 → 390 CSS px; implementation density is 780 → 390 CSS px. Images are displayed proportionally in a browser comparison page, not stretched or raster-painted.
-- State: English default, optional analytics declined, homepage first use; products comparison contains two label examples and one saved plan. Screenshot data is synthetic QA input. BPC label identity is intentionally unconfirmed in the actual saved record; the source emphasized only missing concentration. This is a state difference, not evidence of exact pixel matching.
-- Focused-region evidence is the first-viewport crop in each combined comparison. Separate micro-crops were unnecessary because the issue was overall vertical density.
+- Source: `qa/design-target/product-label-desktop.png` (1487×1058 pixels), normalized to1440×1024 for comparison. The negligible aspect-ratio rounding is <0.06%; no UI is cropped or stretched materially.
+- Implementation: `qa/evidence/focused-label/en-products-desktop.png`, static browser-rendered1440×1024, CSS viewport1440×1024, deviceScaleFactor1. English, synthetic BPC-1575mg/2mg/mL record selected; two other synthetic records. Analytics denied, isolated context. Source examples are never seeded into the real application.
+- Full comparison: `qa/evidence/focused-label/comparison-desktop.png` (source left, implementation right).
+- Focused comparison: `qa/evidence/focused-label/comparison-detail.png` (source above, implementation below). This makes product facts, confirmation and actions readable without judging from a scaled full view alone.
+- Phone evidence: `zh-products-phone.png`, `zh-products-new-phone.png`, `zh-calculator-phone.png`, `zh-planner-phone.png` in the same evidence directory. CSS390×844, density1;320px was also checked. Chrome viewport emulation is not a physical iPhone session. Existing mobile-WebKit E2E uses iPhone13 emulation.
 
-## Comparison history
+## Findings
 
-1. **P2: mobile header and product list pushed the return action below the useful viewport.** Removed empty page-level error spacing, tightened mobile header/list spacing, placed Add another product after My schedules, compacted the plan summary and collapsed local-data controls behind a native disclosure. Backups/restore/clear remain operable and covered by browser tests. Final product capture shows Open my schedule inside the 390 × 780 viewport for this two-product example.
-2. **P2: homepage example was too low and tall.** Tightened introductory gaps, kept the form as a readable subtitle and displayed quantity/concentration as the two label rows. Final homepage viewport contains the vial, label quantities, unknown concentration and explanatory note. Earlier evidence remains in `comparison-*-before.png`; final paired images were regenerated and inspected after fixes.
-3. Independent review identified a valid legacy time-zone alias lost by the planner deep link. All loading paths now add a missing valid time-zone option. It also identified an ambiguous blend basis in the month calendar; agenda, table, month entries and ICS summary now retain the selected basis. Dedicated browser tests cover deep-link aliases and the full blend → calculation → schedule → older-label-snapshot path.
+No actionable P0/P1/P2 visual mismatches remain. The narrower actual1120px content measure, smaller30px task title/24px record title and retained safety/record content are intentional product constraints, consistent with the accepted refinements. The generated illustration is not a pixel-perfect specification for all existing states.
 
-## Five fidelity surfaces
+Required fidelity surfaces:
 
-| Surface | Result |
-|---|---|
-| Typography | Actual self-hosted IBM Plex Sans, weights 400/500/600, readable body and labels; source generated glyphs are approximate. Long product names remain visible. |
-| Layout and spacing | Product-first hierarchy and returning-plan action retained; compact mobile layout, bounded desktop content, native controls and disclosures. Functional touch targets take priority over compressed image-mock controls. |
-| Color and tokens | Mineral white, graphite and orange tokens; pure CSS colors, no copied grain or artificial button texture. Neutral unknown states, clear focus and error boundaries. |
-| Images | A separately generated, explicitly illustrative BPC-157 vial is used only in the educational homepage example. Astro optimizes its 1.8 MB source to roughly 12 KB WebP. User records use their real entered text, without fabricated supplier photos or an unimplemented upload feature. |
-| Copy/content | Product labels, quantities, unknown states, entered amounts and version distinctions preserved; no suggested doses, frequencies or combinations. Chinese UI and error copy covered by AST translation checks. |
+- **Typography:** local Schibsted Grotesk variable Latin, native CJK fallback;16px body,14px labels,30px task titles,24px selected product title,30px concentration. Units and values use tabular numerals. Current selection and action hierarchy remain readable in both locales. Font load checked in Chrome; no remote font requests.
+- **Spacing/layout:** one capped container; grouped selector and open facts with a concentration divider; native phone selector and one-column detail. Inputs/results and label/concentration entry groups use rules rather than enclosing blue cards. No clipping at320/390/1440px across the six checked routes.
+- **Colors/tokens:** near-white cool base, navy ink, slate secondary text, blue selection/action; all CSS values live in shared tokens. Primary text and fields retain contrasting edges and immediate focus states. No gradients, shadows or decorative backgrounds added.
+- **Images/assets:** no raster asset is implied by the selected product-label mock. Existing marked educational vial remains the actual supplied asset on home; no fake supplier product photos or CSS object drawings. Existing app/favicon icons retained. Astro development image endpoint changes to the compiled static webp, not a dropped image.
+- **Copy/content:** existing clinical limits, confirmation wording, blend facts, source references, backup/restore and consent text retained. No actual-use history, reminders, adherence, inventory or clinical verification invented. Product-specific quantities remain user input. The reference, related/all saved schedules and delete controls absent from the illustrative mock remain subordinate and reachable.
 
-## Accepted adaptations and remaining gaps
+## Comparison history and verification
 
-- Native open/closed disclosure markers follow browser conventions. Existing library/planner shortcuts, privacy, disclaimer and consent controls remain, extending the page beyond the static source image.
-- The real product uses an empty state and real saved records; it never seeds the source mock's example products into a visitor's storage.
-- These checks establish browser-rendered behavior and a coherent implementation of the approved direction, not pixel identity with generated glyphs or real-device iPhone Safari acceptance.
-- P3: the quick-calculator helper and terminology explanation continue below the first mobile fold, after the complete label example. Returning users have their product/plan workspace above this content.
+1. Development screenshots contained Astro's toolbar and were rejected as handoff evidence. Switched to actual static build and recaptured. This was evidence correction, not a visual design iteration or a claimed test pass.
+2. Compared the actual static product screen and focused detail to the selected reference in the combined inputs listed above. No P0/P1/P2 design fix was required after that comparison.
+3. Independent fresh-context Hallmark finish reviewer inspected supplied screenshots and source: **ship**,0 actionable findings. The old screenshot showed a more explicit empty-state instruction, but used a different unpopulated state; the real empty state remains preserved.
+4. Functional verification:35 unit tests;88 full Chrome/mobile-WebKit tests passed, plus the2 added selection-event checks passed in a targeted6-test selector suite. Covers old data preservation, confirmations, blend basis, named calculation reuse, backups, language changes, dates/DST/export and analytics enum/consent policy.36 Chrome route/viewport cases checked overflow, script errors and denied analytics; no errors or Google requests.
 
-## Verification
+## Implementation checklist
 
-Chrome desktop plus Playwright iPhone WebKit: 54 end-to-end tests passed; 28 domain/translation unit tests passed. Includes primary navigation, product CRUD, label validation, storage failure, legacy/current backup restore, calculator limits, timezone/calendar behavior, language drafts, exports/print and consent-gated anonymous events. Console errors and horizontal overflow were checked by the route tests. No real Google collection is made in automated tests.
+- [x] Selected label, vial amount and concentration visibly distinct.
+- [x] Mobile selection, links, confirmation gates and keyboard focus work.
+- [x] Existing functional and analytics contracts preserved; same-page backup fragment fixed.
+- [x] Before/after render record and independent review completed.
+- [x] Local production-style static preview remains available.
 
-Independent finish review: `ship`, based on code and desktop/mobile screenshots. The implementation owner additionally inspected the normalized combined before/after comparisons. No actionable P0/P1/P2 remains.
+Follow-up polish: physical iPhone Safari review remains unperformed. No claim of production GA4 reception or deployment is made by local UI acceptance.
 
 final result: passed

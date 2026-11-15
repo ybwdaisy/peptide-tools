@@ -1,0 +1,294 @@
+{
+  "cases": [
+    {
+      "device": "desktop",
+      "route": "/products",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/calculator",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/products/new",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/planner",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/library",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/zh/products",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/zh/calculator",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/zh/products/new",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/zh/planner",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/zh",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "desktop",
+      "route": "/zh/library",
+      "width": 1440,
+      "scroll": 1440,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/products",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/calculator",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/products/new",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/planner",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/library",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/zh/products",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/zh/calculator",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/zh/products/new",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/zh/planner",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/zh",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "phone",
+      "route": "/zh/library",
+      "width": 390,
+      "scroll": 390,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/products",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/calculator",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/products/new",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/planner",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/library",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/zh/products",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/zh/calculator",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/zh/products/new",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/zh/planner",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/zh",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    },
+    {
+      "device": "narrow",
+      "route": "/zh/library",
+      "width": 320,
+      "scroll": 320,
+      "font": "\"Schibsted Grotesk\", ui-sans-serif, sans-serif",
+      "fontLoaded": true
+    }
+  ],
+  "issues": [],
+  "note": "Synthetic label records in isolated browser contexts. Local preview; analytics denied. Chrome viewport emulation is not physical iPhone evidence."
+}

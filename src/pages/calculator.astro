@@ -6,6 +6,8 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Peptide dose-to-volume calculator")} description={t("Convert your specified mg or mcg dose and mg/mL concentration into mL, with an optional clearly labeled U-100 syringe scale.")} active="/calculator">
-  <div class="page-heading"><h1>{t("Dose to volume calculator")}</h1></div>
-  <Calculator />
+  <div class="calculator-page">
+    <div class="page-heading"><h1>{t("Dose to volume calculator")}</h1></div>
+    <Calculator />
+  </div>
 </Shell>

@@ -1,82 +1,113 @@
 [
- {
-  "date": "2026-11-15",
-  "mode": "redesign",
-  "depth": "full",
-  "scope": "app",
-  "shape": "app screen",
-  "theme": "Peptide Tools quiet workspace",
-  "axes": [
-   "near-white",
-   "IBM Plex Sans",
-   "existing orange"
-  ],
-  "hero": "none (app scope)",
-  "nav": "Products, Schedule, Calculator, Library; original destinations and action enums",
-  "footer": "existing legal links and analytics preferences",
-  "imagery": "retained marked educational label example in native disclosure",
-  "photos": [],
-  "entry": "product task, return to local workspace",
-  "fingerprint": "app:quiet-product-input-result-agenda",
-  "sections": [
-   "products",
-   "label entry",
-   "calculator",
-   "schedule",
-   "reference"
-  ],
-  "signature": "real product labels, precise volume and dated entries lead",
-  "waived": [],
-  "prompt": "Simple goals, architecture, design and implementation; every decision improves UX, DX and AX without breaking functions",
-  "finishReview": "independent subagent ship; defective long phone capture replaced by verified viewport segments",
-  "verification": "0 FAIL, 0 REFLEX, 1 kept-figure WARN (facts inside disclosures); 29 unit, 64 browser tests, 14 responsive cases, 57/57 links retained"
- },
- {
-  "date": "2026-11-13",
-  "mode": "redesign",
-  "depth": "full",
-  "scope": "app",
-  "shape": "app screen",
-  "theme": "custom visual-v3 approved",
-  "idea": "A product label becomes a persistent local record carried into a verified calculation and an existing personal plan",
-  "axes": [
-   "light",
-   "grotesk-sans",
-   "warm-orange"
-  ],
-  "signature": "named product, vial quantity, blend basis and saved local schedule",
-  "nav": "products and reference library, original tools retained as contextual and footer links",
-  "imagery": "marked generated label example only; no fabricated supplier images on user records",
-  "fingerprint": "app:product-label-register-calculation-schedule",
-  "waived": [],
-  "finishReview": "independent subagent ship; initial timezone alias and blend calendar basis fixed; final mobile density recaptured",
-  "verification": "28 unit and 54 Chrome/WebKit E2E passed; design-qa.md passed; 0 Hallmark FAIL/REFLEX; long-label heuristic dismissed after control boundary checks"
- },
- {
-  "scope": "app",
-  "shape": "app screen",
-  "theme": "dose",
-  "axes": [
-   "light",
-   "grotesk-sans",
-   "chromatic-green"
-  ],
-  "nav": "top bar, three destinations",
-  "footer": "privacy and analytics controls",
-  "imagery": "none, actual working tools",
-  "photos": [],
-  "entry": "calculator workbench",
-  "fingerprint": "app:calculator-local-calendar",
-  "sections": [
-   "calculator",
-   "reference index",
-   "local calendar"
-  ],
-  "signature": "dose-to-volume workbench and cycle calendar",
-  "waived": [],
-  "prompt": "English mobile-first peptide arithmetic, sourced reference and browser-local scheduling",
-  "finishReview": "subagent, 2 findings resolved against recaptures",
-  "date": "2026-11-12",
-  "mode": "build"
- }
+  {
+    "date": "2026-11-15",
+    "mode": "redesign",
+    "depth": "full",
+    "scope": "app",
+    "shape": "app screen",
+    "theme": "custom focused product labels",
+    "idea": "Select the real product label, check vial amount and concentration, then enter arithmetic or a personal schedule",
+    "axes": [
+      "light",
+      "grotesk-sans",
+      "cool"
+    ],
+    "nav": "existing four task destinations, visible language controls",
+    "footer": "existing legal, tools and consent destinations",
+    "imagery": "retained educational vial example, shown open on home",
+    "photos": [],
+    "entry": "product selection and focused label",
+    "signature": "current product facts beside user-confirmed concentration",
+    "fingerprint": "app:product-selector-focused-label-open-workbench",
+    "sections": [
+      "product selection",
+      "label facts",
+      "calculation inputs and result",
+      "personal schedule"
+    ],
+    "waived": [],
+    "prompt": "Owner selected the third visual direction after releasing old Linear/Notes aesthetic; smaller type, fewer blue panels, native phone product selection",
+    "finishReview": "independent subagent ship, 0 actionable findings",
+    "verification": "35 unit; 88 full Chrome/mobile-WebKit + 2 additional selection analytics cases; 36 EN/ZH viewport cases; 50 built pages and 44 sitemap URLs"
+  },
+  {
+    "date": "2026-11-15",
+    "mode": "redesign",
+    "depth": "full",
+    "scope": "app",
+    "shape": "app screen",
+    "theme": "Peptide Tools quiet workspace",
+    "axes": [
+      "near-white",
+      "IBM Plex Sans",
+      "existing orange"
+    ],
+    "hero": "none (app scope)",
+    "nav": "Products, Schedule, Calculator, Library; original destinations and action enums",
+    "footer": "existing legal links and analytics preferences",
+    "imagery": "retained marked educational label example in native disclosure",
+    "photos": [],
+    "entry": "product task, return to local workspace",
+    "fingerprint": "app:quiet-product-input-result-agenda",
+    "sections": [
+      "products",
+      "label entry",
+      "calculator",
+      "schedule",
+      "reference"
+    ],
+    "signature": "real product labels, precise volume and dated entries lead",
+    "waived": [],
+    "prompt": "Simple goals, architecture, design and implementation; every decision improves UX, DX and AX without breaking functions",
+    "finishReview": "independent subagent ship; defective long phone capture replaced by verified viewport segments",
+    "verification": "0 FAIL, 0 REFLEX, 1 kept-figure WARN (facts inside disclosures); 29 unit, 64 browser tests, 14 responsive cases, 57/57 links retained"
+  },
+  {
+    "date": "2026-11-13",
+    "mode": "redesign",
+    "depth": "full",
+    "scope": "app",
+    "shape": "app screen",
+    "theme": "custom visual-v3 approved",
+    "idea": "A product label becomes a persistent local record carried into a verified calculation and an existing personal plan",
+    "axes": [
+      "light",
+      "grotesk-sans",
+      "warm-orange"
+    ],
+    "signature": "named product, vial quantity, blend basis and saved local schedule",
+    "nav": "products and reference library, original tools retained as contextual and footer links",
+    "imagery": "marked generated label example only; no fabricated supplier images on user records",
+    "fingerprint": "app:product-label-register-calculation-schedule",
+    "waived": [],
+    "finishReview": "independent subagent ship; initial timezone alias and blend calendar basis fixed; final mobile density recaptured",
+    "verification": "28 unit and 54 Chrome/WebKit E2E passed; design-qa.md passed; 0 Hallmark FAIL/REFLEX; long-label heuristic dismissed after control boundary checks"
+  },
+  {
+    "scope": "app",
+    "shape": "app screen",
+    "theme": "dose",
+    "axes": [
+      "light",
+      "grotesk-sans",
+      "chromatic-green"
+    ],
+    "nav": "top bar, three destinations",
+    "footer": "privacy and analytics controls",
+    "imagery": "none, actual working tools",
+    "photos": [],
+    "entry": "calculator workbench",
+    "fingerprint": "app:calculator-local-calendar",
+    "sections": [
+      "calculator",
+      "reference index",
+      "local calendar"
+    ],
+    "signature": "dose-to-volume workbench and cycle calendar",
+    "waived": [],
+    "prompt": "English mobile-first peptide arithmetic, sourced reference and browser-local scheduling",
+    "finishReview": "subagent, 2 findings resolved against recaptures",
+    "date": "2026-11-12",
+    "mode": "build"
+  }
 ]
