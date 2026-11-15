@@ -1,0 +1,76 @@
+{
+  "matrix": [
+    {
+      "lang": "en",
+      "width": 320,
+      "outside": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "outside": []
+    },
+    {
+      "lang": "en",
+      "width": 390,
+      "outside": []
+    },
+    {
+      "lang": "en",
+      "width": 430,
+      "outside": []
+    },
+    {
+      "lang": "en",
+      "width": 768,
+      "outside": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "outside": []
+    },
+    {
+      "lang": "en",
+      "width": 1920,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 320,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 375,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 390,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 430,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 768,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 1280,
+      "outside": []
+    },
+    {
+      "lang": "zh",
+      "width": 1920,
+      "outside": []
+    }
+  ],
+  "errors": [],
+  "workflow": "label calculation, save, bilingual input preservation and backup preview"
+}

@@ -1,0 +1,13 @@
+---
+import { getLocale, translate } from '../lib/i18n';
+interface Props { prefix: string; amountId?: string; errorId: string }
+const { prefix, amountId, errorId } = Astro.props;
+const t = (text: string) => translate(text, getLocale(Astro.url.pathname));
+const amount = amountId ?? `${prefix}-vial-amount`;
+---
+<div class="concentration-source" data-concentration-source={prefix}>
+  <label for={`${prefix}-mode`}>{t('Input method')}</label>
+  <select id={`${prefix}-mode`} name="concentrationMode"><option value="known">{t('Known concentration')}</option><option value="label">{t('Vial amount and final volume')}</option></select>
+  {!amountId && <div data-vial-input hidden><label for={amount}>{t('Amount in one vial (mg)')}</label><input id={amount} name="vialAmount" inputmode="decimal" autocomplete="off" aria-describedby={errorId} disabled /></div>}
+  <div data-volume-input hidden><label for={`${prefix}-final-volume`}>{t('Confirmed final volume (mL)')}</label><input id={`${prefix}-final-volume`} name={amountId ? 'solutionVolumeMl' : 'finalVolume'} inputmode="decimal" autocomplete="off" aria-describedby={`${prefix}-volume-help ${errorId}`} disabled /><p id={`${prefix}-volume-help`} class="field-help">{t('Use the final solution volume, not just added liquid.')}</p></div>
+</div>

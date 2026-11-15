@@ -67,3 +67,14 @@ PR #9 (https://github.com/ybwdaisy/peptide-tools/pull/9) was merged with approva
 A browser test delays SDK processing and performs actual intercepted collector requests. It verifies both product-save operations and both entry starts arrive before document teardown, source metadata stays sanitized, and duplicate SDK callbacks cannot duplicate a save/navigation. Separate no-callback stub tests cover the timeout path. These are simulated SDK checks. The subsequent native real-SDK acceptance and independent Realtime observations are recorded separately above.
 
 Google's control-parameter reference: https://developers.google.com/tag-platform/gtagjs/reference/parameters . A callback indicates SDK processing, not guaranteed long-term report storage.
+
+## Round-one calculation workflow — pending preview review, November 15, 2026
+
+- `calculation_success` and `calculation_error` additionally accept `input_mode=known|label`. Product-linked calculations use the confirmed product concentration and report `known`.
+- `calculation_saved` fires only after a successful explicit local write, with `operation=create|update`, `tool_context=standalone|product` and `input_mode=known|label`. Repeat writes to the same record do not create duplicate records, but distinct deliberate save actions remain events.
+- `calculation_reused` fires on an unmodified same-tab saved-setup link click, with tool context and input mode. It uses the existing bounded SDK-callback navigation helper, including same-URL reopening. Refresh, initialization and language restoration do not fabricate reuse or calculation-success events.
+- No calculation name, product reference, hash, user values, final volume, confirmation state, backup timestamp or digest enters these parameters. Existing origin, consent, QA and hostname boundaries remain. Backup restore is counted only after preview, confirmation and a successful write.
+
+The new input-mode custom dimension, optional save/reuse exploration and actual production reception are **not yet configured or accepted**. Local simulated-tag tests verify one save and one explicit reuse with sanitized events, including same-page navigation; they do not prove GA4 delivery. After approved release, use marked QA traffic, Realtime/DebugView and the exact hostname filter before marking the production instrumentation complete. The existing funnels remain meaningful and unchanged until that review.
+
+Per-mode validation failure rate uses error events / (error + success events), i.e. submitted attempts. The tab-session calculator_start denominator is not a per-mode attempt count and must not be relabelled as one.

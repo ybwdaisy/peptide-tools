@@ -254,3 +254,20 @@ summary::marker { color: var(--color-muted); }
   .schedule-table thead { display: table-header-group; }
   body { background: var(--color-paper); color: var(--color-ink); }
 }
+
+/* First-round workflow additions reuse the established app controls and tokens. */
+.concentration-source { margin-bottom: var(--space-md); }
+.concentration-source > div { margin-top: var(--space-md); }
+.save-calculation { margin-top: var(--space-lg); }
+.save-calculation .button { margin-top: var(--space-sm); }
+.saved-calculations { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+#saved-calculation-list > li { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); border-bottom: 1px solid var(--color-rule); }
+#saved-calculation-list a { display: flex; align-items: center; min-height: 44px; min-width: 0; overflow-wrap: anywhere; }
+[data-backup-state] { margin-block: var(--space-sm); }
+.restore-preview { margin-block: var(--space-md); padding-block: var(--space-md); border-top: 1px solid var(--color-rule); }
+.restore-preview > p, .restore-preview > ul { margin-block: var(--space-sm); }
+@media print { .saved-calculations, .save-calculation, [data-backup-controls] { display: none !important; } }
+
+.explanation a { display: inline-block; }
+
+.calculator-output > .status-message:not(:empty) { margin-top: var(--space-sm); }

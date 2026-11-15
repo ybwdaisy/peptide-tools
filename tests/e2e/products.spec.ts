@@ -88,10 +88,12 @@ test('workspace backup restores products, rejects invalid data without overwriti
   await expect(page.locator('#workspace-status')).toContainText('Restore failed');
   expect(await page.evaluate(key => localStorage.getItem(key), STORAGE_KEY)).toBe('{corrupt');
   await page.locator('#workspace-backup-import').setInputFiles({ name: 'backup.json', mimeType: 'application/json', buffer: Buffer.from(raw) });
-  await expect(page.locator('#workspace-status')).toHaveText('Products and schedules restored.');
+  await page.getByRole('button', { name: 'Restore backup', exact: true }).click();
+  await expect(page.locator('#workspace-status')).toHaveText('Products, schedules and calculations restored.');
   await expect(page.locator('#product-detail-name')).toHaveText('Private label product');
   const legacy = { version: 1, protocols: [{ id: 'legacy', name: 'Legacy plan', timeZone: 'UTC', startDate: '2028-02-28', endDate: '2028-03-01', items: [{ id: 'legacy-item', label: 'Original entry', dose: '250', unit: 'mcg', time: '08:00', frequency: { kind: 'daily' } }] }] };
   await page.locator('#workspace-backup-import').setInputFiles({ name: 'old.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(legacy)) });
+  await page.getByRole('button', { name: 'Restore backup', exact: true }).click();
   await expect(page.locator('#product-schedule-list')).toContainText('Legacy plan');
   const restored = await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   expect(restored.protocols).toEqual(legacy.protocols); expect(restored.products).toEqual([]);

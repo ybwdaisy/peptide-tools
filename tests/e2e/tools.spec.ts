@@ -54,7 +54,8 @@ test('planner generates, saves, reloads, exports and restores a complete protoco
   await page.getByRole('button', { name: 'Clear saved protocols', exact: true }).click();
   await expect(page.locator('#saved-empty')).toBeVisible();
   await page.getByLabel('Restore a JSON backup', { exact: true }).setInputFiles({ name: 'backup.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(json)) });
-  await expect(page.locator('#storage-status')).toContainText('Backup restored');
+  await page.getByRole('button', { name: 'Restore backup', exact: true }).click();
+  await expect(page.locator('#storage-status')).toContainText('Products, schedules and calculations restored.');
   await expect(page.getByRole('button', { name: 'Private test protocol', exact: true })).toBeVisible();
 });
 test('multi-item schedule respects alternate-day rules and invalidates stale exports', async ({ page }) => {

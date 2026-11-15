@@ -1,5 +1,5 @@
 import Decimal from 'decimal.js';
-import { positiveDecimal } from './calculator';
+import { positiveDecimal, labelConcentration } from './calculator';
 import { formatMessage, type Locale } from './i18n';
 
 export interface ProductComponent { name: string; amountMg: string }
@@ -7,6 +7,7 @@ export interface Product {
   id: string; name: string; brand: string; kind: 'single' | 'blend'; form: 'powder' | 'solution' | 'other';
   amountMg: string; components: ProductComponent[]; identityConfirmed: boolean;
   concentrationMgMl: string; concentrationVerified: boolean; revision: string;
+  solutionVolumeMl?: string;
 }
 const identifier = (v: unknown): v is string => typeof v === 'string' && /^[\w-]{1,80}$/.test(v);
 function text(v: unknown, required = true): string {
@@ -24,7 +25,9 @@ export function validateProduct(raw: unknown): Product {
   if (!identifier(p.id) || !identifier(p.revision)) throw new Error('The product identifier is invalid.');
   if (!['single', 'blend'].includes(String(p.kind)) || !['powder', 'solution', 'other'].includes(String(p.form))) throw new Error('Choose a product type and label form.');
   if (typeof p.identityConfirmed !== 'boolean' || typeof p.concentrationVerified !== 'boolean') throw new Error('Confirm the label fields explicitly.');
-  const name = text(p.name), brand = text(p.brand ?? '', false), amountMg = amount(p.amountMg), concentrationMgMl = amount(p.concentrationMgMl);
+  const name = text(p.name), brand = text(p.brand ?? '', false), amountMg = amount(p.amountMg);
+  const solutionVolumeMl = p.solutionVolumeMl === undefined ? undefined : amount(p.solutionVolumeMl);
+  const concentrationMgMl = solutionVolumeMl !== undefined ? (amountMg && solutionVolumeMl ? labelConcentration(amountMg, solutionVolumeMl).toString() : '') : amount(p.concentrationMgMl);
   if (p.concentrationVerified && !concentrationMgMl) throw new Error('Enter a concentration before confirming it.');
   if (!Array.isArray(p.components) || p.components.length > 10) throw new Error('A blend supports 2 to 10 named ingredients.');
   const components: ProductComponent[] = p.kind === 'single' ? [] : p.components.map(c => {
@@ -36,7 +39,7 @@ export function validateProduct(raw: unknown): Product {
     const known = components.reduce((sum, c) => c.amountMg ? sum.plus(c.amountMg) : sum, new Decimal(0));
     if (known.gt(amountMg) || (components.every(c => c.amountMg) && !known.eq(amountMg))) throw new Error('Ingredient amounts must match the total amount in one vial.');
   }
-  return { id: p.id, revision: p.revision, name, brand, kind: p.kind as Product['kind'], form: p.form as Product['form'], amountMg, components, identityConfirmed: p.identityConfirmed, concentrationMgMl, concentrationVerified: p.concentrationVerified };
+  return { id: p.id, revision: p.revision, name, brand, kind: p.kind as Product['kind'], form: p.form as Product['form'], amountMg, components, identityConfirmed: p.identityConfirmed, concentrationMgMl, concentrationVerified: p.concentrationVerified, ...(solutionVolumeMl !== undefined ? { solutionVolumeMl } : {}) };
 }
 export function canCalculateProduct(p: Product): boolean {
   return p.identityConfirmed && p.concentrationVerified && !!p.concentrationMgMl && (p.kind === 'single' || (!!p.amountMg && p.components.length >= 2 && p.components.every(c => !!c.amountMg) && p.components.reduce((n, c) => n.plus(c.amountMg), new Decimal(0)).eq(p.amountMg)));

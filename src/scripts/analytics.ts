@@ -43,14 +43,15 @@ export function track(event: AnalyticsEvent, values: Record<string, unknown> = {
   if (canCollect(event)) window.gtag?.('event', event, parameters(event, values));
 }
 /** Let the tag process the event before unloading this document. Never block the tool on analytics. */
-export function trackThenNavigate(event: AnalyticsEvent, values: Record<string, unknown>, destination: string) {
-  if (!canCollect(event) || !window.gtag) { location.assign(destination); return; }
+export function trackThenNavigate(event: AnalyticsEvent, values: Record<string, unknown>, destination: string, reload = false) {
+  const navigate = () => reload ? location.reload() : location.assign(destination);
+  if (!canCollect(event) || !window.gtag) { navigate(); return; }
   let finished = false;
   const finish = () => {
     if (finished) return;
     finished = true; clearTimeout(timeout);
     // Finish the original click dispatch first (e.g. the calculator's local draft handler).
-    setTimeout(() => location.assign(destination), 0);
+    setTimeout(navigate, 0);
   };
   const timeout = setTimeout(finish, 1000);
   try { window.gtag('event', event, { ...parameters(event, values), event_callback: finish, event_timeout: 1000 }); }

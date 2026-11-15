@@ -1,5 +1,6 @@
 ---
 import Shell from '../layouts/Shell.astro';
+import BackupControls from '../components/BackupControls.astro';
 import { getLocale, localePath, translate } from '../lib/i18n';
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
@@ -23,7 +24,7 @@ const t = (message: string) => translate(message, locale);
     </form>
     <aside class="saved-aside" aria-label={t("Saved protocols and backups")}>
       <div><h2>{t('Saved schedules')}</h2><p id="saved-empty" class="small">{t('No saved schedules.')}</p><ul id="saved-list" class="saved-list"></ul></div>
-      <div class="data-actions"><button type="button" class="button secondary" id="backup-export" disabled>{t("Download JSON backup")}</button><label for="backup-import" class="small">{t("Restore a JSON backup")}</label><input id="backup-import" type="file" accept=".json,application/json" aria-describedby="storage-note" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
+      <div class="data-actions"><BackupControls exportId="backup-export" inputId="backup-import" statusId="storage-status" label="Restore a JSON backup" /><button type="button" class="text-button danger" id="clear-data">{t("Clear saved protocols")}</button></div>
       <details class="optional-help"><summary>{t('Storage and limits')}</summary><p id="storage-note" class="small">{t("Local storage is not a backup. Clearing browser data removes saved protocols. Download a backup to keep a copy.")}</p><p class="small">{t("Up to 20 items, 366 days.")}</p></details>
       <p id="storage-status" class="status-message" role="status"></p>
     </aside>

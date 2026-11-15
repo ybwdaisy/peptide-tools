@@ -3,8 +3,8 @@ const KEY = 'peptide-tools.language-draft.v1';
 export type DraftItem = Record<string, string>;
 interface Draft { route: string; locale: Locale; expires: number; values: Record<string, string>; items: DraftItem[]; editingId?: string; revision?: string; step?: string; generated: boolean }
 const meta = ['protocolName', 'timeZone', 'startDate', 'endDate'];
-const calculator = ['concentration', 'dose', 'unit', 'useSyringe', 'capacity', 'increment'];
-const productFields = ['productName', 'brand', 'kind', 'form', 'amountMg', 'identityConfirmed', 'concentrationMgMl', 'concentrationVerified'];
+const calculator = ['concentration', 'dose', 'unit', 'useSyringe', 'capacity', 'increment', 'concentrationMode', 'vialAmount', 'finalVolume'];
+const productFields = ['productName', 'brand', 'kind', 'form', 'amountMg', 'identityConfirmed', 'concentrationMgMl', 'concentrationVerified', 'concentrationMode', 'solutionVolumeMl'];
 function values(form: HTMLFormElement, names: string[]) {
   return Object.fromEntries(names.map(name => { const field = form.elements.namedItem(name) as HTMLInputElement | null; return [name, field?.type === 'checkbox' ? String(field.checked) : field?.value ?? '']; }));
 }
@@ -16,7 +16,7 @@ export function saveLanguageDraft(locale: Locale) {
     id: row.dataset.id!, product: row.dataset.product ?? '', weekdays: Array.from(row.querySelectorAll<HTMLInputElement>('[data-weekday]:checked')).map(field => field.value).join(','),
   }));
   const componentDrafts = Array.from(form.querySelectorAll<HTMLElement>('[data-component]')).map(row => ({ name: row.querySelector<HTMLInputElement>('[data-component-name]')?.value ?? '', amountMg: row.querySelector<HTMLInputElement>('[data-component-amount]')?.value ?? '' }));
-  const draft: Draft = { route: basePath(location.pathname), locale, expires: Date.now() + 60_000, values: { ...values(form, form.id === 'planner-form' ? meta : form.id === 'product-form' ? productFields : calculator), ...(form.id === 'calculator-form' ? { basis: document.querySelector<HTMLSelectElement>('#calculation-basis')?.value ?? '' } : {}) }, items: form.id === 'product-form' ? componentDrafts : items, editingId: form.dataset.editingId, revision: form.dataset.revision, step: form.dataset.step, generated: document.getElementById('generated-calendar')?.hidden === false };
+  const draft: Draft = { route: basePath(location.pathname), locale, expires: Date.now() + 60_000, values: { ...values(form, form.id === 'planner-form' ? meta : form.id === 'product-form' ? productFields : calculator), ...(form.id === 'calculator-form' ? { calculationName: document.querySelector<HTMLInputElement>('#calculation-name')?.value ?? '', basis: document.querySelector<HTMLSelectElement>('#calculation-basis')?.value ?? '' } : {}) }, items: form.id === 'product-form' ? componentDrafts : items, editingId: form.dataset.editingId, revision: form.dataset.revision, step: form.dataset.step, generated: document.getElementById('generated-calendar')?.hidden === false };
   try { sessionStorage.setItem(KEY, JSON.stringify(draft)); } catch { /* Tools and language links still work without storage. */ }
 }
 export function takeLanguageDraft(): Draft | undefined {

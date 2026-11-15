@@ -35,3 +35,7 @@ Edit shared Shell.astro, app.css, products.css and tokens.css; home, product ent
 ## Acceptance
 
 Capture before/after at phone and desktop sizes, sweep Hallmark in app scope against the kept record, inspect real screenshots, run existing checks/build/unit/browser suites, independently review before opening a PR. Preview and new PR first; merge/production release only after owner approval. Never label static checks or desktop viewport emulation as physical iPhone acceptance.
+
+## Approved functional extension — 2026-11-15
+
+The owner approved round one: known-concentration / label-and-final-volume inputs, saved reusable calculations, backup-request state and restore preview. This explicitly extends the prior schema-preservation boundary for those features only. Keep the quiet app design and native controls; use shared arithmetic/input and backup components, no new dependency or business backend. Read versions 1/2 and use version 3 when final-volume source records or saved calculations require it. Preserve earlier data and snapshots; never infer verification, recommend inputs or auto-calculate restored setups. A changed linked product requires review. New analytics uses fixed enums and retains consent/origin gating. Round two's daily actual-use records remain a separate design review.

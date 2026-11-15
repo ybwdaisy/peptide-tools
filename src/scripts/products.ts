@@ -1,7 +1,7 @@
 import { browserLocale, localePath, ui, uiError } from '../lib/i18n';
 import { canCalculateProduct, matchingReference, type Product } from '../lib/products';
-import { readWorkspace, deleteProduct, exportWorkspace, replaceWorkspace, clearWorkspace, type Workspace } from '../lib/workspace';
-import { parseBackup, STORAGE_KEY } from '../lib/backup';
+import { readWorkspace, deleteProduct, clearWorkspace, type Workspace } from '../lib/workspace';
+import { STORAGE_KEY } from '../lib/backup';
 import { track } from './analytics';
 
 function node<K extends keyof HTMLElementTagNameMap>(tag: K, text?: string, cls?: string): HTMLElementTagNameMap[K] {
@@ -11,7 +11,7 @@ export function initProducts() {
   if (!document.getElementById('product-workspace')) return;
   const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const path = (route: string) => localePath(route, browserLocale());
-  let workspace: Workspace = { version: 2, products: [], protocols: [] };
+  let workspace: Workspace = { version: 3, products: [], protocols: [], calculations: [] };
   let readable = false;
   function link(label: string, href: string, cls = 'text-link') { const a = node('a', label, cls); a.href = href; if (href.includes('#protocol=')) a.dataset.analyticsAction = 'open_schedule'; return a; }
   function amount(product: Product) { return product.amountMg ? ui(product.kind === 'blend' ? '{amount} mg total in one vial' : '{amount} mg in one vial', { amount: product.amountMg }) : ui('Amount not added'); }
@@ -35,7 +35,7 @@ export function initProducts() {
     el('workspace-loading').hidden = true;
     el('products-empty').hidden = !readable || workspace.products.length > 0;
     el('product-add-action').hidden = !readable || !workspace.products.length;
-    el<HTMLButtonElement>('workspace-backup-export').disabled = !readable || !(workspace.products.length || workspace.protocols.length);
+    el<HTMLButtonElement>('workspace-backup-export').disabled = !readable || !(workspace.products.length || workspace.protocols.length || workspace.calculations.length);
     const list = el('product-list'); list.replaceChildren();
     if (readable) for (const product of workspace.products) {
       const li = node('li', undefined, 'product-record'), main = node('div', undefined, 'product-record-main');
@@ -93,27 +93,12 @@ export function initProducts() {
     try { deleteProduct(product.id); track('product_deleted', { product_type: product.kind }); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Product record deleted. Existing schedules were kept.'); }
     catch (caught) { el('workspace-status').textContent = uiError(caught); }
   });
-  el('workspace-backup-export').addEventListener('click', () => {
-    try {
-      const text = exportWorkspace(), url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
-      const a = link('', url); a.download = 'peptide-tools-backup.json'; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-      track('export_completed', { export_type: 'json' }); el('workspace-status').textContent = ui('Backup download requested. Check your downloads to keep a separate copy.');
-    } catch (caught) { el('workspace-status').textContent = uiError(caught); }
-  });
-  el<HTMLInputElement>('workspace-backup-import').addEventListener('change', async event => {
-    const input = event.target as HTMLInputElement, file = input.files?.[0]; if (!file) return;
-    try {
-      if (file.size > 1024 * 1024) throw new Error('Use a backup smaller than 1 MB.');
-      const raw = await file.text(), backup = parseBackup(raw);
-      if (!confirm(ui('Replace saved products and schedules with {products} product(s) and {protocols} schedule(s) from this backup?', { products: backup.products?.length ?? 0, protocols: backup.protocols.length }))) return;
-      replaceWorkspace(raw); track('backup_restored'); render(); el('workspace-status').textContent = ui('Products and schedules restored.');
-    } catch (caught) { el('workspace-status').textContent = ui('Restore failed: {message}', { message: uiError(caught) }); }
-    finally { input.value = ''; }
-  });
   el('workspace-clear').addEventListener('click', () => {
-    if (!confirm(ui('Delete all saved products and schedules from this browser? Download a backup first if you need a copy.'))) return;
-    try { clearWorkspace(); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Saved products and schedules cleared. Downloaded files are unchanged.'); }
+    if (!confirm(ui('Delete all saved products, schedules and calculations from this browser? Download a backup first if you need a copy.'))) return;
+    try { clearWorkspace(); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Saved local data cleared. Downloaded files are unchanged.'); }
     catch { el('workspace-status').textContent = ui('Storage is unavailable. Saved data could not be cleared.'); }
   });
+  window.addEventListener('workspace-restored', render);
+  if (location.hash === '#workspace-data-heading') document.querySelector<HTMLDetailsElement>('.workspace-data')!.open = true;
   render();
 }

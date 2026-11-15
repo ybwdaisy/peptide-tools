@@ -1,5 +1,6 @@
 ---
 import Shell from '../../layouts/Shell.astro';
+import BackupControls from '../../components/BackupControls.astro';
 import '../../styles/products.css';
 import { getLocale, localePath, translate } from '../../lib/i18n';
 const locale = getLocale(Astro.url.pathname);
@@ -25,7 +26,7 @@ const t = (message: string) => translate(message, locale);
       <div id="product-related-schedules" class="product-schedules"><h2>{t('Schedules using this product')}</h2><ul id="product-related-list" class="product-list"></ul><p id="product-related-empty" class="small">{t('No schedule linked yet.')}</p></div>
       <button type="button" id="product-delete" class="text-button danger">{t('Delete product record')}</button>
     </section>
-    <details class="workspace-data"><summary id="workspace-data-heading">{t('Your local data')}</summary><p class="small">{t('Products and schedules stay in this browser. Clearing browser data removes them. Keep a JSON backup separately.')}</p><div class="actions"><button type="button" id="workspace-backup-export" class="button secondary" disabled>{t('Download JSON backup')}</button><button type="button" id="workspace-clear" class="text-button danger">{t('Clear products and schedules')}</button></div><div class="workspace-import"><label for="workspace-backup-import">{t('Restore a products and schedules backup')}</label><input id="workspace-backup-import" type="file" accept=".json,application/json" aria-describedby="workspace-data-help" /><p class="field-help" id="workspace-data-help">{t('Version 1 schedule backups are supported. Restoring replaces the saved records after confirmation.')}</p></div><p id="workspace-status" class="status-message" role="status"></p></details>
+    <details class="workspace-data"><summary id="workspace-data-heading">{t('Your local data')}</summary><p class="small">{t('Your records stay in this browser. Clearing browser data removes them. Keep a separate backup.')}</p><BackupControls exportId="workspace-backup-export" inputId="workspace-backup-import" statusId="workspace-status" label="Restore a local backup" /><button type="button" id="workspace-clear" class="text-button danger">{t('Clear local data')}</button><p id="workspace-status" class="status-message" role="status"></p></details>
   </div>
   <script>import { initProducts } from '../../scripts/products'; initProducts();</script>
 </Shell>
