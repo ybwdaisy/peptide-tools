@@ -100,7 +100,6 @@ export function initProductEntry() {
   }
   concentrationInput('product-source', 'product-amount', 'product-concentration');
   showType(); showStep(draft?.step === 'label' || (!draft && editing) ? 'label' : 'name');
-  el<HTMLButtonElement>('product-save').disabled = blocked;
   el('product-continue').addEventListener('click', continueToLabel);
   el('product-back').addEventListener('click', () => showStep('name', true));
   el('product-add-component').addEventListener('click', () => { addComponent(); showType(); field('concentrationVerified').checked = false; trackStart('product_entry_start', { operation: editing ? 'update' : 'create' }); components.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
@@ -143,4 +142,7 @@ export function initProductEntry() {
     leaving = true; el<HTMLButtonElement>('product-save').disabled = true;
     trackThenNavigate('product_saved', { product_type: product.kind, operation: editing ? 'update' : 'create' }, `${localePath('/products', browserLocale())}#product=${encodeURIComponent(product.id)}`);
   });
+  el<HTMLButtonElement>('product-save').disabled = blocked;
+  el<HTMLButtonElement>('product-continue').disabled = false;
+  form.dataset.ready = 'true';
 }

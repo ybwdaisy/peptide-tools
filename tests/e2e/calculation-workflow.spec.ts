@@ -143,3 +143,34 @@ test('a revised blend never silently reuses an ingredient index from the old lab
   await expect(page.locator('#calculator-error')).toContainText('Choose the ingredient');
   await page.locator('#calculation-basis').selectOption('0');await page.getByRole('button',{name:'Calculate volume',exact:true}).click();await expect(page.locator('#result-volume')).toHaveText('0.1');
 });
+
+
+test('failed modules cannot submit calculator, label or planner inputs through a native GET', async ({ page }) => {
+  const leakedKeys: string[][] = [];
+  await page.route('**/*', route => {
+    const request = route.request();
+    if (request.resourceType() === 'script') return route.abort();
+    if (request.resourceType() === 'document' && new URL(request.url()).search) { leakedKeys.push([...new URL(request.url()).searchParams.keys()]); return route.abort(); }
+    return route.continue();
+  });
+  for (const [path, field] of [['/calculator', '#dose'], ['/products/new', '#product-name'], ['/planner', '#protocol-name']] as const) {
+    await page.goto(path); await page.locator(field).fill('123');
+    for (const button of await page.locator('form button[type="submit"]').all()) await expect(button).toBeDisabled();
+    await page.locator(field).press('Enter'); await expect(page).toHaveURL(new RegExp(path+'$'));
+  }
+  expect(leakedKeys).toEqual([]);
+});
+
+test('submit stays disabled during module loading, then calculation works with the entered values', async ({ page }) => {
+  let release!: () => void; const gate = new Promise<void>(resolve => release = resolve);
+  await page.route('**/*', async route => { if (route.request().resourceType() === 'script') await gate; await route.continue(); });
+  try {
+    await page.goto('/calculator', { waitUntil: 'commit' });
+    await page.locator('#concentration').fill('2'); await page.locator('#dose').fill('250');
+    await expect(page.getByRole('button', { name: 'Calculate volume', exact: true })).toBeDisabled();
+    await page.locator('#dose').press('Enter'); await expect(page).toHaveURL(/\/calculator$/);
+    release(); await expect(page.locator('#calculator-form')).toHaveAttribute('data-ready', 'true');
+    await page.getByRole('button', { name: 'Calculate volume', exact: true }).click();
+    await expect(page.locator('#result-volume')).toHaveText('0.125');
+  } finally { release(); }
+});

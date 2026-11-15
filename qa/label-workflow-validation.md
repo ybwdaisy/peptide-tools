@@ -11,6 +11,7 @@ The owner approved a first round that joins label inputs to calculation, saves r
 - Save and reuse: successful calculations can be named and saved locally. Reopening restores inputs, never an automatically successful calculation. Linked product revisions require explicit review; revised blends additionally clear the old ingredient index. Repeated saves update one record. Missing/deleted products do not silently become standalone calculations.
 - Data: product and planner backup controls share one implementation. A file is size/schema checked, then counts and optional record names are previewed. Cancel does not replace anything. Apply still asks for confirmation, validates again and only then replaces the envelope. The open planner form stays unchanged.
 - Backup state: last download-request time and a local digest show whether records changed since the request. No statement claims the file was actually saved. Invalid metadata cannot prevent an otherwise valid export. Clearing all records also clears the optional metadata.
+- Tool submit buttons render disabled and become enabled only after their handlers are initialized. Script delays/failures and Enter cannot fall back to native GET submission of private inputs.
 - English/Chinese source inputs and unsaved calculation name survive language switching. Native pickers, file selection, focus styles, mobile date/time containment, print/ICS behavior, source links and consent gating remain.
 
 ## UX / DX / AX
@@ -34,11 +35,12 @@ A rollback to PR #12 cannot read version 3. It should reject those records witho
 |---|---|
 | Astro check | 58 files; 0 errors, warnings or hints |
 | Unit tests | 35 passed, including repeating/tiny decimal cases, verification, v1/v2/v3 compatibility, atomic failed mutations and analytics filtering |
-| Chrome / mobile WebKit | 80 passed; includes the original workflows and new source mode, reopen, changed product/blend, preview/cancel/restore, corrupted metadata and simulated-tag save/reuse checks |
+| Chrome / mobile WebKit | 84 passed; includes the original workflows and new source mode, reopen, changed product/blend, preview/cancel/restore, corrupted metadata, simulated-tag save/reuse checks, and delayed/failed-script native-submit guards |
 | Build / static verification | 50 pages; local links/assets/metadata; 44 sitemap URLs |
 | Responsive workflow | 14 EN/ZH cases at 320, 375, 390, 430, 768, 1280 and 1920px; no horizontal overflow or out-of-viewport visible controls |
 | Hallmark app-scope rendered check | 25 captures across five routes; 0 FAIL / 0 REFLEX / 0 WARN; existing long-action-label heuristic dismissals remain documented |
-| Screenshot review | Real calculated/saved states and restore preview inspected; static preview, no dev overlay, fictitious local data |
+| Independent finish review | `fix`, one P1 initialization issue resolved; delayed/failed-module and Enter checks passed in both browsers; no other actionable visual/data defect |
+| Screenshot review | Real calculated/saved states and restore preview inspected; bad resized-Chrome phone capture replaced with a fresh fixed-viewport WebKit capture; static preview, no dev overlay, fictitious local data |
 
 Existing restore tests were updated to click the newly required preview confirmation; they continue asserting the stored data and invalid-import preservation. New tests exercise meaningful data and workflow boundaries rather than snapshotting implementation details. Physical iPhone Safari and actual GA4 reception are not implied by WebKit or mocked-tag tests.
 

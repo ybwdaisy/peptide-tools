@@ -295,4 +295,7 @@ export function initPlanner() {
   el('print-calendar').addEventListener('click', () => { if (current) { rows(events.length); track('print_requested'); window.print(); } });
   window.addEventListener('beforeprint', () => { if (current) rows(events.length); });
   window.addEventListener('afterprint', () => { if (current) rows(shown); });
+  (form.querySelector('button[type="submit"]') as HTMLButtonElement).disabled = false;
+  el<HTMLButtonElement>('save-protocol').disabled = false;
+  form.dataset.ready = 'true';
 }

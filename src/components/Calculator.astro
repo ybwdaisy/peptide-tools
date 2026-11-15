@@ -29,7 +29,7 @@ const t = (message: string) => translate(message, locale);
       <p class="field-help">{t("U-100 markings measure volume here, not peptide activity.")}</p>
     </fieldset>
     <p id="calculator-error" class="error-message" role="alert"></p>
-    <button class="button" type="submit">{t("Calculate volume")}</button>
+    <button class="button" type="submit" disabled>{t("Calculate volume")}</button>
   </form>
   <section class="calculator-output" aria-label={t("Calculation result")} aria-live="polite" aria-atomic="true">
     <h2>{t("Calculated volume")}</h2>
@@ -41,7 +41,7 @@ const t = (message: string) => translate(message, locale);
       <p id="result-unit-note" class="field-help"></p>
       <div id="blend-result" hidden><h3>{t('Ingredient amounts in this volume')}</h3><ul id="blend-amounts"></ul></div>
       <a id="calculation-plan-link" class="button secondary" hidden href={locale === 'zh' ? '/zh/planner' : '/planner'}>{t('Use in my schedule')}</a>
-      <form id="save-calculation-form" class="save-calculation" novalidate><label for="calculation-name">{t('Calculation name')}</label><input id="calculation-name" name="calculationName" maxlength="80" autocomplete="off" /><button class="button secondary" type="submit">{t('Save calculation')}</button></form>
+      <form id="save-calculation-form" class="save-calculation" novalidate><label for="calculation-name">{t('Calculation name')}</label><input id="calculation-name" name="calculationName" maxlength="80" autocomplete="off" /><button class="button secondary" type="submit" disabled>{t('Save calculation')}</button></form>
     </div>
     <p id="calculation-storage-status" class="status-message" role="status"></p>
     <div class="result-context"><p>{t("This tool converts units. It does not determine an appropriate dose or whether a product is safe to use.")}</p></div>

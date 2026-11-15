@@ -51,8 +51,7 @@ export function initCalculator() {
       blocked = true; document.querySelector('#calculation-product-name')!.textContent = ui('Product unavailable');
       document.querySelector('#calculation-product-note')!.textContent = uiError(caught);
     }
-    (form.querySelector('button[type="submit"]') as HTMLButtonElement).disabled = blocked;
-  }
+    }
   if (hash.has('calculation') && !saved) { blocked = true; error.textContent = ui('This saved calculation is no longer available. Open the calculator to start again.'); }
   const source = initConcentrationInput('calculator-source', 'calculator-source-vial-amount', 'concentration', !!productId);
   if (saved) {
@@ -64,7 +63,6 @@ export function initCalculator() {
     document.querySelector<HTMLElement>('#calculation-review')!.hidden = !product || product.revision === saved.productRevision;
   } else if (product) name.value = product.name;
   source.sync();
-  (form.querySelector('button[type="submit"]') as HTMLButtonElement).disabled = blocked;
   const draft = takeLanguageDraft();
   if (draft) for (const name of ['concentration', 'dose', 'unit', 'useSyringe', 'capacity', 'increment', 'concentrationMode', 'vialAmount', 'finalVolume']) {
     if (productId && ['concentration', 'concentrationMode', 'vialAmount', 'finalVolume'].includes(name)) continue;
@@ -180,4 +178,7 @@ export function initCalculator() {
   });
   name.addEventListener('input', () => { storageStatus.textContent = ''; });
   renderSaved();
+  (form.querySelector('button[type="submit"]') as HTMLButtonElement).disabled = blocked;
+  (document.querySelector('#save-calculation-form button[type="submit"]') as HTMLButtonElement).disabled = false;
+  form.dataset.ready = 'true';
 }
