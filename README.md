@@ -27,8 +27,10 @@ Local Chrome tests use installed Google Chrome; CI uses Playwright Chromium. The
 ## Data and behavior
 
 - Decimal arithmetic accepts positive decimal strings (up to 9 integer and 8 fractional digits), converts mcg/mg to mL, and optionally shows U-100 scale markings. No activity-IU conversion or dose recommendation.
+- Calculate from a known concentration or your own vial amount and confirmed final solution volume. Derived values never imply independent label verification. Saved setups include input mode, amount/unit and optional device settings.
 - Planner retains local clock times through DST; ambiguous clock times use the first occurrence, nonexistent times require editing. UTC calendar events preserve the selected zone's instants, with no alarms.
-- Browser storage key: `peptide-tools.protocols.v1`; JSON backups use `{ version: 1, protocols: [...] }`. Max 20 protocols, 20 items each, 366 days each, 1 MB imports. Unknown imported properties are dropped; invalid imports do not replace data.
+- Browser storage key: `peptide-tools.protocols.v1`; JSON backups read versions 1/2/3. New final-volume source records or saved calculations use version 3; older-only records keep version 1/2 compatibility. Saved calculation inputs reopen without automatically calculating, and linked product changes require review. Max 20 protocols, 20 items each, 366 days each, 1 MB imports. Unknown imported properties are dropped; invalid imports do not replace data.
+- Backup controls show the last download-request time and whether data changed since that request; this is not confirmation of a saved file. Imports validate and preview before a confirmed replacement. See [round-one validation and rollback](qa/label-workflow-validation.md).
 - 16 reference pages cite primary sources. Study-specific half-lives appear only with formulation and route context. Unknown fields are deliberate, not default recommendations.
 - No external fonts, images, identity service, application API or protocol uploads. GA4 loads only with opt-in consent and production configuration; exported files intentionally contain the user's own data.
 

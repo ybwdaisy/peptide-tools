@@ -12,6 +12,7 @@
 /* Hallmark · reworded "Saved in this browser" to "Saved schedules" · name the saved object rather than repeat its storage location. */
 /* Hallmark · dropped "Your data" · backup and restore controls already carry explicit action labels. */
 /* Hallmark · finish-review: subagent ship; bad stitched phone evidence recaptured as viewport segments; no actionable defects. Floor 0 FAIL · Reflex 0 · 1 kept-figure warning (facts retained in disclosures). */
+/* Hallmark · round-one functional finish-review: subagent fix · 1 P1 resolved with SSR-disabled submissions and delayed/failed-module Enter tests; phone evidence recaptured in fresh WebKit. */
 @import './tokens.css';
 @import './base.css';
 
@@ -254,3 +255,20 @@ summary::marker { color: var(--color-muted); }
   .schedule-table thead { display: table-header-group; }
   body { background: var(--color-paper); color: var(--color-ink); }
 }
+
+/* First-round workflow additions reuse the established app controls and tokens. */
+.concentration-source { margin-bottom: var(--space-md); }
+.concentration-source > div { margin-top: var(--space-md); }
+.save-calculation { margin-top: var(--space-lg); }
+.save-calculation .button { margin-top: var(--space-sm); }
+.saved-calculations { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+#saved-calculation-list > li { display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); border-bottom: 1px solid var(--color-rule); }
+#saved-calculation-list a { display: flex; align-items: center; min-height: 44px; min-width: 0; overflow-wrap: anywhere; }
+[data-backup-state] { margin-block: var(--space-sm); }
+.restore-preview { margin-block: var(--space-md); padding-block: var(--space-md); border-top: 1px solid var(--color-rule); }
+.restore-preview > p, .restore-preview > ul { margin-block: var(--space-sm); }
+@media print { .saved-calculations, .save-calculation, [data-backup-controls] { display: none !important; } }
+
+.explanation a { display: inline-block; }
+
+.calculator-output > .status-message:not(:empty) { margin-top: var(--space-sm); }

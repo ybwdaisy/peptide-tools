@@ -1,3 +1,4 @@
+import { concentrationInput } from './concentration-input';
 import { browserLocale, localePath, ui, uiError } from '../lib/i18n';
 import { validateProduct, type Product, type ProductComponent } from '../lib/products';
 import { readWorkspace, saveProduct } from '../lib/workspace';
@@ -78,13 +79,15 @@ export function initProductEntry() {
     field('amountMg').value = editing.amountMg; field('identityConfirmed').checked = editing.identityConfirmed;
     field('concentrationMgMl').value = editing.concentrationMgMl; field('concentrationVerified').checked = editing.concentrationVerified;
     editing.components.forEach(addComponent);
+    field('concentrationMode').value = editing.solutionVolumeMl === undefined ? 'known' : 'label';
+    field('solutionVolumeMl').value = editing.solutionVolumeMl ?? '';
     status.textContent = ui('Editing a saved label. Existing schedules keep their saved product details.');
   }
   while (components.children.length < 2) addComponent();
   const draft = takeLanguageDraft();
   if (draft) {
     const values = draft.values;
-    for (const name of ['productName', 'brand', 'kind', 'form', 'amountMg', 'concentrationMgMl', 'identityConfirmed', 'concentrationVerified']) {
+    for (const name of ['productName', 'brand', 'kind', 'form', 'amountMg', 'concentrationMgMl', 'concentrationMode', 'solutionVolumeMl', 'identityConfirmed', 'concentrationVerified']) {
       if (typeof values[name] !== 'string') continue;
       const input = field(name);
       if (input.type === 'checkbox') input.checked = values[name] === 'true'; else input.value = values[name];
@@ -95,8 +98,8 @@ export function initProductEntry() {
     }
     if (draft.editingId && /^[\w-]{1,80}$/.test(draft.editingId)) form.dataset.editingId = draft.editingId;
   }
+  concentrationInput('product-source', 'product-amount', 'product-concentration');
   showType(); showStep(draft?.step === 'label' || (!draft && editing) ? 'label' : 'name');
-  el<HTMLButtonElement>('product-save').disabled = blocked;
   el('product-continue').addEventListener('click', continueToLabel);
   el('product-back').addEventListener('click', () => showStep('name', true));
   el('product-add-component').addEventListener('click', () => { addComponent(); showType(); field('concentrationVerified').checked = false; trackStart('product_entry_start', { operation: editing ? 'update' : 'create' }); components.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
@@ -107,7 +110,7 @@ export function initProductEntry() {
     form.querySelectorAll('[aria-invalid]').forEach(input => input.removeAttribute('aria-invalid'));
     const input = event.target as HTMLInputElement;
     if (['productName', 'kind'].includes(input.name)) field('identityConfirmed').checked = false;
-    if (['productName', 'kind', 'form', 'amountMg', 'concentrationMgMl'].includes(input.name) || input.hasAttribute('data-component-name') || input.hasAttribute('data-component-amount')) field('concentrationVerified').checked = false;
+    if (['productName', 'kind', 'form', 'amountMg', 'concentrationMgMl', 'concentrationMode', 'solutionVolumeMl'].includes(input.name) || input.hasAttribute('data-component-name') || input.hasAttribute('data-component-amount')) field('concentrationVerified').checked = false;
   });
   let nativeErrorReported = false;
   form.addEventListener('invalid', () => {
@@ -127,6 +130,7 @@ export function initProductEntry() {
     const raw = {
       id: form.dataset.editingId!, revision: crypto.randomUUID(), name: field('productName').value.trim(), brand: field('brand').value.trim(), kind: field('kind').value,
       form: field('form').value, amountMg: field('amountMg').value.trim(), identityConfirmed: field('identityConfirmed').checked,
+      ...(field('concentrationMode').value === 'label' ? { solutionVolumeMl: field('solutionVolumeMl').value.trim() } : {}),
       concentrationMgMl: field('concentrationMgMl').value.trim(), concentrationVerified: field('concentrationVerified').checked,
       components: field('kind').value === 'blend' ? Array.from(components.querySelectorAll<HTMLElement>('[data-component]')).map(row => ({ name: row.querySelector<HTMLInputElement>('[data-component-name]')!.value.trim(), amountMg: row.querySelector<HTMLInputElement>('[data-component-amount]')!.value.trim() })) : [],
     };
@@ -138,4 +142,7 @@ export function initProductEntry() {
     leaving = true; el<HTMLButtonElement>('product-save').disabled = true;
     trackThenNavigate('product_saved', { product_type: product.kind, operation: editing ? 'update' : 'create' }, `${localePath('/products', browserLocale())}#product=${encodeURIComponent(product.id)}`);
   });
+  el<HTMLButtonElement>('product-save').disabled = blocked;
+  el<HTMLButtonElement>('product-continue').disabled = false;
+  form.dataset.ready = 'true';
 }
