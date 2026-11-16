@@ -39,4 +39,8 @@ Required fidelity surfaces:
 
 Follow-up polish: physical iPhone Safari review remains unperformed. No claim of production GA4 reception or deployment is made by local UI acceptance.
 
+## Approved logo follow-up — 2026-11-16
+
+The owner subsequently selected cycle-logo option3, superseding the text-only header and orange P icon in earlier UI evidence. The selected source, vector/raster assets, small-size proof,12 EN/ZH header cases,641px collision correction and independent ship review are recorded in `qa/logo-cycle-validation.md`. Other UI facts and behavior remain as reviewed above.
+
 final result: passed

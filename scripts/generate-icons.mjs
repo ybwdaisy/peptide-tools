@@ -20,6 +20,7 @@ try {
     if (size === 180) await writeFile(new URL('../public/apple-touch-icon.png', import.meta.url), png);
     else {
       faviconImages.push({ size, png });
+      if (size === 16) await writeFile(new URL('../public/favicon-16x16.png', import.meta.url), png);
       if (size === 32) await writeFile(new URL('../public/favicon-32x32.png', import.meta.url), png);
     }
   }

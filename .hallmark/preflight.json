@@ -45,5 +45,24 @@
     "src/styles/tokens.css:12",
     "src/layouts/Shell.astro:10"
   ],
-  "verification": "35 unit; 88 full Chrome/mobile-WebKit + 2 additional selection analytics cases; 36 EN/ZH viewport cases; 50 built pages and 44 sitemap URLs; final Hallmark report recorded in qa/focused-label-validation.md"
+  "verification": "35 unit; 88 full Chrome/mobile-WebKit + 2 additional selection analytics cases; 36 EN/ZH viewport cases; 50 built pages and 44 sitemap URLs; final Hallmark report recorded in qa/focused-label-validation.md",
+  "logoUpdate": {
+    "date": "2026-11-16",
+    "scope": "existing header and brand assets",
+    "reference": "qa/design-target/logo-cycle.png",
+    "selected": "displayed logo option 3",
+    "preserved": [
+      "home link and localized accessible name",
+      "all routes, content facts and analytics/data behavior",
+      "existing favicon and apple-touch-icon link paths"
+    ],
+    "introduced": [
+      "flat three-segment cycle vector and inverse",
+      "self-contained wordmarks and transparent PNGs",
+      "shared browser/iOS icons",
+      "header breakpoint 48rem to prevent 641px collision"
+    ],
+    "verification": "12 header cases +8 browser regressions passed; Hallmark0 FAIL/0 WARN; independent logo review ship",
+    "report": "qa/logo-cycle-validation.md"
+  }
 }

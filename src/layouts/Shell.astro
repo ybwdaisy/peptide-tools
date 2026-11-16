@@ -45,7 +45,7 @@ const t = (message: string) => translate(message, locale);
   <body data-ga-id={gaId} data-analytics-origin="https://peptides.ybwdaisy.com" data-analytics-enabled={String(isProduction && /^G-[A-Z0-9]+$/.test(gaId))}>
     <a class="skip-link" href="#main">{t("Skip to content")}</a>
     <header class="site-header container">
-      <a class="brand" href={localePath("/", locale)} aria-label={t("Peptide Tools home")}>Peptide<span>Tools</span></a>
+      <a class="brand" href={localePath("/", locale)} aria-label={t("Peptide Tools home")}><img class="brand-mark" src="/brand/mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="brand-wordmark">Peptide<span>Tools</span></span></a>
       <nav aria-label={t("Main navigation")}>{nav.map(([label, href, action]) => <a data-analytics-action={action} href={localePath(href, locale)} aria-current={active === href ? 'page' : undefined}>{t(label)}</a>)}</nav>
       <div class="header-tools"><nav class="language-switch" aria-label={t('Language')}><a href={localePath(Astro.url.pathname, 'en')} lang="en" hreflang="en" data-language="en" aria-current={locale === 'en' ? 'true' : undefined}>EN</a><a href={localePath(Astro.url.pathname, 'zh')} lang="zh-CN" hreflang="zh-CN" data-language="zh" aria-current={locale === 'zh' ? 'true' : undefined}>中文</a></nav></div>
     </header>

@@ -3,6 +3,7 @@
 /* Hallmark · dismissed 74 · the owner selected the cool near-white canvas in the focused-label visual target; the palette implements that approved reference. */
 /* Hallmark · dropped _image · Astro's development image endpoint becomes the compiled label-example webp in a static build; the original educational asset, alt text and caption are retained. */
 /* Hallmark · finish-review: subagent ship · 0 actionable findings · gap: no physical iPhone session; Chrome and mobile WebKit exercised the real static build. */
+/* Hallmark · logo-review: subagent ship · approved three-segment cycle retained; 12 EN/ZH header widths, focus and home navigation cases passed after fixing the 641px collision. */
 /* Hallmark · dropped "Works in your browser", "Your inputs", "Check the inputs, every time.", "Schedule saved" · owner explicitly requested removing slogans, repeated explanations and secondary labels. */
 /* Hallmark · reworded "Read the evidence, with context." to "Reference library" · the task is the title. */
 /* Hallmark · dropped item- · per-visit planner field UUIDs change; all data-field hooks, labels, events and validation remain. */
@@ -22,7 +23,9 @@
 body { min-width: 320px; }
 strong { font-weight: 600; }
 .site-header { min-height: 72px; display: flex; align-items: center; gap: var(--space-lg); border-bottom: 1px solid var(--color-rule); }
-.brand { flex-shrink: 0; font-size: var(--text-xl); font-weight: 700; letter-spacing: var(--tracking-display); text-decoration: none; }
+.brand { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; flex-shrink: 0; font-size: var(--text-xl); font-weight: 700; letter-spacing: var(--tracking-display); text-decoration: none; white-space: nowrap; }
+.brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
+.brand-wordmark { display: inline-block; }
 .site-header > nav { display: flex; align-items: center; gap: var(--space-lg); margin-left: auto; min-width: 0; }
 .site-header nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: var(--text-md); white-space: nowrap; border-bottom: 2px solid transparent; }
 .site-header nav a[aria-current='page'], .site-header nav a[aria-current='true'] { border-bottom-color: var(--color-accent); font-weight: 600; }
@@ -217,11 +220,13 @@ summary::marker { color: var(--color-muted); }
   .saved-aside .data-actions { margin-top: 0; }
   .saved-aside > .optional-help, .saved-aside > .status-message { grid-column: 1 / -1; }
 }
-@media (max-width: 40rem) {
+@media (max-width: 48rem) {
   .site-header { flex-wrap: wrap; gap: 0 var(--space-md); padding-top: var(--space-xs); }
   .header-tools { margin-left: auto; padding-left: 0; border: 0; }
   .site-header > nav { order: 3; flex-basis: 100%; width: 100%; justify-content: space-between; gap: var(--space-xs); margin: 0; }
   .site-header > nav a { font-size: var(--text-sm); }
+}
+@media (max-width: 40rem) {
   main { padding-top: var(--space-lg); }
   .home-tools, .calculator-workbench { grid-template-columns: minmax(0, 1fr); }
   .home-tools { gap: var(--space-xs); padding-block: var(--space-md); margin-top: var(--space-lg); }

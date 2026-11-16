@@ -1,0 +1,204 @@
+{
+  "cases": [
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/products",
+      "scroll": 1440,
+      "loaded": true,
+      "href": "/",
+      "label": "Peptide Tools home",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "route": "/zh/products",
+      "scroll": 1440,
+      "loaded": true,
+      "href": "/zh",
+      "label": "Peptide Tools 首页",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "route": "/products",
+      "scroll": 768,
+      "loaded": true,
+      "href": "/",
+      "label": "Peptide Tools home",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "route": "/zh/products",
+      "scroll": 768,
+      "loaded": true,
+      "href": "/zh",
+      "label": "Peptide Tools 首页",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 700,
+      "height": 900,
+      "route": "/products",
+      "scroll": 700,
+      "loaded": true,
+      "href": "/",
+      "label": "Peptide Tools home",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 700,
+      "height": 900,
+      "route": "/zh/products",
+      "scroll": 700,
+      "loaded": true,
+      "href": "/zh",
+      "label": "Peptide Tools 首页",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 641,
+      "height": 900,
+      "route": "/products",
+      "scroll": 641,
+      "loaded": true,
+      "href": "/",
+      "label": "Peptide Tools home",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 641,
+      "height": 900,
+      "route": "/zh/products",
+      "scroll": 641,
+      "loaded": true,
+      "href": "/zh",
+      "label": "Peptide Tools 首页",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/products",
+      "scroll": 390,
+      "loaded": true,
+      "href": "/",
+      "label": "Peptide Tools home",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/zh/products",
+      "scroll": 390,
+      "loaded": true,
+      "href": "/zh",
+      "label": "Peptide Tools 首页",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 320,
+      "height": 844,
+      "route": "/products",
+      "scroll": 320,
+      "loaded": true,
+      "href": "/",
+      "label": "Peptide Tools home",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "width": 320,
+      "height": 844,
+      "route": "/zh/products",
+      "scroll": 320,
+      "loaded": true,
+      "href": "/zh",
+      "label": "Peptide Tools 首页",
+      "brandWidth": 163.203125,
+      "markWidth": 32,
+      "collisions": [],
+      "focus": {
+        "width": "2px",
+        "style": "solid"
+      }
+    }
+  ],
+  "issues": [],
+  "ios": "180x180 fully opaque",
+  "ico": [
+    16,
+    32,
+    48
+  ],
+  "note": "Isolated Chrome viewport evidence, not physical iOS home-screen installation."
+}

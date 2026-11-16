@@ -10,6 +10,7 @@ Existing material constraints remain: the generated vial is a marked educational
 
 ## Visual system
 
+- Logo: owner's selected cycle-connection concept (2026-11-16), a three-segment open loop with a short right-hand terminal. Canonical geometry in `public/brand/mark.svg`, reverse in `mark-inverse.svg`; generated from the retained selected reference by `scripts/build-cycle-logo.mjs`. Wordmark is PeptideTools, with local Schibsted Grotesk. Use flat slate blue on light surfaces and white on navy. The static mark implies no completion status, clinical verification or reminder behavior. Header mark32px; existing home link and accessible name stay unchanged. Browser/iOS icons share the same geometry, with full-bleed opaque iOS background.
 - Use locally hosted Schibsted Grotesk variable Latin, with native CJK fallback. Near-white cool canvas #f8fafc, navy ink #10283d, slate secondary text #526577, blue action #205b7a. Keep these in shared tokens; no decorative imagery, gradients, shadows or blue panels enclosing every section.
 - One restrained, capped top navigation. Make Products, Schedule and Calculator reachable without promotional descriptions; keep existing destinations and analytics action enums. Language control stays visible.
 - Titles name the task. Remove slogans and repeated statements of browser-local operation. A first-time empty state may retain one useful instruction and one action.
