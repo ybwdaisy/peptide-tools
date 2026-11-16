@@ -1,21 +1,22 @@
-# Peptide Tools — task-first, quiet interface
+# Peptide Tools — focused product labels
 
-Approved direction: the owner's 2026-11-15 request for the clarity of Linear and Apple Notes, with simple goals, architecture, design and implementation. These are references for restraint, not copied brands.
+Approved direction: the owner released the previous Linear/Apple Notes aesthetic and selected the recommended third visual direction on 2026-11-15. Use the refined focused-label reference, not the old orange/IBM Plex lock: `qa/design-target/product-label-desktop.png`. Product audience: adults in fitness and biohacking managing multiple peptide products they already own. The recognisable object is their own product label, followed by their entered arithmetic and planned schedule.
 
 ## Product and preservation
 
 English-first, bilingual browser-local product labels, arithmetic and user-entered schedules. Astro + TypeScript, native HTML controls, static pages, no business backend. Keep all routes, labels used by tests, IDs, field names, data attributes, links and their destinations, forms, event triggers and parameter policy. Do not change storage schemas, restore/clear confirmations, dates, recurrence/time zones, print/export semantics, source facts, privacy text or consent wording. Keep the latest mobile date/time and file-selector fixes.
 
-Existing material constraints remain: the generated vial is a marked educational example, not a supplier or user product photograph. Never infer quantity, identity, concentration, dose, recurrence or combinations from a product name. The example's 5 mg is mass, not concentration. This request supersedes the prior mineral-gray ground and promotional home composition; IBM Plex Sans and the orange action color remain.
+Existing material constraints remain: the generated vial is a marked educational example, not a supplier or user product photograph. Never infer quantity, identity, concentration, dose, recurrence or combinations from a product name. The example's 5 mg is mass, not concentration. Existing saved data and schemas remain. No actual-use tracking, reminders, inventory, efficacy metrics or clinical verification is introduced.
 
 ## Visual system
 
-- Keep local IBM Plex Sans and the small orange primary-action accent. Use a near-white main canvas and quiet neutral secondary surfaces; no decorative imagery or gradients.
+- Logo: owner's selected cycle-connection concept (2026-11-16), a three-segment open loop with a short right-hand terminal. Canonical geometry in `public/brand/mark.svg`, reverse in `mark-inverse.svg`; generated from the retained selected reference by `scripts/build-cycle-logo.mjs`. Wordmark is PeptideTools, with local Schibsted Grotesk. Use flat slate blue on light surfaces and white on navy. The static mark implies no completion status, clinical verification or reminder behavior. Header mark32px; existing home link and accessible name stay unchanged. Browser/iOS icons share the same geometry, with full-bleed opaque iOS background.
+- Use locally hosted Schibsted Grotesk variable Latin, with native CJK fallback. Near-white cool canvas #f8fafc, navy ink #10283d, slate secondary text #526577, blue action #205b7a. Keep these in shared tokens; no decorative imagery, gradients, shadows or blue panels enclosing every section.
 - One restrained, capped top navigation. Make Products, Schedule and Calculator reachable without promotional descriptions; keep existing destinations and analytics action enums. Language control stays visible.
 - Titles name the task. Remove slogans and repeated statements of browser-local operation. A first-time empty state may retain one useful instruction and one action.
 - Forms lead with their real labels and values. Keep necessary units/confirmation controls and errors visible. Move optional explanations into semantic `details`/`summary` near the relevant form, retaining described-by targets.
-- Prefer lists, facts and tables with thin separators. No nested cards or redundant status tags. Current input values and generated calendar are the main visual objects.
-- Keep a single shared stylesheet and tokens; avoid page-specific copies of layout recipes. Use 44px minimum hit targets (48px mobile buttons), immediate visible focus, minmax(0, 1fr) tracks, shrinking field wrappers, and native pickers.
+- Prefer open aligned facts and tables with thin separators. My products uses a grouped product selector and a focused current record. Desktop selector supports multiple records without crowding; mobile uses a labelled native selection control and a one-column focused detail. Current name, vial amount and concentration are distinct facts, never clinical badges. Calculate volume is the main eligible product action; scheduling and label editing support it. Preserve the calculation-disabled explanation when facts need confirmation.
+- Keep a shared stylesheet and tokens; reuse existing page-specific products.css, avoid duplicated layout recipes. Type is 16px body, 30–32px task titles, 24px detail titles and about32px fact values; no giant headings. Use 44px minimum hit targets (48px mobile buttons), immediate visible focus, minmax(0, 1fr) tracks, shrinking field wrappers, and native pickers. Native date/time fixes remain intact.
 - Preserve semantic headings, forms, labels, stable IDs, native links and explicit control states. No invisible keyword labels, custom widget framework or new dependency.
 
 ## Decisions must improve all three experiences
@@ -30,7 +31,7 @@ Existing material constraints remain: the generated vial is a marked educational
 
 ## File plan
 
-Edit shared Shell.astro, app.css, products.css and tokens.css; home, product entry/detail/workspace, calculator, planner and reference presentation; existing render functions only if removing redundant presentational text. Add bilingual strings to the existing Chinese dictionary where genuinely required. Add review/evidence documents. Delete no file, route or component tree. Do not change tests to conceal regressions.
+Edit shared Shell.astro, app.css, products.css and tokens.css; home, product entry/detail/workspace, Calculator.astro/calculator page and planner presentation; existing product render function only to implement selection and fact layout. Add bilingual strings to the existing Chinese dictionary where required. Shared styling covers library/legal pages with their content unchanged. Add local font, review/evidence documents. Delete no file, route or component tree. Do not change existing tests to conceal regressions.
 
 ## Acceptance
 
@@ -38,4 +39,4 @@ Capture before/after at phone and desktop sizes, sweep Hallmark in app scope aga
 
 ## Approved functional extension — 2026-11-15
 
-The owner approved round one: known-concentration / label-and-final-volume inputs, saved reusable calculations, backup-request state and restore preview. This explicitly extends the prior schema-preservation boundary for those features only. Keep the quiet app design and native controls; use shared arithmetic/input and backup components, no new dependency or business backend. Read versions 1/2 and use version 3 when final-volume source records or saved calculations require it. Preserve earlier data and snapshots; never infer verification, recommend inputs or auto-calculate restored setups. A changed linked product requires review. New analytics uses fixed enums and retains consent/origin gating. Round two's daily actual-use records remain a separate design review.
+The owner approved round one: known-concentration / label-and-final-volume inputs, saved reusable calculations, backup-request state and restore preview. This explicitly extends the prior schema-preservation boundary for those features only. Keep native controls; use shared arithmetic/input and backup components, no new dependency or business backend. Read versions 1/2 and use version 3 when final-volume source records or saved calculations require it. Preserve earlier data and snapshots; never infer verification, recommend inputs or auto-calculate restored setups. A changed linked product requires review. New analytics uses fixed enums and retains consent/origin gating. Round two's daily actual-use records remain a separate design review.

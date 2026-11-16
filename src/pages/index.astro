@@ -7,34 +7,36 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t('Your peptide products and schedule')} description={t('Start with the products you already have. Read your label, check a calculation and organize your own browser-local schedule.')}>
-  <div class="home-workspace home-entry">
-    <section class="home-intro" aria-labelledby="home-heading">
-      <div class="page-heading"><h1 id="home-heading">{t('My products')}</h1></div>
-      <div id="home-return" class="home-return" hidden>
-        <a id="home-return-heading" class="button" data-analytics-action="open_workspace" href={localePath('/products', locale)}>{t('Open my products')}</a>
-      </div>
-      <div class="home-actions"><a class="button" data-analytics-action="add_product" href={localePath('/products/new', locale)}>{t('Add my first product')}</a><a class="home-example-link" data-analytics-action="view_label_example" href="#label-example">{t('See a product example')}</a></div>
+  <div class="focused-home">
+    <div class="home-workspace home-entry">
+      <section class="home-intro" aria-labelledby="home-heading">
+        <div class="page-heading"><h1 id="home-heading">{t('My products')}</h1></div>
+        <div id="home-return" class="home-return" hidden>
+          <a id="home-return-heading" class="button" data-analytics-action="open_workspace" href={localePath('/products', locale)}>{t('Open my products')}</a>
+        </div>
+        <div class="home-actions"><a class="button" data-analytics-action="add_product" href={localePath('/products/new', locale)}>{t('Add my first product')}</a><a class="home-example-link" data-analytics-action="view_label_example" href="#label-example">{t('See a product example')}</a></div>
+      </section>
+      <details class="home-example" open>
+        <summary>{t('Product label example')}</summary>
+        <figure id="label-example" class="label-example" aria-labelledby="example-caption">
+          <figcaption id="example-caption">{t('Example only')}</figcaption>
+          <div class="label-example-content">
+            <Image src={labelExample} alt={t('Generic vial illustration for the label example.')} width={256} height={384} format="webp" quality={80} decoding="async" />
+            <div class="label-example-record"><h2>BPC-157</h2><p class="small example-form">{t('Lyophilized powder')}</p><dl><div><dt>{t('Amount in one vial')}</dt><dd class="num">5 mg</dd></div><div><dt>{t('Concentration')}</dt><dd>{t('Not provided')}</dd></div></dl></div>
+          </div>
+          <p class="small">{t('5 mg is the amount in the vial, not a concentration.')}</p>
+        </figure>
+      </details>
+    </div>
+    <section class="home-tools" aria-label={t('More tools')}>
+      <a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}><h2>{t('Quick calculator')}</h2></a>
+      <a data-analytics-action="open_planner" href={localePath('/planner', locale)}><h2>{t('Protocol planner')}</h2></a>
+      <a href={localePath('/library', locale)}><h2>{t('Reference library')}</h2></a>
+    </section>
+    <section class="home-help" aria-label={t('Help and quick tools')}>
+      <details class="peptide-definition"><summary>{t('What are peptides?')}</summary><p>{t('Peptides are chains of amino acids. This tool helps you organize specific products and your own plan.')}</p></details>
     </section>
   </div>
-  <section class="home-tools" aria-label={t('More tools')}>
-    <a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}><h2>{t('Quick calculator')}</h2></a>
-    <a data-analytics-action="open_planner" href={localePath('/planner', locale)}><h2>{t('Protocol planner')}</h2></a>
-    <a href={localePath('/library', locale)}><h2>{t('Reference library')}</h2></a>
-  </section>
-  <section class="home-help" aria-label={t('Help and quick tools')}>
-    <details class="home-example">
-      <summary>{t('Product label example')}</summary>
-      <figure id="label-example" class="label-example" aria-labelledby="example-caption">
-        <figcaption id="example-caption">{t('Example only')}</figcaption>
-        <div class="label-example-content">
-          <Image src={labelExample} alt={t('Generic vial illustration for the label example.')} width={256} height={384} format="webp" quality={80} decoding="async" />
-          <div class="label-example-record"><h2>BPC-157</h2><p class="small example-form">{t('Lyophilized powder')}</p><dl><div><dt>{t('Amount in one vial')}</dt><dd class="num">5 mg</dd></div><div><dt>{t('Concentration')}</dt><dd>{t('Not provided')}</dd></div></dl></div>
-        </div>
-        <p class="small">{t('5 mg is the amount in the vial, not a concentration.')}</p>
-      </figure>
-    </details>
-    <details class="peptide-definition"><summary>{t('What are peptides?')}</summary><p>{t('Peptides are chains of amino acids. This tool helps you organize specific products and your own plan.')}</p></details>
-  </section>
   <script>
     import { initHome } from '../scripts/home';
     initHome();

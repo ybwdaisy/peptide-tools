@@ -582,5 +582,7 @@
   "Your records stay in this browser. Clearing browser data removes them. Keep a separate backup.": "记录保存在此浏览器。清理浏览器数据会删除记录，请另存备份。",
   "Restore a local backup": "恢复本地备份",
   "Clear local data": "清除本地数据",
-  "Unreadable data cannot be separated. Clear all local products, schedules and calculations?": "无法分离不可读的数据。清除本地所有产品、计划和换算？"
+  "Unreadable data cannot be separated. Clear all local products, schedules and calculations?": "无法分离不可读的数据。清除本地所有产品、计划和换算？",
+  "Schedule details": "计划信息",
+  "Choose a product": "选择产品"
 }

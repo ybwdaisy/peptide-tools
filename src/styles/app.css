@@ -1,5 +1,9 @@
-/* Hallmark · shape: app screen · genre: modern-minimal · theme: Peptide Tools quiet workspace · scope: app · redesign: full · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H5 E4 S4 R5 V3 · weakest: variety; use a consistent task hierarchy rather than decorative page layouts. */
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: custom focused product labels · scope: app · redesign: full · nav: capped task navigation · footer: legal and existing tool links · signature: selected product label and concentration · states: existing empty, local read error, unconfirmed and saved records · axes: light/grotesk-sans/cool · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 · weakest: execution; verify native mobile selection and record actions against real browser states. */
+/* Hallmark · dismissed 74 · the owner selected the cool near-white canvas in the focused-label visual target; the palette implements that approved reference. */
+/* Hallmark · dropped _image · Astro's development image endpoint becomes the compiled label-example webp in a static build; the original educational asset, alt text and caption are retained. */
+/* Hallmark · finish-review: subagent ship · 0 actionable findings · gap: no physical iPhone session; Chrome and mobile WebKit exercised the real static build. */
+/* Hallmark · logo-review: subagent ship · approved three-segment cycle retained; 12 EN/ZH header widths, focus and home navigation cases passed after fixing the 641px collision. */
 /* Hallmark · dropped "Works in your browser", "Your inputs", "Check the inputs, every time.", "Schedule saved" · owner explicitly requested removing slogans, repeated explanations and secondary labels. */
 /* Hallmark · reworded "Read the evidence, with context." to "Reference library" · the task is the title. */
 /* Hallmark · dropped item- · per-visit planner field UUIDs change; all data-field hooks, labels, events and validation remain. */
@@ -11,20 +15,21 @@
 /* Hallmark · dropped "1,000", "366 days" · values are retained inside optional arithmetic and storage disclosures, not removed from the product. */
 /* Hallmark · reworded "Saved in this browser" to "Saved schedules" · name the saved object rather than repeat its storage location. */
 /* Hallmark · dropped "Your data" · backup and restore controls already carry explicit action labels. */
-/* Hallmark · finish-review: subagent ship; bad stitched phone evidence recaptured as viewport segments; no actionable defects. Floor 0 FAIL · Reflex 0 · 1 kept-figure warning (facts retained in disclosures). */
-/* Hallmark · round-one functional finish-review: subagent fix · 1 P1 resolved with SSR-disabled submissions and delayed/failed-module Enter tests; phone evidence recaptured in fresh WebKit. */
 @import './tokens.css';
 @import './base.css';
 
-@font-face { font-family: 'IBM Plex Sans'; src: url('/fonts/ibm-plex-sans.ttf') format('truetype'); font-style: normal; font-weight: 100 700; font-display: swap; }
+@font-face { font-family: 'Schibsted Grotesk'; src: url('/fonts/schibsted-grotesk-latin.woff2') format('woff2'); font-style: normal; font-weight: 400 900; font-display: swap; }
+@font-face { font-family: 'Schibsted Grotesk'; src: url('/fonts/schibsted-grotesk-latin-ext.woff2') format('woff2'); font-style: normal; font-weight: 400 900; font-display: swap; unicode-range: U+0100-02BA,U+02BD-02C5,U+02CE-02D7,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
 body { min-width: 320px; }
 strong { font-weight: 600; }
 .site-header { min-height: 72px; display: flex; align-items: center; gap: var(--space-lg); border-bottom: 1px solid var(--color-rule); }
-.brand { flex-shrink: 0; font-size: var(--text-lg); font-weight: 600; letter-spacing: var(--tracking-display); text-decoration: none; }
+.brand { display: inline-flex; align-items: center; gap: var(--space-xs); min-height: 44px; flex-shrink: 0; font-size: var(--text-xl); font-weight: 700; letter-spacing: var(--tracking-display); text-decoration: none; white-space: nowrap; }
+.brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
+.brand-wordmark { display: inline-block; }
 .site-header > nav { display: flex; align-items: center; gap: var(--space-lg); margin-left: auto; min-width: 0; }
-.site-header nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: var(--text-sm); white-space: nowrap; border-bottom: 2px solid transparent; }
-.site-header nav a[aria-current='page'], .site-header nav a[aria-current='true'] { border-bottom-color: var(--color-ink); }
-.header-tools { flex-shrink: 0; }
+.site-header nav a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; font-size: var(--text-md); white-space: nowrap; border-bottom: 2px solid transparent; }
+.site-header nav a[aria-current='page'], .site-header nav a[aria-current='true'] { border-bottom-color: var(--color-accent); font-weight: 600; }
+.header-tools { flex-shrink: 0; padding-left: var(--space-md); border-left: 1px solid var(--color-rule); }
 .language-switch { display: flex; gap: var(--space-2xs); }
 .site-header .language-switch a { justify-content: center; min-width: 44px; padding-inline: var(--space-xs); }
 main { padding-block: var(--space-xl) var(--space-2xl); min-height: 65dvh; }
@@ -96,7 +101,7 @@ summary::marker { color: var(--color-muted); }
 
 .calculator-workbench { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); }
 .calculator-inputs { padding-right: var(--space-lg); }
-.calculator-output { display: flex; flex-direction: column; min-height: 300px; padding: var(--space-lg); background: var(--color-paper-2); }
+.calculator-output { display: flex; flex-direction: column; min-height: 300px; padding-left: var(--space-xl); border-left: 1px solid var(--color-rule); }
 .calculator-output > h2 { margin-bottom: var(--space-lg); }
 .dose-row { display: grid; grid-template-columns: minmax(0, 1fr) 112px; gap: var(--space-sm); margin-block: var(--space-lg); }
 .two-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
@@ -215,17 +220,20 @@ summary::marker { color: var(--color-muted); }
   .saved-aside .data-actions { margin-top: 0; }
   .saved-aside > .optional-help, .saved-aside > .status-message { grid-column: 1 / -1; }
 }
-@media (max-width: 40rem) {
+@media (max-width: 48rem) {
   .site-header { flex-wrap: wrap; gap: 0 var(--space-md); padding-top: var(--space-xs); }
-  .header-tools { margin-left: auto; }
-  .site-header > nav { order: 3; flex-basis: 100%; width: 100%; gap: var(--space-sm); margin: 0; overflow-x: auto; }
+  .header-tools { margin-left: auto; padding-left: 0; border: 0; }
+  .site-header > nav { order: 3; flex-basis: 100%; width: 100%; justify-content: space-between; gap: var(--space-xs); margin: 0; }
+  .site-header > nav a { font-size: var(--text-sm); }
+}
+@media (max-width: 40rem) {
   main { padding-top: var(--space-lg); }
   .home-tools, .calculator-workbench { grid-template-columns: minmax(0, 1fr); }
   .home-tools { gap: var(--space-xs); padding-block: var(--space-md); margin-top: var(--space-lg); }
   .home-actions { gap: var(--space-sm); }
   .label-example-content { gap: var(--space-md); }
   .calculator-inputs { padding: 0; }
-  .calculator-output { min-height: 260px; padding: var(--space-md); }
+  .calculator-output { min-height: 260px; padding: var(--space-lg) 0 0; border-left: 0; border-top: 1px solid var(--color-rule); }
   .planner-meta, .item-frequency { grid-template-columns: minmax(0, 1fr); }
   .item-fields { grid-template-columns: minmax(0, 1fr) 100px; }
   .item-fields > :first-child { grid-column: 1 / -1; }
@@ -272,3 +280,110 @@ summary::marker { color: var(--color-muted); }
 .explanation a { display: inline-block; }
 
 .calculator-output > .status-message:not(:empty) { margin-top: var(--space-sm); }
+
+/* Calculator: an open label-to-result workbench in the shared focused-label system. */
+.calculator-page .product-context { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: start; gap: var(--space-lg); padding-block: var(--space-lg); margin-bottom: var(--space-xl); border-block: 1px solid var(--color-rule); }
+.calculator-product-label, .calculator-product-controls { min-width: 0; }
+.calculator-product-label h2 { max-width: none; font-size: var(--text-2xl); }
+.calculator-product-label p:not(:empty) { margin-top: var(--space-xs); overflow-wrap: anywhere; }
+.calculator-page #calculation-basis-wrap { margin-top: 0; }
+.calculator-page #calculation-product-edit { text-underline-offset: 3px; }
+.calculator-page .calculator-workbench { gap: var(--space-xl); align-items: start; }
+.calculator-page .calculator-inputs { min-width: 0; padding: 0; }
+.calculator-label-inputs { min-width: 0; padding-bottom: var(--space-lg); border-bottom: 1px solid var(--color-rule); }
+.calculator-page .concentration-source { margin-bottom: var(--space-lg); }
+.calculator-concentration { min-width: 0; }
+.calculator-page .dose-row { margin-block: var(--space-lg); }
+.calculator-submit { margin-top: var(--space-md); }
+.calculator-page .calculator-output { min-width: 0; min-height: 300px; padding: 0 0 0 var(--space-xl); background: transparent; border-left: 1px solid var(--color-rule); }
+.calculator-page .calculator-output > h2 { margin-bottom: var(--space-md); }
+.calculator-page .volume, .calculator-page .result-placeholder { font-size: var(--text-result); }
+.calculator-page .result-placeholder { margin-block: var(--space-md); }
+.calculator-page .result-context { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.calculator-page .save-calculation { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-sm); margin-top: var(--space-lg); }
+.calculator-page .save-calculation > div { min-width: 0; }
+.calculator-page .save-calculation .button { margin-top: 0; }
+.calculator-page .saved-calculations { margin-top: var(--space-xl); }
+.calculator-page .saved-calculations .section-toolbar > a { display: inline-flex; align-items: center; min-height: 44px; }
+.calculator-page .explanation { max-width: none; margin-top: var(--space-xl); }
+.calculator-page .explanation p { max-width: 65ch; }
+@media (max-width: 60rem) {
+  .calculator-page .save-calculation { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .calculator-page .save-calculation > div { width: 100%; }
+}
+@media (max-width: 40rem) {
+  .calculator-page .product-context { grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); padding-block: var(--space-md); margin-bottom: var(--space-lg); }
+  .calculator-page .calculator-workbench { gap: var(--space-xl); }
+  .calculator-page .calculator-output { min-height: 0; padding: var(--space-lg) 0 0; border-left: 0; border-top: 1px solid var(--color-rule); }
+  .calculator-submit > .button { width: 100%; }
+  .calculator-page .save-calculation { justify-items: stretch; }
+  .calculator-page .saved-calculations .section-toolbar { align-items: flex-start; }
+}
+
+/* Planner keeps native controls on an open working surface. */
+.planner-heading { margin-bottom: var(--space-xl); }
+.planner-form, .planner-setup, .planner-items-region, .planner-commit { min-width: 0; }
+.planner-setup > h2 { margin-bottom: var(--space-lg); }
+.planner-setup .optional-help { margin-top: var(--space-sm); }
+.planner-items-region .protocol-item { padding-block: var(--space-lg); }
+.planner-items-region .protocol-item:first-child { margin-top: var(--space-lg); }
+.planner-add-item { margin-top: var(--space-xs); }
+.planner-commit { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.planner-commit > .error-message:empty { margin: 0; }
+.planner-local-data { padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.planner-local-data > h2 { font-size: var(--text-md); }
+.planner-product-selection select { font-weight: 500; }
+.planner-product-selection > p:empty { display: none; }
+.planner-agenda { padding-block: var(--space-lg); border-block: 1px solid var(--color-rule); }
+.planner-agenda .calendar-toolbar { margin-bottom: var(--space-sm); }
+.planner-agenda .agenda-week { max-width: 560px; }
+.planner-agenda .agenda-entries > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-xs) var(--space-lg); }
+.planner-agenda .agenda-entry-values { margin-top: 0; }
+@media (max-width: 60rem) {
+  .planner-local-data { padding-top: 0; border-top: 0; }
+}
+@media (max-width: 40rem) {
+  .planner-heading { margin-bottom: var(--space-lg); }
+  .planner-setup > h2 { margin-bottom: var(--space-md); }
+  .planner-meta input, .planner-meta select, .item-frequency input, .item-frequency select { width: 100%; min-width: 0; max-width: 100%; }
+  .planner-commit > .actions { align-items: stretch; }
+  .planner-commit > .actions > .button { width: 100%; }
+  .planner-local-data { margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-rule); }
+  .planner-agenda .agenda-entries > li { grid-template-columns: minmax(0, 1fr); }
+  .planner-agenda .agenda-week { margin-inline: 0; }
+}
+
+/* Home: the existing educational label is visible beside the first product action. */
+.focused-home .home-entry, .focused-home .home-tools, .focused-home .home-help { max-width: none; }
+.focused-home .home-workspace { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); align-items: start; gap: var(--space-2xl); }
+.focused-home .home-intro { min-width: 0; padding-block: var(--space-lg); }
+.focused-home .home-intro .page-heading { margin-bottom: var(--space-lg); }
+.focused-home .home-actions { align-items: flex-start; gap: var(--space-sm) var(--space-lg); }
+.focused-home .home-example { min-width: 0; border-top: 1px solid var(--color-rule); }
+.focused-home .home-example > summary { color: var(--color-ink); font-size: var(--text-md); font-weight: 500; }
+.focused-home .label-example { margin-bottom: 0; padding: var(--space-md) 0 var(--space-lg); background: transparent; }
+.focused-home .label-example-content { grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr); gap: var(--space-lg); margin-block: var(--space-md); }
+.focused-home .label-example img { max-height: 192px; }
+.focused-home .label-example-record { min-width: 0; }
+.focused-home .label-example-record h2 { font-size: var(--text-2xl); }
+.focused-home .label-example-record dl > div { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
+.focused-home .label-example-record dd { text-align: right; }
+.focused-home .home-tools { margin-top: var(--space-xl); }
+.focused-home .home-tools a { min-width: 0; }
+.focused-home .home-tools h2 { font-size: var(--text-lg); }
+@media (max-width: 60rem) {
+  .focused-home .home-workspace { grid-template-columns: minmax(0, 1fr); gap: var(--space-lg); }
+  .focused-home .home-intro { padding-block: 0; }
+  .focused-home .home-example { max-width: 640px; }
+}
+@media (max-width: 40rem) {
+  .focused-home .home-workspace { gap: var(--space-lg); }
+  .focused-home .home-actions { gap: var(--space-xs) var(--space-md); }
+  .focused-home .label-example { padding-top: var(--space-xs); }
+  .focused-home .label-example-content { grid-template-columns: minmax(0, 0.45fr) minmax(0, 1fr); gap: var(--space-md); }
+  .focused-home .label-example img { max-height: 144px; }
+  .focused-home .label-example-record h2 { font-size: var(--text-xl); }
+  .focused-home .label-example-record dl > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-2xs); }
+  .focused-home .label-example-record dd { text-align: left; }
+  .focused-home .home-tools { margin-top: var(--space-lg); }
+}
