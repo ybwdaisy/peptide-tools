@@ -33,7 +33,7 @@ test('a blend calculation has an explicit component basis and carries only confi
   await row.locator('[data-field="time"]').fill('08:00'); await row.locator('[data-field="frequency"]').selectOption('daily');
   await page.getByRole('button', { name: 'Generate calendar', exact: true }).click();
   await expect(page.locator('#agenda-entries')).toContainText(blend.name);
-  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   const schedule = await page.evaluate(key => JSON.parse(localStorage.getItem(key)!).protocols[0], STORAGE_KEY);
   expect(schedule.items[0].product.amountMg).toBe('10'); expect(schedule.items[0].doseBasis).toBe('0');
   // A later label change does not silently replace the schedule snapshot.
@@ -76,7 +76,7 @@ test('deep links preserve valid legacy time-zone aliases when opening and resavi
   }, STORAGE_KEY);
   await page.goto('/planner#protocol=legacy');
   await expect(page.locator('#time-zone')).toHaveValue('Etc/GMT+5');
-  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   await expect(page.locator('#planner-status')).toContainText('Saved in this browser');
   const data = await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   expect(data.protocols[0].timeZone).toBe('Etc/GMT+5');

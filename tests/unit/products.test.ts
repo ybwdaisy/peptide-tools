@@ -52,18 +52,18 @@ test('version 2 keeps immutable product snapshots while legacy backups remain re
   assert.throws(() => parseBackup(JSON.stringify({ version: 2, protocols: [], products: [p, p] })), /duplicate/);
 });
 
-test('workspace mutations preserve older plans, import atomically and protect unreadable data', () => {
+test('workspace mutations preserve older plans, import atomically and protect unreadable data', async () => {
   let stored: string | null = null;
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: () => stored, setItem: (_key: string, value: string) => { stored = value; }, removeItem: () => { stored = null; } } });
-  stored = serializeBackup([protocol()]); saveProduct(product());
+  stored = serializeBackup([protocol()]); await saveProduct(product());
   assert.equal(readWorkspace().protocols.length, 1); assert.equal(readWorkspace().products.length, 1);
-  saveProtocols([]); assert.equal(readWorkspace().products.length, 1);
-  saveProtocols([protocol()]); deleteProduct('p1'); assert.equal(readWorkspace().protocols[0]?.items[0]?.product?.name, 'BPC-157');
-  const original = exportWorkspace(); assert.throws(() => replaceWorkspace('{bad')); assert.equal(exportWorkspace(), original);
-  stored = '{corrupt'; assert.throws(() => saveProduct(product())); assert.equal(stored, '{corrupt');
-  replaceWorkspace(original); assert.equal(localStorage.getItem(STORAGE_KEY), original);
+  await saveProtocols([]); assert.equal(readWorkspace().products.length, 1);
+  await saveProtocols([protocol()]); await deleteProduct('p1'); assert.equal(readWorkspace().protocols[0]?.items[0]?.product?.name, 'BPC-157');
+  const original = exportWorkspace(); await assert.rejects(() => replaceWorkspace('{bad')); assert.equal(exportWorkspace(), original);
+  stored = '{corrupt'; await assert.rejects(() => saveProduct(product())); assert.equal(stored, '{corrupt');
+  await replaceWorkspace(original); assert.equal(localStorage.getItem(STORAGE_KEY), original);
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem() { throw new Error('unavailable'); } } });
-  assert.throws(() => saveProduct(product()));
+  await assert.rejects(() => saveProduct(product()));
   Reflect.deleteProperty(globalThis, 'localStorage');
 });
 

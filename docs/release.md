@@ -1,5 +1,7 @@
 # Production release and rollback
 
+Latest functional release work: [daily workflow, verification and v4-aware rollback](daily-workflow-2026-11-17.md). The November 12 deployment details below are historical; the project now has a GitHub connection to `ybwdaisy/peptide-tools`, production branch `main`. Do not follow the older no-Git statement for new releases. Any rollback after actual records are created must preserve v4 readability; see the linked record.
+
 Updated: 2026-11-12. The owner authorized merging, production deployment and subdomain setup.
 
 ## Current production

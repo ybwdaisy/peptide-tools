@@ -1,5 +1,5 @@
 import { readWorkspace } from '../lib/workspace';
-import { ui } from '../lib/i18n';
+import { ui, browserLocale, localePath } from '../lib/i18n';
 
 export function initHome() {
   const example = document.getElementById('label-example')?.closest('details');
@@ -10,10 +10,16 @@ export function initHome() {
   if (!returning) return;
   try {
     const saved = readWorkspace();
-    returning.hidden = saved.products.length === 0 && saved.protocols.length === 0;
+    returning.hidden = !(saved.products.length || saved.protocols.length || saved.calculations.length || saved.records.length);
+    const primary = document.getElementById('home-return-heading') as HTMLAnchorElement;
+    if (saved.protocols.length || saved.records.length) {
+      primary.textContent = ui('Open today'); primary.href = localePath('/today', browserLocale()); primary.dataset.analyticsAction = 'open_today';
+    } else if (!saved.products.length && saved.calculations.length) {
+      primary.textContent = ui('Open saved calculations'); primary.href = localePath('/calculator', browserLocale()) + '#saved-calculations'; primary.dataset.analyticsAction = 'resume_calculation';
+    }
     const addProduct = document.querySelector('[data-analytics-action="add_product"]');
     addProduct?.classList.toggle('secondary', !returning.hidden);
-    if (addProduct && !returning.hidden) addProduct.textContent = ui('Add another product');
+    if (addProduct && saved.products.length) addProduct.textContent = ui('Add another product');
   } catch {
     // A read failure never modifies existing records or blocks the first-use paths.
     returning.hidden = true;

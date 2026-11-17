@@ -42,12 +42,12 @@ test('language switching retains planner drafts, saved identity and user text; C
   const row=page.locator('.protocol-item').first();
   await row.locator('[data-field="label"]').fill('Calculator'); await row.locator('[data-field="dose"]').fill('250'); await row.locator('[data-field="time"]').fill('08:00');
   await page.getByRole('button',{name:'生成日历',exact:true}).click(); await expect(page.locator('#calendar-summary')).toContainText('3 条记录');
-  await page.getByRole('button',{name:'保存在此浏览器',exact:true}).click();
+  await page.getByRole('button',{name:'保存在此浏览器',exact:true}).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   const before=await page.evaluate(key=>localStorage.getItem(key),STORAGE_KEY);
   await page.locator('[data-language="en"]').click();
   await expect(page.locator('#protocol-name')).toHaveValue('Delete'); await expect(row.locator('[data-field="label"]')).toHaveValue('Calculator');
   await expect(page.locator('#calendar-summary')).toContainText('3 entries');
-  await page.getByRole('button',{name:'Save in this browser',exact:true}).click();
+  await page.getByRole('button',{name:'Save in this browser',exact:true}).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   expect(await page.evaluate(key=>localStorage.getItem(key),STORAGE_KEY)).toBe(before);
   await page.locator('[data-language="zh"]').click(); await expect(page.locator('#calendar-summary')).toContainText('3 条记录');
   const pending=page.waitForEvent('download'); await page.getByRole('button',{name:'导出日历（.ics）',exact:true}).click();

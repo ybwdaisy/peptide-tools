@@ -40,7 +40,7 @@ test('planner generates, saves, reloads, exports and restores a complete protoco
   await expect(page.locator('#calendar-summary')).toContainText('3 entries');
   await expect(page.locator('#schedule-rows tr')).toHaveCount(3);
   await expect(page.locator('#schedule-rows td:nth-child(3)').first()).toBeVisible();
-  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   await expect(page.locator('#planner-status')).toContainText('Saved in this browser');
   const backupDownload = page.waitForEvent('download'); await page.getByRole('button', { name: 'Download JSON backup', exact: true }).click();
   const backup = await backupDownload; const backupPath = await backup.path(); expect(backupPath).toBeTruthy();
@@ -72,12 +72,12 @@ test('multi-item schedule respects alternate-day rules and invalidates stale exp
 });
 test('unavailable local storage shows an error without claiming a successful save', async ({ page }) => {
   await page.addInitScript(() => { const original = Storage.prototype.setItem; Storage.prototype.setItem = function(key, value) { if (key.includes('protocols')) throw new DOMException('Full', 'QuotaExceededError'); return original.call(this, key, value); }; });
-  await fillProtocol(page); await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await fillProtocol(page); await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   await expect(page.locator('#planner-error')).toContainText('unavailable or full');
   await expect(page.locator('#saved-empty')).toBeVisible();
 });
 test('invalid restore preserves existing stored data', async ({ page }) => {
-  await fillProtocol(page); await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await fillProtocol(page); await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   const before = await page.evaluate(key => localStorage.getItem(key), STORAGE_KEY);
   await page.getByLabel('Restore a JSON backup', { exact: true }).setInputFiles({ name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{"version":2,"protocols":[]}') });
   await expect(page.locator('#storage-status')).toContainText('Restore failed');
@@ -85,7 +85,7 @@ test('invalid restore preserves existing stored data', async ({ page }) => {
 });
 test('corrupt existing storage is not overwritten by a new save', async ({ page }) => {
   await page.addInitScript(key => localStorage.setItem(key, '{corrupt'), STORAGE_KEY);
-  await fillProtocol(page); await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await fillProtocol(page); await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   await expect(page.locator('#planner-error')).toContainText('Nothing has been overwritten');
   expect(await page.evaluate(key => localStorage.getItem(key), STORAGE_KEY)).toBe('{corrupt');
 });
@@ -176,7 +176,7 @@ test('planner analytics records successful actions once and never sends restored
   await fillProtocol(page);
   await page.getByRole('button', { name: 'Analytics preferences', exact: true }).click(); await page.getByRole('button', { name: 'Allow analytics', exact: true }).click();
   await page.getByRole('button', { name: 'Generate calendar', exact: true }).click();
-  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   await page.getByRole('button', { name: 'Download JSON backup', exact: true }).click();
   await page.getByRole('button', { name: 'Export calendar (.ics)', exact: true }).click();
   await page.evaluate(() => { window.print = () => {}; }); await page.getByRole('button', { name: 'Print cycle', exact: true }).click();

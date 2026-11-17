@@ -11,7 +11,7 @@ export function initProducts() {
   if (!document.getElementById('product-workspace')) return;
   const el = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const path = (route: string) => localePath(route, browserLocale());
-  let workspace: Workspace = { version: 3, products: [], protocols: [], calculations: [] };
+  let workspace: Workspace = { version: 4, products: [], protocols: [], calculations: [], records: [] };
   let readable = false;
   let selectedProductId: string | undefined;
   function link(label: string, href: string, cls = 'text-link') { const a = node('a', label, cls); a.href = href; if (href.includes('#protocol=')) a.dataset.analyticsAction = 'open_schedule'; return a; }
@@ -37,7 +37,7 @@ export function initProducts() {
     el('products-empty').hidden = !readable || workspace.products.length > 0;
     el('product-add-action').hidden = !readable || !workspace.products.length;
     el('product-picker-wrap').hidden = !readable || !workspace.products.length;
-    el<HTMLButtonElement>('workspace-backup-export').disabled = !readable || !(workspace.products.length || workspace.protocols.length || workspace.calculations.length);
+    el<HTMLButtonElement>('workspace-backup-export').disabled = !readable || !(workspace.products.length || workspace.protocols.length || workspace.calculations.length || workspace.records.length);
     const list = el('product-list'); list.replaceChildren();
     const picker = el<HTMLSelectElement>('product-picker'); picker.replaceChildren();
     if (readable) for (const product of workspace.products) {
@@ -116,15 +116,15 @@ export function initProducts() {
     }
   });
   window.addEventListener('storage', event => { if (event.key === STORAGE_KEY || event.key === null) render(); });
-  el('product-delete').addEventListener('click', () => {
+  el('product-delete').addEventListener('click', async () => {
     const product = workspace.products.find(p => p.id === selectedProductId); if (!product) return;
     if (!confirm(ui('Delete “{name}” from your products? Existing schedules keep their saved product details.', { name: product.name }))) return;
-    try { deleteProduct(product.id); track('product_deleted', { product_type: product.kind }); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Product record deleted. Existing schedules were kept.'); }
+    try { await deleteProduct(product.id); track('product_deleted', { product_type: product.kind }); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Product record deleted. Existing schedules were kept.'); }
     catch (caught) { el('workspace-status').textContent = uiError(caught); }
   });
-  el('workspace-clear').addEventListener('click', () => {
-    if (!confirm(ui('Delete all saved products, schedules and calculations from this browser? Download a backup first if you need a copy.'))) return;
-    try { clearWorkspace(); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Saved local data cleared. Downloaded files are unchanged.'); }
+  el('workspace-clear').addEventListener('click', async () => {
+    if (!confirm(ui('Delete all saved products, schedules, calculations and actual records from this browser? Download a backup first if you need a copy.'))) return;
+    try { await clearWorkspace(); history.replaceState(null, '', path('/products')); render(); el('workspace-status').textContent = ui('Saved local data cleared. Downloaded files are unchanged.'); }
     catch { el('workspace-status').textContent = ui('Storage is unavailable. Saved data could not be cleared.'); }
   });
   window.addEventListener('workspace-restored', render);

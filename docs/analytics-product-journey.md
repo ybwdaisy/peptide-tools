@@ -1,5 +1,7 @@
 # Product-first analytics — November 13, 2026
 
+Current daily workflow extension (November 17, 2026): `/today`, returning-user navigation, `record_saved`, `record_removed` and CSV export are specified in [daily workflow release](daily-workflow-2026-11-17.md#analytics). The previous product/calculation funnel events remain unchanged. Historical reception evidence below does not establish reception of the new daily events.
+
 The website now begins with a product label and a browser-local workspace. The analytics release follows that journey while retaining the existing shared GA4 property, stream and privacy policy. PR #8 introduced the contract; PR #9 is merged and deployed as `d93ee74`, deployment `dpl_3hvo7oH8ZeNLgmCvWZq6MTXY2j1Z`. Native Chrome acceptance now independently confirms navigation events and one create/one update save in GA4 Realtime. Preserved Network HAR omitted some events that GA4 received; an absent HAR row alone cannot establish event loss. See the [current acceptance record](evidence/production-sdk-trace-20261113-pr9.json).
 
 ## Fixed event contract
