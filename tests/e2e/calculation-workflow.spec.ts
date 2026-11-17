@@ -55,7 +55,7 @@ test('a changed product requires review before reusing a saved setup, then updat
   await page.getByRole('button', { name: 'Calculate volume', exact: true }).click(); await expect(page.locator('#calculator-error')).toContainText('Check the updated product');
   await page.locator('#confirm-updated-product').check(); await page.getByRole('button', { name: 'Calculate volume', exact: true }).click();
   await expect(page.locator('#result-volume')).toHaveText('0.05');
-  await page.getByRole('button', { name: 'Save calculation', exact: true }).dblclick();
+  await page.getByRole('button', { name: 'Save calculation', exact: true }).dblclick(); await expect(page.locator('#save-calculation-form button[type=submit]')).toBeEnabled();
   const data = await page.evaluate(key => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY); expect(data.calculations).toHaveLength(1); expect(data.calculations[0].productRevision).toBe('r2');
 });
 

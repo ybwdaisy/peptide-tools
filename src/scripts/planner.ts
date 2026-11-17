@@ -5,7 +5,7 @@ import { calendarMonth, generateSchedule, today, validateProtocol, type Protocol
 import { STORAGE_KEY } from '../lib/backup';
 import { exportCalendar } from '../lib/ical';
 import { track, trackStart } from './analytics';
-import { readWorkspace, saveProtocols, clearProtocols, clearWorkspace } from '../lib/workspace';
+import { readWorkspace, saveProtocol, deleteProtocol, clearProtocols, clearWorkspace } from '../lib/workspace';
 import { productSummary, validateProduct, type Product } from '../lib/products';
 
 function download(text: string, type: string, filename: string) {
@@ -206,10 +206,10 @@ export function initPlanner() {
     el<HTMLInputElement>('agenda-date').value = hash.has('protocol') ? today(p.timeZone) : p.startDate;
     rows(shown); renderMonth(); renderAgenda();
   }
-  function persist(list: Protocol[]) {
+  async function persist(action: () => Promise<void>) {
     if (unreadableSavedData) throw new Error('Unreadable saved data must be restored or cleared before saving.');
-    saveProtocols(list);
-    unreadableSavedData = false; protocols = list; renderSaved();
+    await action();
+    unreadableSavedData = false; protocols = readWorkspace().protocols; renderSaved();
   }
   function renderSaved() {
     el('saved-empty').hidden = protocols.length > 0;
@@ -224,7 +224,7 @@ export function initPlanner() {
         try { showSchedule(p); } catch (e) { current = undefined; el('generated-calendar').hidden = true; el('calendar-empty').hidden = false; showError(e); }
       });
       const remove = element('button', ui('Delete'), 'text-button'); remove.type = 'button'; remove.setAttribute('aria-label', ui('Delete saved protocol {name}', { name: p.name }));
-      remove.addEventListener('click', () => { if (!confirm(ui('Delete “{name}” from this browser?', { name: p.name }))) return; try { persist(protocols.filter(x => x.id !== p.id)); storageStatus.textContent = ui('Saved protocol deleted. The open form is unchanged.'); } catch { storageStatus.textContent = ui('Storage is unavailable. Nothing was deleted.'); } });
+      remove.addEventListener('click', async () => { if (!confirm(ui('Delete “{name}” from this browser?', { name: p.name }))) return; try { await persist(() => deleteProtocol(p.id)); storageStatus.textContent = ui('Saved protocol deleted. The open form is unchanged.'); } catch { storageStatus.textContent = ui('Storage is unavailable. Nothing was deleted.'); } });
       const actions = element('div', undefined, 'actions'); actions.append(open, remove); li.append(actions); fragment.append(li);
     }
     el('saved-list').replaceChildren(fragment);
@@ -273,14 +273,18 @@ export function initPlanner() {
   form.addEventListener('input', dirty); form.addEventListener('change', dirty);
   el('add-item').addEventListener('click', () => { dirty(); addItem(); items.lastElementChild?.querySelector<HTMLInputElement>('input')?.focus(); });
   form.addEventListener('submit', event => { event.preventDefault(); error.textContent = ''; trackStart('planner_start', { tool_context: toolContext() }); try { showSchedule(readForm()); track('schedule_generated', { tool_context: toolContext() }); status.textContent = ui('Calendar generated from your entries. Save it separately to keep it in this browser.'); } catch (e) { showError(e); } });
-  el('save-protocol').addEventListener('click', () => {
+  let saving = false;
+  el('save-protocol').addEventListener('click', async () => {
+    if (saving) return;
     error.textContent = ''; trackStart('planner_start', { tool_context: toolContext() });
     if (unreadableSavedData) { error.textContent = ui('Existing saved data could not be read. Restore a valid backup or explicitly clear saved protocols before saving. Nothing has been overwritten.'); return; }
     let p: Protocol;
     try { p = readForm(); const check = generateSchedule(p); if (!check.length) throw new Error('No dates match this schedule. Adjust the dates or repeat rules.'); } catch (e) { showError(e); return; }
     if (!protocols.some(x => x.id === p.id) && protocols.length >= 20) { error.textContent = ui('This browser holds 20 protocols. Delete one before saving another.'); return; }
     const operation = protocols.some(x => x.id === p.id) ? 'update' : 'create';
-    try { persist([...protocols.filter(x => x.id !== p.id), p]); status.textContent = ui('Saved in this browser. Download a JSON backup to keep a separate copy.'); track('protocol_saved', { operation, tool_context: p.items.some(item => item.product) ? 'product' : 'standalone' }); } catch { error.textContent = ui('Local storage is unavailable or full. Your form is still here; generate a calendar and export it, or enable browser storage before saving.'); }
+    saving = true;
+    el<HTMLButtonElement>('save-protocol').disabled = true; el('save-protocol').setAttribute('aria-busy', 'true');
+    try { await persist(() => saveProtocol(p)); status.textContent = ui('Saved in this browser. Download a JSON backup to keep a separate copy.'); track('protocol_saved', { operation, tool_context: p.items.some(item => item.product) ? 'product' : 'standalone' }); } catch { error.textContent = ui('Local storage is unavailable or full. Your form is still here; generate a calendar and export it, or enable browser storage before saving.'); } finally { saving = false; el<HTMLButtonElement>('save-protocol').disabled = false; el('save-protocol').removeAttribute('aria-busy'); }
   });
   el('new-protocol').addEventListener('click', () => {
     if (!confirm(ui('Clear the open form and start a new protocol? Saved protocols will remain.'))) return;
@@ -291,7 +295,7 @@ export function initPlanner() {
   el('show-more').addEventListener('click', () => { shown += 100; rows(shown); });
   el('export-ics').addEventListener('click', () => { if (!current) return; download(exportCalendar(current, events, new Date(), browserLocale()), 'text/calendar;charset=utf-8', 'peptide-tools-calendar.ics'); track('export_completed', { export_type: 'ics' }); });
   window.addEventListener('workspace-restored', () => { try { protocols = readWorkspace().protocols; unreadableSavedData = false; renderSaved(); } catch { /* Shared restore reports errors. */ } });
-  el('clear-data').addEventListener('click', () => { if (!confirm(ui('Delete all saved protocols from this browser? Download a backup first if you need a copy.'))) return; try { if (unreadableSavedData) { if (!confirm(ui('Unreadable data cannot be separated. Clear all local products, schedules and calculations?'))) return; clearWorkspace(); } else clearProtocols(); unreadableSavedData = false; protocols = []; renderSaved(); storageStatus.textContent = ui('Saved protocols cleared. The open form and downloaded files are unchanged.'); } catch { storageStatus.textContent = ui('Storage is unavailable. Saved data could not be cleared.'); } });
+  el('clear-data').addEventListener('click', async () => { if (!confirm(ui('Delete all saved protocols from this browser? Download a backup first if you need a copy.'))) return; try { if (unreadableSavedData) { if (!confirm(ui('Unreadable data cannot be separated. Clear all local products, schedules, calculations and actual records?'))) return; await clearWorkspace(); } else await clearProtocols(); unreadableSavedData = false; protocols = []; renderSaved(); storageStatus.textContent = ui('Saved protocols cleared. The open form and downloaded files are unchanged.'); } catch { storageStatus.textContent = ui('Storage is unavailable. Saved data could not be cleared.'); } });
   el('print-calendar').addEventListener('click', () => { if (current) { rows(events.length); track('print_requested'); window.print(); } });
   window.addEventListener('beforeprint', () => { if (current) rows(events.length); });
   window.addEventListener('afterprint', () => { if (current) rows(shown); });

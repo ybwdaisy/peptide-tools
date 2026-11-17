@@ -30,7 +30,7 @@ test('Chinese translations cover page copy, validation messages and every source
     for (const value of [peptide.summary, peptide.limitation, peptide.risk, peptide.evidence, peptide.halfLife, peptide.halfLifeContext, ...peptide.sources.map(s => s.title)]) if (value) assert.ok(messages[value], `${peptide.slug}: ${value}`);
   }
   assert.ok(messages[FDA_RISK_SOURCE.title]);
-  const files = ['pages/index.astro','pages/calculator.astro','pages/planner.astro','pages/products/index.astro','pages/products/new.astro','pages/library/index.astro','pages/library/[slug].astro','pages/privacy.astro','pages/disclaimer.astro','pages/404.astro','layouts/Shell.astro','components/Calculator.astro','components/ConcentrationSource.astro','components/BackupControls.astro','scripts/concentration-input.ts','scripts/backup-controls.ts','lib/saved-calculations.ts','scripts/planner.ts','scripts/calculator.ts','scripts/analytics.ts','scripts/home.ts','scripts/products.ts','scripts/product-entry.ts','lib/planner.ts','lib/calculator.ts','lib/backup.ts','lib/products.ts','lib/workspace.ts'];
+  const files = ['pages/today.astro','scripts/today.ts','lib/records.ts','pages/index.astro','pages/calculator.astro','pages/planner.astro','pages/products/index.astro','pages/products/new.astro','pages/library/index.astro','pages/library/[slug].astro','pages/privacy.astro','pages/disclaimer.astro','pages/404.astro','layouts/Shell.astro','components/Calculator.astro','components/ConcentrationSource.astro','components/BackupControls.astro','scripts/concentration-input.ts','scripts/backup-controls.ts','lib/saved-calculations.ts','scripts/planner.ts','scripts/calculator.ts','scripts/analytics.ts','scripts/home.ts','scripts/products.ts','scripts/product-entry.ts','lib/planner.ts','lib/calculator.ts','lib/backup.ts','lib/products.ts','lib/workspace.ts'];
   for (const file of files) {
     const source = await readFile(new URL(`../../src/${file}`, import.meta.url), 'utf8');
     const copy = [ ...source.matchAll(/\b(?:t|ui)\(["']([^"'\n]+)["']/g), ...source.matchAll(/(?:PlannerError|Error)\('([^']+)'\)/g), ...source.matchAll(/InputError\('[^']+', '([^']+)'/g) ];
@@ -53,7 +53,7 @@ test('Chinese translations cover page copy, validation messages and every source
 });
 
 test('localized routes share the original anonymous analytics page groups', () => {
-  for (const path of ['/', '/calculator', '/planner', '/products', '/products/new', '/library', '/library/secret-user-identity', '/privacy', '/disclaimer']) assert.deepEqual(safePage(localePath(path, 'zh')), safePage(path));
+  for (const path of ['/', '/today', '/calculator', '/planner', '/products', '/products/new', '/library', '/library/secret-user-identity', '/privacy', '/disclaimer']) assert.deepEqual(safePage(localePath(path, 'zh')), safePage(path));
   const serialized = JSON.stringify(safePage('/zh/library/secret-user-identity'));
   assert.match(serialized, /\/library\/detail/);
   assert.doesNotMatch(serialized, /secret-user-identity|\/zh/);

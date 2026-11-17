@@ -220,12 +220,40 @@ summary::marker { color: var(--color-muted); }
   .saved-aside .data-actions { margin-top: 0; }
   .saved-aside > .optional-help, .saved-aside > .status-message { grid-column: 1 / -1; }
 }
-@media (max-width: 48rem) {
+@media (max-width: 60rem) {
   .site-header { flex-wrap: wrap; gap: 0 var(--space-md); padding-top: var(--space-xs); }
   .header-tools { margin-left: auto; padding-left: 0; border: 0; }
   .site-header > nav { order: 3; flex-basis: 100%; width: 100%; justify-content: space-between; gap: var(--space-xs); margin: 0; }
   .site-header > nav a { font-size: var(--text-sm); }
 }
+
+/* Daily records extend the locked product-label system; no separate visual theme. */
+.daily-workspace { max-width: 880px; margin-inline: auto; }
+.daily-controls { max-width: 680px; }
+.daily-date-actions { margin-block: var(--space-xs) var(--space-lg); }
+.daily-entries { list-style: none; margin: 0; padding: 0; }
+.daily-entries > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-md); align-items: center; padding-block: var(--space-lg); border-top: 1px solid var(--color-rule); }
+.daily-entry-info { min-width: 0; }
+.daily-entry-info h3, .daily-entry-info p { overflow-wrap: anywhere; }
+.daily-entry-info p { margin-top: var(--space-2xs); }
+.daily-entry-info .daily-amount, .record-outcome { font-weight: 600; }
+.daily-entries .actions { align-self: start; }
+.record-editor { margin-block: var(--space-lg); padding-block: var(--space-lg); border-block: 1px solid var(--color-rule); }
+.record-editor .record-fields { margin-top: var(--space-md); }
+.record-fields > div, .daily-controls > div, .history-filters > div { min-width: 0; }
+.record-amount { display: grid; grid-template-columns: minmax(0, 1fr) 100px; gap: var(--space-sm); }
+.record-notes { margin-block: var(--space-md); }
+.record-notes textarea { height: auto; min-height: 100px; resize: vertical; }
+.record-note { white-space: pre-wrap; }
+.record-history { margin-top: var(--space-xl); }
+.history-filters { max-width: 680px; margin-bottom: var(--space-sm); }
+@media (max-width: 40rem) {
+  .daily-entries > li, .daily-controls, .record-fields, .history-filters { grid-template-columns: minmax(0, 1fr); }
+  .daily-entries .actions { gap: var(--space-md); }
+  .daily-workspace input:is([type='date'], [type='time']), .daily-workspace select { width: 100%; max-width: 100%; min-width: 0; }
+  .daily-workspace .page-toolbar { align-items: flex-start; }
+}
+@media (max-width: 23rem) { .site-header > nav { flex-wrap: wrap; justify-content: flex-start; column-gap: var(--space-md); } }
 @media (max-width: 40rem) {
   main { padding-top: var(--space-lg); }
   .home-tools, .calculator-workbench { grid-template-columns: minmax(0, 1fr); }

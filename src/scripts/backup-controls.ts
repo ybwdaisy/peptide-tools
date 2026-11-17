@@ -1,4 +1,4 @@
-import { parseBackup, BACKUP_STATUS_KEY, type Backup } from '../lib/backup';
+import { parseBackup, BACKUP_STATUS_KEY, MAX_BACKUP_BYTES, type Backup } from '../lib/backup';
 import { exportWorkspace, readWorkspace, replaceWorkspace } from '../lib/workspace';
 import { browserLocale, ui, uiError } from '../lib/i18n';
 import { track } from './analytics';
@@ -16,7 +16,7 @@ export function initBackupControls() {
       const request = ++refreshId; let readable = false;
       try {
         const workspace = readWorkspace(); readable = true;
-        const empty = !(workspace.products.length || workspace.protocols.length || workspace.calculations.length);
+        const empty = !(workspace.products.length || workspace.protocols.length || workspace.calculations.length || workspace.records.length);
         button.disabled = empty; state.textContent = empty ? '' : ui('No backup download requested yet.');
         let meta; try { meta = JSON.parse(localStorage.getItem(BACKUP_STATUS_KEY) ?? 'null'); } catch { meta = null; }
         if (!empty && meta && typeof meta.digest === 'string' && /^[a-f0-9]{64}$/.test(meta.digest) && Number.isFinite(meta.at) && meta.at > 0 && meta.at <= Date.now()) {
@@ -42,21 +42,23 @@ export function initBackupControls() {
     input.onchange = async () => {
       const file = input.files?.[0]; cancel(false); if (!file) return; const request = generation;
       try {
-        if (file.size > 1024 * 1024) throw new Error('Use a backup smaller than 1 MB.');
+        if (file.size > MAX_BACKUP_BYTES) throw new Error('Use a backup smaller than 10 MB.');
         const raw = await file.text(), data = parseBackup(raw); if (generation !== request) return;
         pending = { raw, data }; status.textContent = '';
-        find<HTMLElement>('[data-restore-summary]').textContent = ui('{products} products, {protocols} schedules, {calculations} calculations.', { products: data.products?.length ?? 0, protocols: data.protocols.length, calculations: data.calculations?.length ?? 0 });
+        find<HTMLElement>('[data-restore-summary]').textContent = ui('{products} products, {protocols} schedules, {calculations} calculations, {records} actual records.', { products: data.products?.length ?? 0, protocols: data.protocols.length, calculations: data.calculations?.length ?? 0, records: data.records?.length ?? 0 });
         const names = [...(data.products ?? []), ...data.protocols, ...(data.calculations ?? [])].map(entry => { const li = document.createElement('li'); li.textContent = entry.name; return li; });
         find<HTMLElement>('[data-restore-names]').replaceChildren(...names); find<HTMLElement>('[data-restore-details]').hidden = !names.length; preview.hidden = false;
       } catch (error) { if (generation === request) status.textContent = ui('Restore failed: {message}', { message: uiError(error) }); }
     };
     find<HTMLButtonElement>('[data-restore-cancel]').addEventListener('click', () => cancel());
-    find<HTMLButtonElement>('[data-restore-confirm]').addEventListener('click', () => {
-      if (!pending || !confirm(ui('Replace all saved products, schedules and calculations with this backup? Download a backup first.'))) return;
+    find<HTMLButtonElement>('[data-restore-confirm]').addEventListener('click', async () => {
+      if (!pending || !confirm(ui('Replace all saved products, schedules, calculations and actual records with this backup? Download a backup first.'))) return;
       const restore = find<HTMLButtonElement>('[data-restore-confirm]'); restore.disabled = true;
       try {
-        replaceWorkspace(pending.raw); cancel(); track('backup_restored');
-        status.textContent = ui('Products, schedules and calculations restored.');
+        let hadRecords = false; try { hadRecords = readWorkspace().records.length > 0; } catch { /* An unreadable workspace can still be explicitly replaced. */ }
+        const includesRecords = pending.data.version === 4 || hadRecords;
+        await replaceWorkspace(pending.raw); cancel(); track('backup_restored');
+        status.textContent = ui('Products, schedules and calculations restored.') + (includesRecords ? ' ' + ui('Actual records restored: {count}.', { count: readWorkspace().records.length }) : '');
         window.dispatchEvent(new Event('workspace-restored')); void refresh();
       } catch (error) { status.textContent = ui('Restore failed: {message}', { message: uiError(error) }); }
       finally { restore.disabled = false; }

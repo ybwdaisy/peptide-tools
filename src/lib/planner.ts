@@ -59,9 +59,12 @@ export function validateProtocol(value: unknown): Protocol {
 }
 export function generateSchedule(input: Protocol): Occurrence[] {
   const p = validateProtocol(input);
-  const start = Temporal.PlainDate.from(p.startDate), end = Temporal.PlainDate.from(p.endDate);
+  return generateRange(p, Temporal.PlainDate.from(p.startDate), Temporal.PlainDate.from(p.endDate));
+}
+function generateRange(p: Protocol, from: Temporal.PlainDate, end: Temporal.PlainDate): Occurrence[] {
+  const start = Temporal.PlainDate.from(p.startDate);
   const result: Occurrence[] = [];
-  for (let date = start; Temporal.PlainDate.compare(date, end) <= 0; date = date.add({ days: 1 })) {
+  for (let date = from; Temporal.PlainDate.compare(date, end) <= 0; date = date.add({ days: 1 })) {
     const offset = start.until(date).days;
     for (const item of p.items) {
       const f = item.frequency;
@@ -74,6 +77,18 @@ export function generateSchedule(input: Protocol): Occurrence[] {
     }
   }
   return result.sort((a, b) => a.instant.localeCompare(b.instant) || a.itemId.localeCompare(b.itemId));
+}
+/** A reporting day is a half-open interval of instants, including on 23/25-hour days. */
+export function occurrencesOnDate(input: Protocol, date: string, timeZone: string): Occurrence[] {
+  const p = validateProtocol(input), day = isoDate(date);
+  const begin = day.toZonedDateTime(timeZone).toInstant();
+  const finish = day.add({ days: 1 }).toZonedDateTime(timeZone).toInstant();
+  let from = begin.toZonedDateTimeISO(p.timeZone).toPlainDate();
+  let to = finish.subtract({ nanoseconds: 1 }).toZonedDateTimeISO(p.timeZone).toPlainDate();
+  const start = Temporal.PlainDate.from(p.startDate), end = Temporal.PlainDate.from(p.endDate);
+  if (Temporal.PlainDate.compare(from, start) < 0) from = start;
+  if (Temporal.PlainDate.compare(to, end) > 0) to = end;
+  return generateRange(p, from, to).filter(e => Temporal.Instant.compare(e.instant, begin) >= 0 && Temporal.Instant.compare(e.instant, finish) < 0);
 }
 export function calendarMonth(month: string): string[] {
   const first = Temporal.PlainYearMonth.from(month).toPlainDate({ day: 1 });

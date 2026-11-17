@@ -39,15 +39,15 @@ test('v3 roundtrip includes setups, rejects duplicates/future versions and still
   assert.throws(() => parseBackup(JSON.stringify({ version: 3, products: [], protocols: [], calculations: [setup(), setup()] })), /duplicate/);
   assert.throws(() => parseBackup(JSON.stringify({ version: 4, products: [], protocols: [], calculations: [] })));
 });
-test('all workspace mutations preserve calculations and failed imports/writes leave the envelope intact', () => {
+test('all workspace mutations preserve calculations and failed imports/writes leave the envelope intact', async () => {
   let stored: string | null = null, fail = false;
   Object.defineProperty(globalThis, 'localStorage', { configurable: true, value: { getItem: () => stored, setItem: (_key: string, value: string) => { if (fail) throw Error('full'); stored = value; }, removeItem: () => { stored = null; } } });
   try {
-    stored = serializeBackup([]); saveCalculation(setup()); saveProduct(validateProduct(product)); saveProtocols([]); deleteProduct('p1');
+    stored = serializeBackup([]); await saveCalculation(setup()); await saveProduct(validateProduct(product)); await saveProtocols([]); await deleteProduct('p1');
     assert.equal(readWorkspace().calculations.length, 1);
-    const before = exportWorkspace(); assert.throws(() => replaceWorkspace('{bad')); assert.equal(exportWorkspace(), before);
-    fail = true; assert.throws(() => saveCalculation(setup({ dose: '500' }))); assert.equal(exportWorkspace(), before);
-    fail = false; saveCalculation(setup({ dose: '500' })); assert.equal(readWorkspace().calculations.length, 1); assert.equal(readWorkspace().calculations[0]?.dose, '500');
+    const before = exportWorkspace(); await assert.rejects(() => replaceWorkspace('{bad')); assert.equal(exportWorkspace(), before);
+    fail = true; await assert.rejects(() => saveCalculation(setup({ dose: '500' }))); assert.equal(exportWorkspace(), before);
+    fail = false; await saveCalculation(setup({ dose: '500' })); assert.equal(readWorkspace().calculations.length, 1); assert.equal(readWorkspace().calculations[0]?.dose, '500');
   } finally { Reflect.deleteProperty(globalThis, 'localStorage'); }
 });
 test('save/reuse analytics allows only fixed modes and contexts, never the stored inputs or identity', () => {

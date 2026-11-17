@@ -7,10 +7,10 @@ const t = (text: string) => translate(text, getLocale(Astro.url.pathname));
 <div data-backup-controls data-status-id={statusId}>
   <button type="button" class="button secondary" id={exportId} data-backup-export disabled>{t('Download JSON backup')}</button>
   <p data-backup-state class="small" aria-live="polite"></p>
-  <div class="workspace-import"><label for={inputId}>{t(label)}</label><input id={inputId} type="file" accept=".json,application/json" data-backup-import aria-describedby={`${inputId}-help`} /><p id={`${inputId}-help`} class="field-help">{t('Version 1, 2 and 3 backups are supported. Review before replacing local records.')}</p></div>
+  <div class="workspace-import"><label for={inputId}>{t(label)}</label><input id={inputId} type="file" accept=".json,application/json" data-backup-import aria-describedby={`${inputId}-help`} /><p id={`${inputId}-help`} class="field-help">{t('Version 1–4 backups are supported. Review before replacing local records.')}</p></div>
   <section data-restore-preview class="restore-preview" aria-labelledby={`${inputId}-preview-heading`} hidden>
     <h3 id={`${inputId}-preview-heading`}>{t('Review backup')}</h3><p data-restore-summary></p><details data-restore-details hidden><summary>{t('Records in this backup')}</summary><ul data-restore-names></ul></details>
-    <p class="small">{t('Restoring replaces all saved products, schedules and calculations. The open form stays unchanged.')}</p>
+    <p class="small">{t('Restoring replaces all saved products, schedules, calculations and actual records. An unsaved actual record will be closed.')}</p>
     <div class="actions"><button type="button" class="button secondary" data-restore-confirm>{t('Restore backup')}</button><button type="button" class="text-button" data-restore-cancel>{t('Cancel restore')}</button></div>
   </section>
 </div>

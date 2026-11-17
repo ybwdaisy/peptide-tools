@@ -8,6 +8,7 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? '';
 const verification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 const canonical = new URL(localePath(Astro.url.pathname, getLocale(Astro.url.pathname)), Astro.site);
 const nav = [
+  ['Today', '/today', 'open_today'],
   ['Products', '/products', 'open_workspace'],
   ['Schedule', '/planner', 'open_planner'],
   ['Calculator', '/calculator', 'quick_calculator'],

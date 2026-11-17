@@ -120,7 +120,7 @@ export function initProductEntry() {
     trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
     track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'invalid_label' });
   }, true);
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
     if (leaving) return;
     trackStart('product_entry_start', { operation: editing ? 'update' : 'create' });
@@ -137,8 +137,9 @@ export function initProductEntry() {
     let product: Product;
     try { product = validateProduct(raw); }
     catch (caught) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'invalid_label' }); error.textContent = uiError(caught); error.tabIndex = -1; error.focus(); return; }
-    try { saveProduct(product); }
-    catch (caught) { track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'storage_unavailable' }); error.textContent = uiError(caught); status.textContent = ui('Your form is still here. Nothing was saved; check browser storage before trying again.'); return; }
+    leaving = true; el<HTMLButtonElement>('product-save').disabled = true;
+    try { await saveProduct(product); }
+    catch (caught) { leaving = false; el<HTMLButtonElement>('product-save').disabled = false; track('product_entry_error', { operation: editing ? 'update' : 'create', error_code: 'storage_unavailable' }); error.textContent = uiError(caught); status.textContent = ui('Your form is still here. Nothing was saved; check browser storage before trying again.'); return; }
     leaving = true; el<HTMLButtonElement>('product-save').disabled = true;
     trackThenNavigate('product_saved', { product_type: product.kind, operation: editing ? 'update' : 'create' }, `${localePath('/products', browserLocale())}#product=${encodeURIComponent(product.id)}`);
   });

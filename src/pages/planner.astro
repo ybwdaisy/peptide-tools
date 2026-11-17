@@ -6,7 +6,7 @@ const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
 <Shell title={t("Local peptide protocol planner")} description={t("Build a schedule from your own entries, save it in this browser, and print or export a time-zone-aware calendar. No account or dose templates.")} active="/planner">
-  <div class="page-heading page-toolbar planner-heading"><h1>{t("My schedule")}</h1><a class="text-link" href={localePath('/products', locale)}>{t('Choose from My products')}</a></div>
+  <div class="page-heading page-toolbar planner-heading"><h1>{t("My schedule")}</h1><div class="actions"><a data-analytics-action="open_today" href={localePath('/today', locale)}>{t('Today and history')}</a><a class="text-link" href={localePath('/products', locale)}>{t('Choose from My products')}</a></div></div>
   <div class="planner-layout">
     <form id="planner-form" class="planner-form" novalidate>
       <section class="planner-setup" aria-labelledby="schedule-details-heading">

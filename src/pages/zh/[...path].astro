@@ -3,6 +3,7 @@ import Calculator from '../calculator.astro';
 import Library from '../library/index.astro';
 import Reference from '../library/[slug].astro';
 import Planner from '../planner.astro';
+import Today from '../today.astro';
 import Privacy from '../privacy.astro';
 import Disclaimer from '../disclaimer.astro';
 import Products from '../products/index.astro';
@@ -10,12 +11,12 @@ import ProductEntry from '../products/new.astro';
 import { peptides } from '../../data/peptides';
 export function getStaticPaths() {
   return [
-    ...['calculator', 'library', 'planner', 'privacy', 'disclaimer', 'products', 'products/new'].map(path => ({ params: { path }, props: { page: path, peptide: undefined } })),
+    ...['calculator', 'library', 'planner', 'today', 'privacy', 'disclaimer', 'products', 'products/new'].map(path => ({ params: { path }, props: { page: path, peptide: undefined } })),
     ...peptides.map(peptide => ({ params: { path: `library/${peptide.slug}` }, props: { page: 'reference', peptide } })),
   ];
 }
 const { page, peptide } = Astro.props;
-const pages = { calculator: Calculator, library: Library, planner: Planner, privacy: Privacy, disclaimer: Disclaimer, reference: Reference, products: Products, 'products/new': ProductEntry };
+const pages = { calculator: Calculator, library: Library, planner: Planner, today: Today, privacy: Privacy, disclaimer: Disclaimer, reference: Reference, products: Products, 'products/new': ProductEntry };
 const Page = pages[page as keyof typeof pages];
 ---
 <Page peptide={peptide!} />

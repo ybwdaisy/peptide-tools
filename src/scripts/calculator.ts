@@ -153,28 +153,33 @@ export function initCalculator() {
           event.preventDefault(); trackThenNavigate('calculation_reused', { tool_context: setup.productId ? 'product' : 'standalone', input_mode: setup.mode }, link.href, link.href === location.href);
         });
         remove.type = 'button'; remove.className = 'text-button'; remove.textContent = ui('Delete'); remove.setAttribute('aria-label', ui('Delete saved calculation {name}', { name: setup.name }));
-        remove.addEventListener('click', () => {
+        remove.addEventListener('click', async () => {
           if (!confirm(ui('Delete this saved calculation? Products and schedules will remain.'))) return;
-          try { deleteCalculation(setup.id); if (calculationId === setup.id) calculationId = crypto.randomUUID(); renderSaved(); }
+          try { await deleteCalculation(setup.id); if (calculationId === setup.id) calculationId = crypto.randomUUID(); renderSaved(); }
           catch (error) { storageStatus.textContent = uiError(error); }
         });
         row.append(link, remove); list.append(row);
       }
     } catch { storageStatus.textContent = ui('Saved data could not be read. Calculations still work; nothing will be overwritten.'); }
   }
-  document.querySelector('#save-calculation-form')!.addEventListener('submit', event => {
+  let saving = false;
+  document.querySelector('#save-calculation-form')!.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!calculated) return;
+    if (!calculated || saving) return;
+    saving = true;
+    const saveButton = document.querySelector<HTMLButtonElement>('#save-calculation-form button[type="submit"]')!;
+    saveButton.disabled = true; saveButton.setAttribute('aria-busy', 'true');
     try {
       if (product && readWorkspace().products.find(p => p.id === product.id)?.revision !== product.revision) throw new Error('The product changed. Reopen this calculation to review the updated label.');
       const setup = validateSavedCalculation({ ...calculated, id: calculationId, name: name.value });
       const operation = readWorkspace().calculations.some(c => c.id === setup.id) ? 'update' : 'create';
-      saveCalculation(setup);
+      await saveCalculation(setup);
       history.replaceState(null, '', `${localePath('/calculator', browserLocale())}#calculation=${encodeURIComponent(setup.id)}`);
       document.querySelector<HTMLElement>('#calculation-review')!.hidden = true;
       storageStatus.textContent = ui('Calculation saved in this browser.');
       track('calculation_saved', { operation, tool_context: product ? 'product' : 'standalone', input_mode: setup.mode }); renderSaved();
     } catch (error) { storageStatus.textContent = uiError(error); }
+    finally { saving = false; saveButton.disabled = false; saveButton.removeAttribute('aria-busy'); }
   });
   name.addEventListener('input', () => { storageStatus.textContent = ''; });
   renderSaved();

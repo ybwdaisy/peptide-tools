@@ -90,9 +90,9 @@ test('direct local save is a conversion without a generate click and subsequent 
   await row.getByLabel('Item name', { exact: true }).fill('PRIVATE-ITEM');
   await row.getByLabel('Dose entered', { exact: true }).fill('250');
   await row.getByLabel('Local time', { exact: true }).fill('08:00');
-  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   await expect(page.locator('#planner-status')).toContainText('Saved in this browser');
-  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click();
+  await page.getByRole('button', { name: 'Save in this browser', exact: true }).click(); await expect(page.locator('#save-protocol')).toBeEnabled();
   const recorded = await events(page);
   expect(recorded.filter(e => e.name === 'protocol_saved').map(e => e.params.operation)).toEqual(['create', 'update']);
   expect(recorded.filter(e => e.name === 'protocol_saved').every(e => e.params.tool_context === 'standalone')).toBe(true);

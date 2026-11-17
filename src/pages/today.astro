@@ -1,0 +1,42 @@
+---
+import Shell from '../layouts/Shell.astro';
+import BackupControls from '../components/BackupControls.astro';
+import { getLocale, localePath, translate } from '../lib/i18n';
+const locale = getLocale(Astro.url.pathname), t = (s: string) => translate(s, locale);
+---
+<Shell title={t('Today and history')} description={t('Your saved schedules and actual records, together in this browser.')} active="/today" noindex>
+  <div class="daily-workspace">
+    <div class="page-heading page-toolbar"><h1>{t('Today')}</h1><div class="actions"><button id="record-new" class="button" type="button" disabled>{t('Add a record')}</button><a href="#record-history">{t('History')}</a></div></div>
+    <div class="daily-controls two-columns"><div><label for="daily-date">{t('View date')}</label><input type="date" id="daily-date" min="2000-01-01" max="2100-12-31" required /></div><div><label for="daily-zone">{t('View time zone')}</label><select id="daily-zone"></select></div></div>
+    <div class="actions daily-date-actions"><button class="text-button" type="button" id="daily-previous">{t('Previous day')}</button><button class="text-button" type="button" id="daily-now">{t('Today')}</button><button class="text-button" type="button" id="daily-next">{t('Next day')}</button></div>
+    <p id="daily-error" class="error-message" role="alert"></p><p id="daily-status" class="status-message" role="status"></p>
+    <section id="record-editor" class="record-editor" aria-labelledby="record-editor-heading" hidden>
+      <div class="section-toolbar"><h2 id="record-editor-heading" tabindex="-1">{t('Add a record')}</h2><button id="record-cancel" type="button" class="text-button">{t('Cancel')}</button></div>
+      <p id="record-planned-context" class="small"></p>
+      <form id="record-form" novalidate>
+        <input type="hidden" name="recordContext" id="record-context" />
+        <div class="record-fields two-columns">
+          <div><label for="record-product">{t('Saved product')}</label><select id="record-product" name="recordProduct"><option value="">{t('Custom item')}</option></select></div>
+          <div><label for="record-label">{t('Product or item name')}</label><input id="record-label" name="recordLabel" maxlength="80" required autocomplete="off" /></div>
+          <div><label for="record-outcome">{t('Record status')}</label><select id="record-outcome" name="recordStatus"><option value="taken">{t('Taken')}</option><option value="skipped">{t('Skipped')}</option></select></div>
+          <div id="record-amount-fields"><label for="record-dose">{t('Actual amount')}</label><div class="record-amount"><input id="record-dose" name="recordDose" type="text" inputmode="decimal" autocomplete="off" required /><select id="record-unit" name="recordUnit" aria-label={t('Actual amount unit')}><option value="mcg">mcg</option><option value="mg">mg</option></select></div></div>
+          <div id="record-basis-wrap" hidden><label for="record-basis">{t('Amount refers to')}</label><select id="record-basis" name="recordBasis"></select></div>
+          <div><label for="record-date">{t('Entry date')}</label><input id="record-date" name="recordDate" type="date" min="2000-01-01" max="2100-12-31" required /></div>
+          <div><label for="record-time">{t('Entry time')}</label><input id="record-time" name="recordTime" type="time" required /></div>
+          <div><label for="record-zone">{t('Entry time zone')}</label><select id="record-zone" name="recordZone"></select></div>
+        </div>
+        <details class="optional-help"><summary>{t('Clock-change time')}</summary><label for="record-clock">{t('If this time occurs twice')}</label><select id="record-clock" name="recordClock"><option value="reject">{t('Ask me to choose')}</option><option value="earlier">{t('First occurrence')}</option><option value="later">{t('Second occurrence')}</option></select></details>
+        <div class="record-notes"><label for="record-notes">{t('Notes (optional)')}</label><textarea id="record-notes" name="recordNotes" maxlength="1000" rows="3"></textarea></div>
+        <p id="record-error" class="error-message" role="alert"></p><div class="actions"><button id="record-save" type="submit" class="button" disabled>{t('Save record')}</button></div>
+      </form>
+    </section>
+    <section aria-labelledby="daily-heading"><div class="section-toolbar"><h2 id="daily-heading">{t('Scheduled entries')}</h2><a data-analytics-action="open_planner" href={localePath('/planner', locale)}>{t('Manage schedules')}</a></div><p id="daily-empty" class="small">{t('No scheduled entries for this date.')}</p><ul id="daily-entries" class="daily-entries"></ul></section>
+    <section id="daily-extra" class="record-history" aria-labelledby="daily-extra-heading" hidden><h2 id="daily-extra-heading">{t('Other records on this date')}</h2><ul id="daily-extra-entries" class="daily-entries"></ul></section>
+    <section id="record-history" class="record-history" aria-labelledby="history-heading"><div class="section-toolbar"><h2 id="history-heading">{t('History')}</h2><button id="records-csv" class="button secondary" type="button" disabled>{t('Export CSV')}</button></div>
+      <div class="two-columns history-filters"><div><label for="history-from">{t('From date')}</label><input id="history-from" type="date" min="2000-01-01" max="2100-12-31" /></div><div><label for="history-until">{t('Through date')}</label><input id="history-until" type="date" min="2000-01-01" max="2100-12-31" /></div></div>
+      <p class="small">{t('History dates use the view time zone. Skipped entries are not actual usage.')}</p><button id="history-reset" class="text-button" type="button">{t('Clear date filters')}</button><p id="history-error" class="error-message" role="alert"></p><p id="history-empty" class="small">{t('No records yet. Record an entry above or add a past entry.')}</p><ul id="history-entries" class="daily-entries"></ul><button id="history-more" type="button" class="button secondary" hidden>{t('Show more records')}</button>
+    </section>
+    <details class="workspace-data"><summary>{t('Your local data')}</summary><p class="small">{t('Your records stay in this browser. Clearing browser data removes them. Keep a separate backup.')}</p><BackupControls exportId="daily-backup-export" inputId="daily-backup-import" statusId="daily-backup-status" label="Restore a local backup" /><p id="daily-backup-status" class="status-message" role="status"></p></details>
+  </div>
+  <script>import { initToday } from '../scripts/today'; initToday();</script>
+</Shell>
