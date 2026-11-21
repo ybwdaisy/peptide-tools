@@ -1,3 +1,4 @@
+import { simulatePublicVisitor } from './analytics-fixture';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { STORAGE_KEY } from '../../src/lib/backup';
@@ -118,6 +119,7 @@ test('consented event contract sends only allowlisted data and withdrawal stops 
     await route.fulfill({ response, body: html });
   });
   const analytics: string[] = [];
+  await simulatePublicVisitor(page);
   await page.route('https://www.googletagmanager.com/**', async route => { analytics.push(route.request().url()); await route.fulfill({ contentType: 'application/javascript', body: '/* stub: no real Google collection in automated tests */' }); });
   await page.goto('/calculator?utm_source=reddit&utm_medium=social&utm_campaign=private-name&dose=private-dose');
   expect(analytics).toHaveLength(0);
@@ -172,6 +174,7 @@ test('planner analytics records successful actions once and never sends restored
     const response = await route.fetch();
     await route.fulfill({ response, body: (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', `data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"') });
   });
+  await simulatePublicVisitor(page);
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* no real collection */' }));
   await fillProtocol(page);
   await page.getByRole('button', { name: 'Analytics preferences', exact: true }).click(); await page.getByRole('button', { name: 'Allow analytics', exact: true }).click();

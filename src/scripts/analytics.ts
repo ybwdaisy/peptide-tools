@@ -1,13 +1,17 @@
+import { isQaTraffic, QA_STORAGE_KEY } from '../lib/analytics-traffic';
 import { ui } from '../lib/i18n';
 import { EVENT_NAMES, NAVIGATION_ACTIONS, eventParams, safeCampaign, safePage, safeReferrer, type AnalyticsEvent } from '../lib/analytics-policy';
 
 declare global { interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void } }
 const CONSENT_KEY = 'peptide-tools.analytics-consent.v1';
 const STARTS_KEY = 'peptide-tools.analytics-starts.v2';
-// Explicit acceptance sessions are labelled throughout navigation, never inferred from user inputs.
-const QA_KEY = 'peptide-tools.analytics-qa.v1';
-let qa = new URLSearchParams(location.search).get('analytics_test') === '1';
-try { qa ||= sessionStorage.getItem(QA_KEY) === '1'; if (qa) sessionStorage.setItem(QA_KEY, '1'); } catch { /* Current-page QA label still applies. */ }
+function collectionBlocked() {
+  const qa = isQaTraffic();
+  if (qa && document.body.dataset.gaId) (window as unknown as Record<string, unknown>)[`ga-disable-${document.body.dataset.gaId}`] = true;
+  return qa;
+}
+const qa = collectionBlocked();
+window.addEventListener('storage', event => { if (event.key === QA_STORAGE_KEY) collectionBlocked(); });
 // Existing page_group reports can exclude QA immediately, before a new GA4 dimension propagates.
 const pageMetadata = () => ({ ...safePage(location.pathname), ...(qa ? { page_group: 'qa' } : {}) });
 const traffic = { traffic_class: qa ? 'qa' : 'public', ...(qa ? { debug_mode: true } : {}) };
@@ -17,7 +21,7 @@ const campaign = safeCampaign(location.search);
 const referrer = safeReferrer(document.referrer);
 function readChoice() { try { return localStorage.getItem(CONSENT_KEY); } catch { return null; } }
 function writeChoice(value: string) { try { localStorage.setItem(CONSENT_KEY, value); } catch { /* This-page consent remains usable without storage. */ } }
-function configuration() { return document.documentElement.dataset.languageRedirect !== 'true' && location.origin === document.body.dataset.analyticsOrigin && document.body.dataset.analyticsEnabled === 'true' && /^G-[A-Z0-9]+$/.test(document.body.dataset.gaId ?? ''); }
+function configuration() { return !collectionBlocked() && document.documentElement.dataset.languageRedirect !== 'true' && location.origin === document.body.dataset.analyticsOrigin && document.body.dataset.analyticsEnabled === 'true' && /^G-[A-Z0-9]+$/.test(document.body.dataset.gaId ?? ''); }
 function initialize() {
   if (ready || !consent || !configuration()) return;
   ready = true;

@@ -1,3 +1,4 @@
+import { simulatePublicVisitor } from './analytics-fixture';
 import { test, expect } from '@playwright/test';
 import { STORAGE_KEY } from '../../src/lib/backup';
 
@@ -50,6 +51,7 @@ test('only active selection emits one product-open event and never sends the rec
     const response = await route.fetch();
     await route.fulfill({ response, body: (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', `data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"') });
   });
+  await simulatePublicVisitor(page);
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* isolated test, no collection */' }));
   await page.addInitScript(() => {
     localStorage.setItem('peptide-tools.analytics-consent.v1', 'granted');

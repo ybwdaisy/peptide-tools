@@ -1,3 +1,4 @@
+import { simulatePublicVisitor } from './analytics-fixture';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { STORAGE_KEY } from '../../src/lib/backup';
@@ -107,6 +108,7 @@ test('product events count active actions and contain no private label inputs', 
     const response = await route.fetch(); const html = (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', `data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"');
     await route.fulfill({ response, body: html });
   });
+  await simulatePublicVisitor(page);
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* no real Google traffic */' }));
   await page.goto('/products/new'); await page.getByRole('button', { name: 'Allow analytics', exact: true }).click();
   await page.getByLabel('Product name', { exact: true }).fill('Secret product name');
