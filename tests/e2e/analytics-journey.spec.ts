@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-async function collect(page: Page) {
+async function collect(page: Page, human = true) {
   await page.route('**/*', async route => {
     if (route.request().resourceType() !== 'document') return route.continue();
     const response = await route.fetch();
@@ -8,16 +8,16 @@ async function collect(page: Page) {
   });
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* offline tag contract; never real GA collection */' }));
   await page.route(/google-analytics\.com|googleadservices\.com|doubleclick\.net/, route => route.abort());
-  await page.addInitScript(() => {
+  await page.addInitScript((human) => {
     // Simulate a normal visitor only in this fully intercepted SDK contract fixture.
-    Object.defineProperty(navigator, 'webdriver', { get: () => false });
+    if (human) Object.defineProperty(navigator, 'webdriver', { get: () => false });
     localStorage.setItem('peptide-tools.analytics-consent.v1', 'granted');
     addEventListener('beforeunload', () => {
       const layer = (window as unknown as { dataLayer?: Array<ArrayLike<unknown>> }).dataLayer ?? [];
       const saved = JSON.parse(sessionStorage.getItem('test.commands') ?? '[]');
       sessionStorage.setItem('test.commands', JSON.stringify([...saved, ...layer.map(args => Array.from(args))]));
     });
-  });
+  }, human);
 }
 async function events(page: Page) {
   return page.evaluate(() => {
@@ -70,6 +70,7 @@ test('restoring and switching language do not manufacture a start; tool contexts
   expect((await events(page)).filter(e => e.name === 'calculator_start')).toHaveLength(0);
   await page.getByLabel('Target dose', { exact: true }).fill('250');
   await page.getByRole('button', { name: 'Calculate volume', exact: true }).click();
+  await expect.poll(async () => (await events(page)).filter(event => event.name === 'calculation_success' && event.params.tool_context === 'product').length).toBe(1);
   await page.goto('/calculator');
   await page.getByLabel('Concentration', { exact: false }).fill('2');
   await page.getByLabel('Target dose', { exact: true }).fill('250');
@@ -172,4 +173,17 @@ test('explicit QA stays uncollected after consent, product navigation and a full
   expect(await events(page)).toEqual([]);
   expect(tags).toEqual([]);
   expect(await page.evaluate(() => localStorage.getItem('peptide-tools.analytics-qa.v1'))).toBe('1');
+});
+
+
+test('webdriver automation stays uncollected even with a reset flag and granted consent', async ({ page }) => {
+  await collect(page, false);
+  await page.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => true }));
+  const requests: string[] = [];
+  page.on('request', request => { if (/googletagmanager|google-analytics/.test(request.url())) requests.push(request.url()); });
+  await page.goto('/?analytics_test=0');
+  await page.getByRole('link', { name: 'Add my first product', exact: true }).click();
+  await page.reload();
+  expect(await events(page)).toEqual([]);
+  expect(requests).toEqual([]);
 });
