@@ -1,3 +1,4 @@
+import { simulatePublicVisitor } from './analytics-fixture';
 import { test, expect, type Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { STORAGE_KEY } from '../../src/lib/backup';
@@ -100,6 +101,7 @@ test('loading, restoring and rerendering do not create record events and denied 
 test('allowed analytics sends only whitelisted categories once per successful explicit operation',async({page})=>{
   await seed(page);
   await page.route('**/*',async route=>{if(route.request().resourceType()!=='document')return route.continue();const r=await route.fetch(); await route.fulfill({response:r,body:(await r.text()).replace('data-analytics-enabled="false"','data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"',`data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/,'data-ga-id="G-TEST123"')});});
+  await simulatePublicVisitor(page);
   await page.route('https://www.googletagmanager.com/**',r=>r.fulfill({contentType:'application/javascript',body:'/* offline GA contract */'}));
   await page.goto('/today'); await page.getByRole('button',{name:'Analytics preferences',exact:true}).click(); await page.getByRole('button',{name:'Allow analytics',exact:true}).click(); await page.locator('#daily-zone').selectOption('UTC');await page.locator('#daily-date').fill('2028-02-29');
   await page.locator('#daily-entries > li').first().getByRole('button',{name:'Skip',exact:true}).click(); await page.locator('#daily-zone').selectOption('America/New_York'); await page.locator('#daily-zone').selectOption('UTC');

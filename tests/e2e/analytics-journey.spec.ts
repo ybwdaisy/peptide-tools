@@ -1,20 +1,23 @@
 import { test, expect, type Page } from '@playwright/test';
 
-async function collect(page: Page) {
+async function collect(page: Page, human = true) {
   await page.route('**/*', async route => {
     if (route.request().resourceType() !== 'document') return route.continue();
     const response = await route.fetch();
     await route.fulfill({ response, body: (await response.text()).replace('data-analytics-enabled="false"', 'data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"', `data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/, 'data-ga-id="G-TEST123"') });
   });
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* offline tag contract; never real GA collection */' }));
-  await page.addInitScript(() => {
+  await page.route(/google-analytics\.com|googleadservices\.com|doubleclick\.net/, route => route.abort());
+  await page.addInitScript((human) => {
+    // Simulate a normal visitor only in this fully intercepted SDK contract fixture.
+    if (human) Object.defineProperty(navigator, 'webdriver', { get: () => false });
     localStorage.setItem('peptide-tools.analytics-consent.v1', 'granted');
     addEventListener('beforeunload', () => {
       const layer = (window as unknown as { dataLayer?: Array<ArrayLike<unknown>> }).dataLayer ?? [];
       const saved = JSON.parse(sessionStorage.getItem('test.commands') ?? '[]');
       sessionStorage.setItem('test.commands', JSON.stringify([...saved, ...layer.map(args => Array.from(args))]));
     });
-  });
+  }, human);
 }
 async function events(page: Page) {
   return page.evaluate(() => {
@@ -24,9 +27,9 @@ async function events(page: Page) {
   });
 }
 
-test('product activation counts explicit steps, distinguishes edits, and keeps QA through navigation', async ({ page }) => {
+test('product activation counts explicit steps, distinguishes edits, and preserves public event taxonomy through navigation', async ({ page }) => {
   await collect(page);
-  await page.goto('/?analytics_test=1&name=PRIVATE-QUERY');
+  await page.goto('/?name=PRIVATE-QUERY');
   await page.getByRole('link', { name: 'Add my first product', exact: true }).click();
   await page.getByLabel('Product name', { exact: true }).fill('PRIVATE-PRODUCT');
   await page.getByRole('button', { name: 'Continue to label', exact: true }).click();
@@ -42,7 +45,7 @@ test('product activation counts explicit steps, distinguishes edits, and keeps Q
   expect(recorded.filter(e => e.name === 'product_entry_start').map(e => e.params.operation)).toEqual(['create', 'update']);
   expect(recorded.filter(e => e.name === 'product_label_view')).toHaveLength(1);
   expect(recorded.filter(e => e.name === 'product_saved').map(e => e.params.operation)).toEqual(['create', 'update']);
-  expect(recorded.every(e => e.params.traffic_class === 'qa' && e.params.page_group === 'qa' && e.params.debug_mode === true)).toBe(true);
+  expect(recorded.every(e => e.params.traffic_class === 'public' && e.params.debug_mode === undefined)).toBe(true);
   expect(JSON.stringify(recorded)).not.toMatch(/PRIVATE|17\.321|product=|edit=|analytics_test/);
 });
 
@@ -67,6 +70,7 @@ test('restoring and switching language do not manufacture a start; tool contexts
   expect((await events(page)).filter(e => e.name === 'calculator_start')).toHaveLength(0);
   await page.getByLabel('Target dose', { exact: true }).fill('250');
   await page.getByRole('button', { name: 'Calculate volume', exact: true }).click();
+  await expect.poll(async () => (await events(page)).filter(event => event.name === 'calculation_success' && event.params.tool_context === 'product').length).toBe(1);
   await page.goto('/calculator');
   await page.getByLabel('Concentration', { exact: false }).fill('2');
   await page.getByLabel('Target dose', { exact: true }).fill('250');
@@ -133,7 +137,7 @@ test('navigation waits for delayed SDK processing and duplicate callbacks cannot
     layer.push = (...commands) => { commands.forEach(process); return push(...commands); };
     layer.forEach(process);
   ` }));
-  await page.goto('/?analytics_test=1');
+  await page.goto('/');
   await page.getByRole('link', { name: 'Add my first product', exact: true }).click();
   await expect(page).toHaveURL(/\/products\/new$/);
   expect(received.filter(e => e.name === 'navigation_action' && e.params.action === 'add_product')).toHaveLength(1);
@@ -151,4 +155,35 @@ test('navigation waits for delayed SDK processing and duplicate callbacks cannot
   expect(received.filter(e => e.name === 'product_saved').map(e => e.params.operation)).toEqual(['create', 'update']);
   expect(received.filter(e => e.name === 'product_saved').every(e => e.params.page_location === 'https://peptides.ybwdaisy.com/products/new')).toBe(true);
   expect(JSON.stringify(received)).not.toMatch(/PRIVATE|17\.321|product=|edit=|analytics_test/);
+});
+
+
+test('explicit QA stays uncollected after consent, product navigation and a full reload', async ({ page }) => {
+  await collect(page);
+  const tags: string[] = [];
+  page.on('request', request => { if (/googletagmanager|google-analytics/.test(request.url())) tags.push(request.url()); });
+  await page.goto('/?analytics_test=1');
+  await page.getByRole('link', { name: 'Add my first product', exact: true }).click();
+  await page.getByLabel('Product name', { exact: true }).fill('QA-LOCAL-ONLY');
+  await page.getByRole('button', { name: 'Continue to label', exact: true }).click();
+  await page.getByLabel('Form on the label', { exact: true }).selectOption('powder');
+  await page.getByRole('button', { name: 'Save product', exact: true }).click();
+  await expect(page).toHaveURL(/\/products#product=/);
+  await page.reload();
+  expect(await events(page)).toEqual([]);
+  expect(tags).toEqual([]);
+  expect(await page.evaluate(() => localStorage.getItem('peptide-tools.analytics-qa.v1'))).toBe('1');
+});
+
+
+test('webdriver automation stays uncollected even with a reset flag and granted consent', async ({ page }) => {
+  await collect(page, false);
+  await page.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => true }));
+  const requests: string[] = [];
+  page.on('request', request => { if (/googletagmanager|google-analytics/.test(request.url())) requests.push(request.url()); });
+  await page.goto('/?analytics_test=0');
+  await page.getByRole('link', { name: 'Add my first product', exact: true }).click();
+  await page.reload();
+  expect(await events(page)).toEqual([]);
+  expect(requests).toEqual([]);
 });

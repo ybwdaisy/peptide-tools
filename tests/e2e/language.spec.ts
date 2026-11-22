@@ -1,3 +1,4 @@
+import { simulatePublicVisitor } from './analytics-fixture';
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { STORAGE_KEY } from '../../src/lib/backup';
@@ -71,6 +72,7 @@ test('Chinese calculation events retain the original anonymous contract', async 
     const response=await route.fetch();const html=(await response.text()).replace('data-analytics-enabled="false"','data-analytics-enabled="true"').replace('data-analytics-origin="https://peptides.ybwdaisy.com"',`data-analytics-origin="${new URL(route.request().url()).origin}"`).replace(/data-ga-id(?:="[^"]*")?(?=\s|>)/,'data-ga-id="G-TEST123"');
     await route.fulfill({response,body:html});
   });
+  await simulatePublicVisitor(page);
   await page.route('https://www.googletagmanager.com/**',route=>route.fulfill({contentType:'application/javascript',body:'/* no Google traffic */'}));
   await page.goto('/zh/calculator'); await page.getByRole('button',{name:'允许统计',exact:true}).click();
   await page.getByRole('button',{name:'计算体积',exact:true}).click();
