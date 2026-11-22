@@ -1,6 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 
-async function collect(page: Page, human = true) {
+async function collect(page: Page, human = true, grantConsent = true) {
   await page.route('**/*', async route => {
     if (route.request().resourceType() !== 'document') return route.continue();
     const response = await route.fetch();
@@ -8,16 +8,17 @@ async function collect(page: Page, human = true) {
   });
   await page.route('https://www.googletagmanager.com/**', route => route.fulfill({ contentType: 'application/javascript', body: '/* offline tag contract; never real GA collection */' }));
   await page.route(/google-analytics\.com|googleadservices\.com|doubleclick\.net/, route => route.abort());
-  await page.addInitScript((human) => {
+  await page.addInitScript(({ human, grantConsent }) => {
     // Simulate a normal visitor only in this fully intercepted SDK contract fixture.
     if (human) Object.defineProperty(navigator, 'webdriver', { get: () => false });
-    localStorage.setItem('peptide-tools.analytics-consent.v1', 'granted');
+    if (grantConsent) localStorage.setItem('peptide-tools.analytics-consent.v1', 'granted');
+    else if (sessionStorage.getItem('test.consent-accepted') !== '1') localStorage.removeItem('peptide-tools.analytics-consent.v1');
     addEventListener('beforeunload', () => {
       const layer = (window as unknown as { dataLayer?: Array<ArrayLike<unknown>> }).dataLayer ?? [];
       const saved = JSON.parse(sessionStorage.getItem('test.commands') ?? '[]');
       sessionStorage.setItem('test.commands', JSON.stringify([...saved, ...layer.map(args => Array.from(args))]));
     });
-  }, human);
+  }, { human, grantConsent });
 }
 async function events(page: Page) {
   return page.evaluate(() => {
@@ -190,10 +191,7 @@ test('webdriver automation stays uncollected even with a reset flag and granted 
 
 for (const flag of ['analytics_test', 'qa']) {
   test(`${flag} is captured before consent, survives a new tab and resets only inside the offline fixture`, async ({ page, context }) => {
-    await collect(page);
-    await page.addInitScript(() => {
-      if (sessionStorage.getItem('test.consent-accepted') !== '1') localStorage.removeItem('peptide-tools.analytics-consent.v1');
-    });
+    await collect(page, true, false);
     const requests: string[] = [];
     page.on('request', request => { if (/googletagmanager|google-analytics|googleadservices|doubleclick/.test(request.url())) requests.push(request.url()); });
     await page.goto(`/?${flag}=1`);
