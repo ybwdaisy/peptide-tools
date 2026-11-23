@@ -1,5 +1,9 @@
 # Project instructions
 
+## Funnel configuration contract
+
+- Read the public [v1 contract](https://site-pulse-nine-tau.vercel.app/contracts/funnels-v1.md) and [JSON Schema](https://site-pulse-nine-tau.vercel.app/contracts/funnels-v1.schema.json) whenever changing analytics/funnels and before release, and update the sole editable `analytics/funnels.json` accordingly. Contract updates do not automatically rewrite an ongoing chat's context.
+
 ## Analytics test isolation
 
 - Production development/acceptance visits must enter through `?analytics_test=1` (also accepts `?qa=1`). Capture QA mode before consent in both sessionStorage and localStorage; preserve it through navigation and new same-origin tabs. A normal manual browser uses `?analytics_test=0` to explicitly reset it. Each domain has independent storage and must be marked separately. An explicit reset never overrides `navigator.webdriver=true`.

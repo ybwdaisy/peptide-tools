@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "hostname": "peptides.ybwdaisy.com",
+  "revision": "2026-11-23.1",
+  "qaPolicy": "no-collection-for-tests-v1",
+  "events": [
+    "page_view",
+    "calculator_start",
+    "calculation_success",
+    "calculation_error",
+    "planner_start",
+    "schedule_generated",
+    "protocol_saved",
+    "export_completed",
+    "print_requested",
+    "product_entry_start",
+    "product_saved",
+    "product_opened",
+    "product_deleted",
+    "backup_restored",
+    "navigation_action",
+    "product_label_view",
+    "product_entry_error",
+    "calculation_saved",
+    "calculation_reused",
+    "record_saved",
+    "record_removed"
+  ],
+  "funnels": [
+    {
+      "id": "peptides-first-product",
+      "definition": {
+        "name": "首次添加·入口到产品保存",
+        "filters": [
+          {
+            "field": "date",
+            "match": "EXACT",
+            "value": "20261112",
+            "not": true
+          },
+          {
+            "field": "customEvent:page_group",
+            "match": "EXACT",
+            "value": "qa",
+            "not": true
+          }
+        ],
+        "steps": [
+          {
+            "label": "点击添加产品",
+            "event": "navigation_action",
+            "pageContains": "",
+            "filters": [
+              {
+                "field": "customEvent:action",
+                "match": "EXACT",
+                "value": "add_product"
+              }
+            ]
+          },
+          {
+            "label": "开始填写新产品",
+            "event": "product_entry_start",
+            "pageContains": "",
+            "filters": [
+              {
+                "field": "customEvent:operation",
+                "match": "EXACT",
+                "value": "create"
+              }
+            ]
+          },
+          {
+            "label": "进入标签步骤",
+            "event": "product_label_view",
+            "pageContains": "",
+            "filters": [
+              {
+                "field": "customEvent:operation",
+                "match": "EXACT",
+                "value": "create"
+              }
+            ]
+          },
+          {
+            "label": "新产品保存成功",
+            "event": "product_saved",
+            "pageContains": "",
+            "filters": [
+              {
+                "field": "customEvent:operation",
+                "match": "EXACT",
+                "value": "create"
+              }
+            ]
+          }
+        ]
+      },
+      "source": {
+        "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+        "note": "产品发布的漏斗配置；后续随本产品发布更新。GA4 网页独立修改不自动同步。"
+      }
+    },
+    {
+      "id": "peptides-calculator",
+      "definition": {
+        "name": "计算器·访问到计算成功",
+        "filters": [
+          {
+            "field": "date",
+            "match": "EXACT",
+            "value": "20261112",
+            "not": true
+          },
+          {
+            "field": "customEvent:page_group",
+            "match": "EXACT",
+            "value": "qa",
+            "not": true
+          }
+        ],
+        "steps": [
+          {
+            "label": "访问计算器",
+            "event": "page_view",
+            "pageContains": "/calculator"
+          },
+          {
+            "label": "开始计算",
+            "event": "calculator_start",
+            "pageContains": ""
+          },
+          {
+            "label": "计算成功",
+            "event": "calculation_success",
+            "pageContains": ""
+          }
+        ]
+      },
+      "source": {
+        "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+        "note": "产品发布的漏斗配置；后续随本产品发布更新。GA4 网页独立修改不自动同步。"
+      }
+    },
+    {
+      "id": "peptides-generation",
+      "definition": {
+        "name": "计划生成·访问到生成成功",
+        "filters": [
+          {
+            "field": "date",
+            "match": "EXACT",
+            "value": "20261112",
+            "not": true
+          },
+          {
+            "field": "customEvent:page_group",
+            "match": "EXACT",
+            "value": "qa",
+            "not": true
+          }
+        ],
+        "steps": [
+          {
+            "label": "访问计划页",
+            "event": "page_view",
+            "pageContains": "/planner"
+          },
+          {
+            "label": "开始编辑计划",
+            "event": "planner_start",
+            "pageContains": ""
+          },
+          {
+            "label": "生成计划成功",
+            "event": "schedule_generated",
+            "pageContains": ""
+          }
+        ]
+      },
+      "source": {
+        "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+        "note": "产品发布的漏斗配置；后续随本产品发布更新。GA4 网页独立修改不自动同步。"
+      }
+    },
+    {
+      "id": "peptides-saving",
+      "definition": {
+        "name": "计划保存·访问到保存成功",
+        "filters": [
+          {
+            "field": "date",
+            "match": "EXACT",
+            "value": "20261112",
+            "not": true
+          },
+          {
+            "field": "customEvent:page_group",
+            "match": "EXACT",
+            "value": "qa",
+            "not": true
+          }
+        ],
+        "steps": [
+          {
+            "label": "访问计划页",
+            "event": "page_view",
+            "pageContains": "/planner"
+          },
+          {
+            "label": "开始编辑计划",
+            "event": "planner_start",
+            "pageContains": ""
+          },
+          {
+            "label": "保存方案成功",
+            "event": "protocol_saved",
+            "pageContains": ""
+          }
+        ]
+      },
+      "source": {
+        "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+        "note": "产品发布的漏斗配置；后续随本产品发布更新。GA4 网页独立修改不自动同步。"
+      }
+    },
+    {
+      "id": "peptides-entry",
+      "definition": {
+        "name": "产品录入·含编辑",
+        "filters": [
+          {
+            "field": "date",
+            "match": "EXACT",
+            "value": "20261112",
+            "not": true
+          },
+          {
+            "field": "customEvent:page_group",
+            "match": "EXACT",
+            "value": "qa",
+            "not": true
+          }
+        ],
+        "steps": [
+          {
+            "label": "访问产品录入页",
+            "event": "page_view",
+            "pageContains": "/products/new"
+          },
+          {
+            "label": "开始填写产品",
+            "event": "product_entry_start",
+            "pageContains": ""
+          },
+          {
+            "label": "产品保存成功",
+            "event": "product_saved",
+            "pageContains": ""
+          }
+        ]
+      },
+      "source": {
+        "url": "https://analytics.google.com/analytics/web/#/analysis/a359267445p494048879/edit/EqjrhzZYSeeMpPBtKqUmQA",
+        "note": "产品发布的漏斗配置；后续随本产品发布更新。GA4 网页独立修改不自动同步。"
+      }
+    }
+  ]
+}

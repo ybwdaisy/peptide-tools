@@ -8,12 +8,14 @@
   },
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
-    "build": "astro build",
+    "build": "node --import tsx scripts/funnels.ts --generate && astro build && node --import tsx scripts/funnels.ts --dist",
     "preview": "astro preview --host 127.0.0.1 --port 4321",
     "check": "astro check",
     "test": "node --import tsx --test tests/unit/*.test.ts",
     "test:e2e": "playwright test",
-    "verify:site": "node scripts/check-site.mjs"
+    "verify:site": "node scripts/check-site.mjs",
+    "verify:funnels": "node --import tsx scripts/funnels.ts --check",
+    "verify:funnels:remote": "node --import tsx scripts/funnels.ts --remote"
   },
   "dependencies": {
     "@js-temporal/polyfill": "0.5.1",
@@ -26,6 +28,7 @@
     "@fontsource-variable/schibsted-grotesk": "^5.2.7",
     "@playwright/test": "1.65.0",
     "@types/node": "^24.19.2",
+    "ajv": "8.20.0",
     "puppeteer-core": "25.17.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
