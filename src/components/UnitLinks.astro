@@ -1,0 +1,10 @@
+---
+import { getLocale, localePath, translate } from '../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
+---
+<nav class="unit-links" aria-label={t('Unit reference')}>
+  <a href={`${localePath('/calculator', locale)}#mg-mcg`}>{t('mg vs mcg')}</a>
+  <a href={`${localePath('/calculator', locale)}#mg-per-ml`}>{t('mg/mL concentration')}</a>
+  <a href={`${localePath('/calculator', locale)}#u100-volume`}>{t('U-100 markings to mL')}</a>
+</nav>

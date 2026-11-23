@@ -1,13 +1,17 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import Calculator from '../components/Calculator.astro';
+import UnitLinks from '../components/UnitLinks.astro';
+import UnitGuide from '../components/UnitGuide.astro';
 import { getLocale, translate } from '../lib/i18n';
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
 ---
-<Shell title={t("Peptide dose-to-volume calculator")} description={t("Convert your specified mg or mcg dose and mg/mL concentration into mL, with an optional clearly labeled U-100 syringe scale.")} active="/calculator">
+<Shell title={t('Peptide calculator: mg, mcg, mL & U-100')} description={t('Convert your specified mg or mcg amount and mg/mL concentration to mL. Understand mass, final solution volume and the optional U-100 syringe scale.')} active="/calculator">
   <div class="calculator-page">
     <div class="page-heading"><h1>{t("Dose to volume calculator")}</h1></div>
+    <UnitLinks />
     <Calculator />
+    <UnitGuide />
   </div>
 </Shell>

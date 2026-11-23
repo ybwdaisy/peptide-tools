@@ -16,6 +16,16 @@ const nav = [
 ] as const;
 const locale = getLocale(Astro.url.pathname);
 const t = (message: string) => translate(message, locale);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonical.href}#webpage`,
+  url: canonical.href,
+  name: `${title} | Peptide Tools`,
+  description,
+  inLanguage: locale === 'zh' ? 'zh-CN' : 'en',
+  isPartOf: { '@type': 'WebSite', '@id': `${Astro.site}#website`, url: Astro.site?.href, name: 'Peptide Tools' },
+};
 ---
 <!doctype html>
 <html lang={locale === 'zh' ? 'zh-CN' : 'en'}>
@@ -42,6 +52,7 @@ const t = (message: string) => translate(message, locale);
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <title>{title} | Peptide Tools</title>
+    {!noindex && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />}
   </head>
   <body data-ga-id={gaId} data-analytics-origin="https://peptides.ybwdaisy.com" data-analytics-enabled={String(isProduction && /^G-[A-Z0-9]+$/.test(gaId))}>
     <a class="skip-link" href="#main">{t("Skip to content")}</a>
