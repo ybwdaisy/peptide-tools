@@ -17,6 +17,8 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
+      - run: npm run verify:funnels
+      - run: npm run verify:funnels:remote
       - run: npm run check
       - run: npm test
       - run: npm run build

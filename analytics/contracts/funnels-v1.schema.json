@@ -1,0 +1,206 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "hostname": {
+      "type": "string",
+      "maxLength": 253,
+      "pattern": "^[a-z0-9](?:[a-z0-9.-]*[a-z0-9])?$"
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]{0,79}$"
+    },
+    "qaPolicy": {
+      "type": "string",
+      "const": "no-collection-for-tests-v1"
+    },
+    "events": {
+      "minItems": 1,
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,79}$"
+      }
+    },
+    "funnels": {
+      "minItems": 1,
+      "maxItems": 30,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{0,99}$"
+          },
+          "definition": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60
+              },
+              "filters": {
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "maxLength": 100,
+                      "pattern": "^(?:[a-zA-Z][a-zA-Z0-9]*|customEvent:[a-zA-Z][a-zA-Z0-9_]*)$"
+                    },
+                    "match": {
+                      "type": "string",
+                      "enum": [
+                        "EXACT",
+                        "CONTAINS",
+                        "FULL_REGEXP"
+                      ]
+                    },
+                    "value": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300
+                    },
+                    "not": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "match",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "steps": {
+                "minItems": 2,
+                "maxItems": 10,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "event": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,79}(?:\\|[a-zA-Z][a-zA-Z0-9_]{0,79}){0,9}$"
+                    },
+                    "pageContains": {
+                      "default": "",
+                      "type": "string",
+                      "maxLength": 300
+                    },
+                    "filters": {
+                      "maxItems": 10,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string",
+                            "maxLength": 100,
+                            "pattern": "^(?:[a-zA-Z][a-zA-Z0-9]*|customEvent:[a-zA-Z][a-zA-Z0-9_]*)$"
+                          },
+                          "match": {
+                            "type": "string",
+                            "enum": [
+                              "EXACT",
+                              "CONTAINS",
+                              "FULL_REGEXP"
+                            ]
+                          },
+                          "value": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 300
+                          },
+                          "not": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "field",
+                          "match",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "withinSeconds": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 604800
+                    },
+                    "directlyFollowed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "label",
+                    "event"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "name",
+              "steps"
+            ],
+            "additionalProperties": false
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "maxLength": 1000,
+                "pattern": "^https:\\/\\/[^\\s]+$"
+              },
+              "note": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "url",
+              "note"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "definition"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "hostname",
+    "revision",
+    "qaPolicy",
+    "events",
+    "funnels"
+  ],
+  "additionalProperties": false,
+  "$id": "https://site-pulse-nine-tau.vercel.app/contracts/funnels-v1.schema.json",
+  "title": "Site Pulse funnel manifest v1"
+}
