@@ -1,0 +1,31 @@
+---
+import { getLocale, translate } from '../lib/i18n';
+const locale = getLocale(Astro.url.pathname);
+const t = (message: string) => translate(message, locale);
+---
+<div class="unit-guide prose">
+  <p>{t('Arithmetic examples only. These numbers are not suggested doses, mixing instructions or evidence that a product is safe.')}</p>
+  <section id="mg-mcg" aria-labelledby="mg-mcg-heading">
+    <h2 id="mg-mcg-heading">{t('mg vs mcg: two units of mass')}</h2>
+    <p>{t('mg means milligram; mcg means microgram (µg). 1 mg = 1,000 mcg. To change mcg to mg, divide by 1,000; to change mg to mcg, multiply by 1,000. Neither unit tells you a liquid volume.')}</p>
+    <p class="equation">250 mcg ÷ 1,000 = 0.25 mg</p>
+    <p class="small">{t('Source:')} <a href="https://www.nist.gov/pml/owm/metric-si-prefixes" rel="noreferrer">{t('NIST — metric prefixes')}</a></p>
+  </section>
+  <section id="mg-per-ml" aria-labelledby="mg-per-ml-heading">
+    <h2 id="mg-per-ml-heading">{t('mg/mL: mass per volume of solution')}</h2>
+    <p>{t('mg/mL describes how many milligrams are in each milliliter. Divide the mass in mg by the confirmed final solution volume in mL. A vial labeled only in mg does not give a concentration; the amount of liquid added is not automatically the final solution volume.')}</p>
+    <p class="equation">10 mg ÷ 5 mL = 2 mg/mL</p>
+    <p>{t('To find a volume, divide your specified mass by that concentration. In this arithmetic example:')}</p>
+    <p class="equation">0.25 mg ÷ 2 mg/mL = 0.125 mL</p>
+    <p class="small">{t('Source:')} <a href="https://goldbook.iupac.org/terms/view/M03713" rel="noreferrer">{t('IUPAC — mass concentration')}</a></p>
+  </section>
+  <section id="u100-volume" aria-labelledby="u100-volume-heading">
+    <h2 id="u100-volume-heading">{t('U-100 markings: a volume scale')}</h2>
+    <p>{t('A U-100 syringe scale has 100 scale units per 1 mL. One scale unit corresponds to 0.01 mL; one printed graduation may span more than one unit. For this scale only, multiply mL by 100 or divide the scale value by 100 to get mL.')}</p>
+    <p class="equation">0.125 mL × 100 = 12.5 {t('U-100 markings')}</p>
+    <p>{t('This is a volume reading, not peptide activity in IU. It does not apply to U-40 or U-500 scales. Check the actual capacity and smallest graduation; this tool does not round to a usable injection or recommend a device.')}</p>
+    <p class="small">{t('Source:')} <a href="https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b519bd83-038c-4ec5-a231-a51ec5cc291f" rel="noreferrer">{t('DailyMed — U-100 labeling and matching syringe')}</a>{t(' (scale convention only; not peptide-use guidance).')}</p>
+  </section>
+  <p class="small">{t('Unit sources checked:')} <time datetime="2026-11-23">2026-11-23</time></p>
+  <p><a href="#calculator-form">{t('Back to calculator')}</a></p>
+</div>

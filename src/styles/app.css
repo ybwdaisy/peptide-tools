@@ -404,6 +404,14 @@ summary::marker { color: var(--color-muted); }
   .focused-home .home-intro { padding-block: 0; }
   .focused-home .home-example { max-width: 640px; }
 }
+
+/* Unit references reuse the tool's open, ruled layout and native links. */
+.unit-links { display: flex; flex-wrap: wrap; gap: var(--space-xs) var(--space-lg); margin-block: var(--space-md) var(--space-lg); }
+.unit-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.unit-guide { max-width: 72ch; margin-top: var(--space-xl); }
+.unit-guide > section { padding-block: var(--space-lg); border-top: 1px solid var(--color-rule); scroll-margin-top: var(--space-lg); }
+.unit-guide h2 { margin-top: 0; font-size: var(--text-2xl); }
+.unit-guide .equation { overflow-wrap: anywhere; }
 @media (max-width: 40rem) {
   .focused-home .home-workspace { gap: var(--space-lg); }
   .focused-home .home-actions { gap: var(--space-xs) var(--space-md); }

@@ -1,5 +1,6 @@
 ---
 import Shell from '../layouts/Shell.astro';
+import UnitLinks from '../components/UnitLinks.astro';
 import { Image } from 'astro:assets';
 import labelExample from '../assets/label-example.png';
 import { getLocale, localePath, translate } from '../lib/i18n';
@@ -34,6 +35,8 @@ const t = (message: string) => translate(message, locale);
       <a href={localePath('/library', locale)}><h2>{t('Reference library')}</h2></a>
     </section>
     <section class="home-help" aria-label={t('Help and quick tools')}>
+      <h2>{t('Understand the numbers')}</h2>
+      <UnitLinks />
       <details class="peptide-definition"><summary>{t('What are peptides?')}</summary><p>{t('Peptides are chains of amino acids. This tool helps you organize specific products and your own plan.')}</p></details>
     </section>
   </div>

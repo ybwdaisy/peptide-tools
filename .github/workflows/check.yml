@@ -23,5 +23,6 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run verify:site
+      - run: npm run verify:seo
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run test:e2e
