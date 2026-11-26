@@ -215,7 +215,7 @@ body:has(.consent-bar:not([hidden])) .site-footer { padding-bottom: 108px; }
 .noscript-note { padding-block: var(--space-md); }
 @media (hover: hover) {
   .button:not(:disabled):hover { background: var(--color-accent-deep); }
-  .button.secondary:not(:disabled):hover, input:not([type='checkbox']):not(:disabled):hover, select:not(:disabled):hover, input[type='file']::file-selector-button:hover { background: var(--color-paper-2); }
+  .button.secondary:not(:disabled):hover, input:not([type='checkbox']):not(:disabled):hover, select:not(:disabled):hover, input[type='file']::file-selector-button:hover { background-color: var(--color-paper-2); }
   .text-button:hover, .home-tools a:hover h2, .site-header nav a:hover, .reference-list a:hover strong { text-decoration: underline; }
 }
 @media (max-width: 60rem) {
