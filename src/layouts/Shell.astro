@@ -64,7 +64,7 @@ const structuredData = {
     <main id="main" class="container"><slot /></main>
     <footer class="site-footer container">
       <p>{t("Tools for arithmetic and personal organization. No medical advice.")}</p>
-      <nav aria-label={t("Footer")}><a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}>{t('Calculator')}</a><a data-analytics-action="open_planner" href={localePath('/planner', locale)}>{t('Protocol planner')}</a><a href={localePath("/privacy", locale)}>{t("Privacy")}</a><a href={localePath("/disclaimer", locale)}>{t("Disclaimer")}</a><button type="button" class="text-button" data-open-consent>{t("Analytics preferences")}</button></nav>
+      <nav aria-label={t("Footer")}><a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}>{t('Calculator')}</a><a data-analytics-action="open_planner" href={localePath('/planner', locale)}>{t('Protocol planner')}</a><a href={localePath("/privacy", locale)}>{t("Privacy")}</a><a href={localePath("/disclaimer", locale)}>{t("Disclaimer")}</a><a href="https://github.com/ybwdaisy/peptide-tools" target="_blank" rel="noopener noreferrer">GitHub</a><button type="button" class="text-button" data-open-consent>{t("Analytics preferences")}</button></nav>
     </footer>
     <section id="analytics-choice" class="consent-bar" aria-label={t("Optional analytics preferences")} hidden>
       <div><strong>{t("Help improve these tools?")}</strong><p>{t("Optional usage analytics excludes your inputs. Tools work either way.")} <a href={localePath("/privacy", locale)}>{t("Details")}</a></p><p id="analytics-status" class="small">{t("Optional analytics: off.")}</p></div>
