@@ -11,7 +11,10 @@ const t = (message: string) => translate(message, locale);
   <div class="focused-home">
     <div class="home-workspace home-entry">
       <section class="home-intro" aria-labelledby="home-heading">
-        <div class="page-heading"><h1 id="home-heading">{t('My products')}</h1></div>
+        <div class="page-heading">
+          <h1 id="home-heading">{t('My products')}</h1>
+          <p>{t('Organize your vial labels, convert mg/mcg amounts to mL or U-100 markings, and track your own browser-local schedule.')}</p>
+        </div>
         <div id="home-return" class="home-return" hidden>
           <a id="home-return-heading" class="button" data-analytics-action="open_workspace" href={localePath('/products', locale)}>{t('Open my products')}</a>
         </div>
@@ -30,9 +33,18 @@ const t = (message: string) => translate(message, locale);
       </details>
     </div>
     <section class="home-tools" aria-label={t('More tools')}>
-      <a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}><h2>{t('Quick calculator')}</h2></a>
-      <a data-analytics-action="open_planner" href={localePath('/planner', locale)}><h2>{t('Protocol planner')}</h2></a>
-      <a href={localePath('/library', locale)}><h2>{t('Reference library')}</h2></a>
+      <div class="home-tool">
+        <a data-analytics-action="quick_calculator" href={localePath('/calculator', locale)}><h2>{t('Quick calculator')}</h2></a>
+        <p>{t('Convert vial mg, final solution mL, and target mcg into volume or U-100 markings.')}</p>
+      </div>
+      <div class="home-tool">
+        <a data-analytics-action="open_planner" href={localePath('/planner', locale)}><h2>{t('Protocol planner')}</h2></a>
+        <p>{t('Build a recurring schedule across time zones and export calendar entries.')}</p>
+      </div>
+      <div class="home-tool">
+        <a href={localePath('/library', locale)}><h2>{t('Reference library')}</h2></a>
+        <p>{t('Primary-source summaries and regulatory context for 16 peptides.')}</p>
+      </div>
     </section>
     <section class="home-help" aria-label={t('Help and quick tools')}>
       <h2>{t('Understand the numbers')}</h2>

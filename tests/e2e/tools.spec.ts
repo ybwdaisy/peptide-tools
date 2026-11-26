@@ -4,6 +4,24 @@ import { readFile } from 'node:fs/promises';
 import { STORAGE_KEY } from '../../src/lib/backup';
 
 async function dismissConsent(page: Page) { const decline = page.getByRole('button', { name: 'No thanks', exact: true }); if (await decline.isVisible()) await decline.click(); }
+test('select caret survives hover and focus in both languages', async ({ page, context }) => {
+  await context.route(/googletagmanager\.com|google-analytics\.com|googleadservices\.com|doubleclick\.net|\/(?:g\/)?collect(?:[/?]|$)|\/(?:beacon|batch(?:es)?|unload)(?:[/?]|$)/, route => route.abort());
+  for (const prefix of ['', '/zh']) {
+    await page.goto(`${prefix}/calculator?analytics_test=1`);
+    const select = page.locator('#calculator-source-mode');
+    await page.mouse.move(0, 0);
+    const image = await select.evaluate(el => getComputedStyle(el).backgroundImage);
+    expect(image).not.toBe('none');
+    await select.hover();
+    await expect.poll(() => select.evaluate(el => getComputedStyle(el).backgroundImage)).toBe(image);
+    await select.focus();
+    await expect(select).toBeFocused();
+    expect(await select.evaluate(el => getComputedStyle(el).backgroundImage)).toBe(image);
+    await select.selectOption('label');
+    await expect(select).toHaveValue('label');
+    await expect(page.locator('.calculator-output h2')).toHaveText(prefix ? '计算结果' : 'Calculated volume');
+  }
+});
 async function fillProtocol(page: Page) {
   await page.goto('/planner'); await dismissConsent(page);
   await page.getByLabel('Protocol name', { exact: true }).fill('Private test protocol');
