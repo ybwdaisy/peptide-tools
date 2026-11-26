@@ -2,6 +2,12 @@
 
 An independent, English-first bilingual browser-local product workspace, calculator, schedule planner and daily record keeper for `peptides.ybwdaisy.com`. No accounts or business backend. No dose recommendations.
 
+Website: [peptides.ybwdaisy.com](https://peptides.ybwdaisy.com) · Source: [ybwdaisy/peptide-tools](https://github.com/ybwdaisy/peptide-tools).
+
+## License
+
+The project's original source code is available under the [MIT License](LICENSE). Bundled fonts retain their respective SIL Open Font License notices: [Schibsted Grotesk](public/fonts/schibsted-grotesk-LICENSE.txt), [IBM Plex Sans](public/fonts/OFL-IBM-Plex-Sans.txt), and the [font embedded in the wordmark](public/brand/FONT-LICENSE.txt).
+
 ## Run
 
 Node 24.x and npm:
